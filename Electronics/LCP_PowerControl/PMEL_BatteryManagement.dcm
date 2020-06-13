@@ -1,0 +1,8 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP MAX17205
+D Stand-Alone ModelGauge m5 Fuel Gauge with SHA-256 Authentication
+F https://datasheets.maximintegrated.com/en/ds/MAX17201-MAX17215.pdf
+$ENDCMP
+#
+#End Doc Library

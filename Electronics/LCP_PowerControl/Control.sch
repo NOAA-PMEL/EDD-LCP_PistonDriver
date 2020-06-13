@@ -1,0 +1,83 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 6 8
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Text HLabel 8950 3800 2    50   BiDi ~ 0
+CONTROL_SDA
+$Comp
+L Connector_Generic_Shielded:Conn_01x05_Shielded J2
+U 1 1 5EE2F074
+P 4200 3800
+F 0 "J2" H 4288 3671 50  0000 L CNN
+F 1 "Conn_01x05_Shielded" H 4288 3762 50  0000 L CNN
+F 2 "" H 4200 3800 50  0001 C CNN
+F 3 "~" H 4200 3800 50  0001 C CNN
+	1    4200 3800
+	-1   0    0    1   
+$EndComp
+Text HLabel 8950 3700 2    50   Output ~ 0
+CONTROL_EN
+Text HLabel 8950 3900 2    50   Output ~ 0
+CONTROL_SCL
+Wire Wire Line
+	8950 3700 4400 3700
+Wire Wire Line
+	8950 3800 4400 3800
+Wire Wire Line
+	4400 3900 8950 3900
+$Comp
+L power:GND #PWR010
+U 1 1 5EE31A75
+P 5500 4300
+F 0 "#PWR010" H 5500 4050 50  0001 C CNN
+F 1 "GND" H 5505 4127 50  0000 C CNN
+F 2 "" H 5500 4300 50  0001 C CNN
+F 3 "" H 5500 4300 50  0001 C CNN
+	1    5500 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4400 4000 5500 4000
+Wire Wire Line
+	5500 4000 5500 4300
+$Comp
+L Device:Polyfuse F1
+U 1 1 5EE32249
+P 4950 3600
+F 0 "F1" V 4850 3600 50  0000 C CNN
+F 1 "1A" V 5000 3750 50  0000 C CNN
+F 2 "Fuse:Fuse_Bourns_MF-RG650" H 5000 3400 50  0001 L CNN
+F 3 "~" H 4950 3600 50  0001 C CNN
+F 4 "MF-R065" V 4950 3600 50  0001 C CNN "MPN"
+	1    4950 3600
+	0    1    1    0   
+$EndComp
+$Comp
+L power:+BATT #PWR09
+U 1 1 5EE32FBC
+P 5500 3400
+F 0 "#PWR09" H 5500 3250 50  0001 C CNN
+F 1 "+BATT" H 5515 3573 50  0000 C CNN
+F 2 "" H 5500 3400 50  0001 C CNN
+F 3 "" H 5500 3400 50  0001 C CNN
+	1    5500 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5500 3400 5500 3600
+Wire Wire Line
+	5500 3600 5100 3600
+Wire Wire Line
+	4400 3600 4800 3600
+$EndSCHEMATC

@@ -1,0 +1,131 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 8
+Title "Low Cost Profiler - Power Control Board"
+Date ""
+Rev ""
+Comp "NOAA Pacific Marine Environmental Lab"
+Comment1 "Design by: Matt Casari"
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Sheet
+S 850  1250 1350 1150
+U 5EE2A57D
+F0 "Battery Input" 50
+F1 "BatteryInput.sch" 50
+F2 "BATT_V+" O R 2200 1550 50 
+F3 "BATT_V-" I R 2200 2050 50 
+$EndSheet
+$Sheet
+S 2600 1250 1300 1150
+U 5EE2A7AF
+F0 "Power Monitoring" 50
+F1 "PowerMonitoring.sch" 50
+F2 "BM_SDA" B R 3900 1650 50 
+F3 "BM_SCL" I R 3900 1800 50 
+F4 "BM_IRQ" O R 3900 1950 50 
+F5 "BATT_V-" O L 2600 2050 50 
+F6 "BATT_V+" I L 2600 1550 50 
+$EndSheet
+$Sheet
+S 850  5250 1350 1150
+U 5EE2A864
+F0 "Console" 50
+F1 "Console.sch" 50
+F2 "CONSOLE_RX" I R 2200 5850 50 
+F3 "CONSOLE_TX" O R 2200 6000 50 
+F4 "CONSOLE_PWR" O R 2200 5700 50 
+$EndSheet
+$Sheet
+S 850  3900 1350 1150
+U 5EE2AA1B
+F0 "Control Board Connection" 50
+F1 "Control.sch" 50
+F2 "CONTROL_SDA" B R 2200 4400 50 
+F3 "CONTROL_EN" O R 2200 4250 50 
+F4 "CONTROL_SCL" O R 2200 4550 50 
+$EndSheet
+$Sheet
+S 8100 2950 1300 1150
+U 5EE2AB43
+F0 "Piston Control" 50
+F1 "PistonControl.sch" 50
+F2 "MD_EN" I L 8100 3300 50 
+F3 "MD_PH" I L 8100 3400 50 
+F4 "~MD_FAULT" O L 8100 3500 50 
+F5 "MD_IPROPI" U L 8100 3600 50 
+F6 "~MD_SLEEP" I L 8100 3800 50 
+F7 "MD_PMODE" I L 8100 3700 50 
+F8 "MD_POWER_EN" I L 8100 3200 50 
+$EndSheet
+Wire Wire Line
+	2600 2050 2200 2050
+Wire Wire Line
+	2200 1550 2600 1550
+Wire Wire Line
+	4300 1950 3900 1950
+Wire Wire Line
+	3900 1800 4300 1800
+Wire Wire Line
+	4300 1650 3900 1650
+Wire Wire Line
+	2200 4250 4300 4250
+Wire Wire Line
+	4300 4400 2200 4400
+Wire Wire Line
+	2200 4550 4300 4550
+Wire Wire Line
+	4300 5850 2200 5850
+Wire Wire Line
+	2200 6000 4300 6000
+Wire Wire Line
+	8100 3300 7000 3300
+Wire Wire Line
+	7000 3400 8100 3400
+Wire Wire Line
+	7000 3500 8100 3500
+Wire Wire Line
+	8100 3600 7000 3600
+Wire Wire Line
+	7000 3700 8100 3700
+Wire Wire Line
+	7000 3800 8100 3800
+$Sheet
+S 2600 2700 1300 1150
+U 5EE4388C
+F0 "Power Regulators" 50
+F1 "PowerRegulators.sch" 50
+F2 "POWER_EN" I R 3900 3050 50 
+$EndSheet
+Wire Wire Line
+	7000 3200 8100 3200
+Wire Wire Line
+	3900 3050 4300 3050
+$Sheet
+S 4300 1250 2700 5150
+U 5EE2A5A7
+F0 "Microcontroller" 50
+F1 "Microcontroller.sch" 50
+F2 "BM_SDA" B L 4300 1650 50 
+F3 "BM_SCL" O L 4300 1800 50 
+F4 "BM_IRQ" I L 4300 1950 50 
+F5 "CONTROL_EN" I L 4300 4250 50 
+F6 "CONTROL_SDA" B L 4300 4400 50 
+F7 "CONTROL_SCL" I L 4300 4550 50 
+F8 "CONSOLE_TX" I L 4300 6000 50 
+F9 "CONSOLE_RX" O L 4300 5850 50 
+F10 "MD_EN" O R 7000 3300 50 
+F11 "MD_PH" O R 7000 3400 50 
+F12 "~MD_FAULT" I R 7000 3500 50 
+F13 "MD_IPROPI" U R 7000 3600 50 
+F14 "MD_PMODE" O R 7000 3700 50 
+F15 "~MD_SLEEP" O R 7000 3800 50 
+F16 "12V_ENABLE" O L 4300 3050 50 
+F17 "MD_POWER_EN" O R 7000 3200 50 
+$EndSheet
+$EndSCHEMATC

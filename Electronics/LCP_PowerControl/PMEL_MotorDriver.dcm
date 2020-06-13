@@ -1,0 +1,8 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP DRV8874
+D H-Bridge Motor Driver With Integrated Current Sense and Regulation
+F https://www.ti.com/lit/ds/symlink/drv8874.pdf?ts=1591932536319&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FDRV8874%253FkeyMatch%253DDRV8874%2526tisearch%253DSearch-EN-everything%2526usecase%253DGPN
+$ENDCMP
+#
+#End Doc Library

@@ -1,0 +1,376 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 7 8
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L PMEL_MotorDriver:DRV8874 U2
+U 1 1 5EE3E1B1
+P 6500 3350
+F 0 "U2" H 6850 4100 50  0000 C CNN
+F 1 "DRV8874" H 6100 4100 50  0000 C CNN
+F 2 "Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3x3mm_ThermalVias" H 6600 2400 50  0001 C CNN
+F 3 "https://www.ti.com/lit/ds/symlink/drv8874.pdf?ts=1591932536319&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FDRV8874%253FkeyMatch%253DDRV8874%2526tisearch%253DSearch-EN-everything%2526usecase%253DGPN" H 6450 4050 50  0001 C CNN
+	1    6500 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR018
+U 1 1 5EE3EECC
+P 6450 4400
+F 0 "#PWR018" H 6450 4150 50  0001 C CNN
+F 1 "GND" H 6455 4227 50  0000 C CNN
+F 2 "" H 6450 4400 50  0001 C CNN
+F 3 "" H 6450 4400 50  0001 C CNN
+	1    6450 4400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6450 4400 6450 4300
+Wire Wire Line
+	6350 4200 6350 4300
+Wire Wire Line
+	6350 4300 6450 4300
+Connection ~ 6450 4300
+Wire Wire Line
+	6450 4300 6450 4200
+Wire Wire Line
+	6550 4200 6550 4300
+Wire Wire Line
+	6550 4300 6450 4300
+$Comp
+L Device:R R12
+U 1 1 5EE3FD90
+P 4650 5450
+F 0 "R12" H 4720 5496 50  0000 L CNN
+F 1 "2.0k" H 4720 5405 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4580 5450 50  0001 C CNN
+F 3 "~" H 4650 5450 50  0001 C CNN
+	1    4650 5450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R11
+U 1 1 5EE40243
+P 4650 4950
+F 0 "R11" H 4720 4996 50  0000 L CNN
+F 1 "1.3k" H 4720 4905 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4580 4950 50  0001 C CNN
+F 3 "~" H 4650 4950 50  0001 C CNN
+	1    4650 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR014
+U 1 1 5EE41A14
+P 4650 5650
+F 0 "#PWR014" H 4650 5400 50  0001 C CNN
+F 1 "GND" H 4655 5477 50  0000 C CNN
+F 2 "" H 4650 5650 50  0001 C CNN
+F 3 "" H 4650 5650 50  0001 C CNN
+	1    4650 5650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4650 5650 4650 5600
+Wire Wire Line
+	4650 5100 4650 5200
+$Comp
+L power:+3V3 #PWR013
+U 1 1 5EE425E2
+P 4650 4700
+F 0 "#PWR013" H 4650 4550 50  0001 C CNN
+F 1 "+3V3" H 4665 4873 50  0000 C CNN
+F 2 "" H 4650 4700 50  0001 C CNN
+F 3 "" H 4650 4700 50  0001 C CNN
+	1    4650 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4650 4700 4650 4800
+Wire Wire Line
+	5900 3700 5500 3700
+Wire Wire Line
+	5500 3700 5500 5200
+Wire Wire Line
+	5500 5200 4650 5200
+Connection ~ 4650 5200
+Wire Wire Line
+	4650 5200 4650 5300
+$Comp
+L Device:R R10
+U 1 1 5EE45F8E
+P 4200 2500
+F 0 "R10" H 4270 2546 50  0000 L CNN
+F 1 "10k" H 4270 2455 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4130 2500 50  0001 C CNN
+F 3 "~" H 4200 2500 50  0001 C CNN
+	1    4200 2500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5900 3000 4200 3000
+Wire Wire Line
+	4200 3000 4200 2650
+$Comp
+L power:+3V3 #PWR012
+U 1 1 5EE46911
+P 4200 2250
+F 0 "#PWR012" H 4200 2100 50  0001 C CNN
+F 1 "+3V3" H 4215 2423 50  0000 C CNN
+F 2 "" H 4200 2250 50  0001 C CNN
+F 3 "" H 4200 2250 50  0001 C CNN
+	1    4200 2250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4200 2350 4200 2250
+$Comp
+L Device:R R9
+U 1 1 5EE46FCD
+P 3700 4100
+F 0 "R9" H 3770 4146 50  0000 L CNN
+F 1 "750" H 3770 4055 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 3630 4100 50  0001 C CNN
+F 3 "~" H 3700 4100 50  0001 C CNN
+	1    3700 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR011
+U 1 1 5EE4805F
+P 3700 4350
+F 0 "#PWR011" H 3700 4100 50  0001 C CNN
+F 1 "GND" H 3705 4177 50  0000 C CNN
+F 2 "" H 3700 4350 50  0001 C CNN
+F 3 "" H 3700 4350 50  0001 C CNN
+	1    3700 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3700 4350 3700 4250
+Text HLabel 2250 2800 0    50   Input ~ 0
+MD_EN
+Text HLabel 2250 2900 0    50   Input ~ 0
+MD_PH
+Text HLabel 2250 3200 0    50   Output ~ 0
+~MD_FAULT
+Text HLabel 2250 3450 0    50   UnSpc ~ 0
+MD_IPROPI
+Text HLabel 2250 3850 0    50   Input ~ 0
+MD_PMODE
+Wire Wire Line
+	2250 2800 5900 2800
+Wire Wire Line
+	5900 2900 2250 2900
+Wire Wire Line
+	2250 3200 5900 3200
+Wire Wire Line
+	5900 3450 3700 3450
+Wire Wire Line
+	5900 3850 2250 3850
+Wire Wire Line
+	3700 3950 3700 3450
+Connection ~ 3700 3450
+Wire Wire Line
+	3700 3450 2250 3450
+Text HLabel 2250 3000 0    50   Input ~ 0
+~MD_SLEEP
+Wire Wire Line
+	2250 3000 4200 3000
+Connection ~ 4200 3000
+$Comp
+L Device:C C7
+U 1 1 5EE4D335
+P 7750 2750
+F 0 "C7" H 7865 2796 50  0000 L CNN
+F 1 "0.022uF" H 7865 2705 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 7788 2600 50  0001 C CNN
+F 3 "~" H 7750 2750 50  0001 C CNN
+	1    7750 2750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7050 2750 7350 2750
+Wire Wire Line
+	7350 2750 7350 2550
+Wire Wire Line
+	7350 2550 7750 2550
+Wire Wire Line
+	7750 2550 7750 2600
+Wire Wire Line
+	7750 2950 7750 2900
+Wire Wire Line
+	7050 2950 7750 2950
+$Comp
+L Device:C C6
+U 1 1 5EE5019B
+P 6650 2250
+F 0 "C6" H 6765 2296 50  0000 L CNN
+F 1 "0.1uF" H 6765 2205 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 6688 2100 50  0001 C CNN
+F 3 "~" H 6650 2250 50  0001 C CNN
+F 4 "16V" H 6650 2250 50  0001 C CNN "VR"
+F 5 "X7R" H 6650 2250 50  0001 C CNN "Type"
+F 6 "" H 6650 2250 50  0001 C CNN "MPN"
+	1    6650 2250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5150 1850 5400 1850
+Wire Wire Line
+	5400 1850 5800 1850
+$Comp
+L Device:C C5
+U 1 1 5EE51A5A
+P 5800 2100
+F 0 "C5" H 5915 2146 50  0000 L CNN
+F 1 "0.1uF" H 5915 2055 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 5838 1950 50  0001 C CNN
+F 3 "~" H 5800 2100 50  0001 C CNN
+	1    5800 2100
+	1    0    0    -1  
+$EndComp
+Connection ~ 5800 1850
+$Comp
+L power:GND #PWR017
+U 1 1 5EE5285D
+P 5800 2350
+F 0 "#PWR017" H 5800 2100 50  0001 C CNN
+F 1 "GND" H 5805 2177 50  0000 C CNN
+F 2 "" H 5800 2350 50  0001 C CNN
+F 3 "" H 5800 2350 50  0001 C CNN
+	1    5800 2350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5800 2350 5800 2250
+$Comp
+L Device:CP C4
+U 1 1 5EE53B4B
+P 5400 2100
+F 0 "C4" H 5518 2146 50  0000 L CNN
+F 1 "CP" H 5518 2055 50  0000 L CNN
+F 2 "" H 5438 1950 50  0001 C CNN
+F 3 "~" H 5400 2100 50  0001 C CNN
+	1    5400 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR016
+U 1 1 5EE54344
+P 5400 2350
+F 0 "#PWR016" H 5400 2100 50  0001 C CNN
+F 1 "GND" H 5405 2177 50  0000 C CNN
+F 2 "" H 5400 2350 50  0001 C CNN
+F 3 "" H 5400 2350 50  0001 C CNN
+	1    5400 2350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5400 2350 5400 2250
+$Comp
+L Device:Polyfuse F2
+U 1 1 5EE55CEE
+P 5000 1850
+F 0 "F2" V 4775 1850 50  0000 C CNN
+F 1 "Polyfuse" V 4866 1850 50  0000 C CNN
+F 2 "" H 5050 1650 50  0001 L CNN
+F 3 "~" H 5000 1850 50  0001 C CNN
+	1    5000 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L power:+BATT #PWR015
+U 1 1 5EE56FD7
+P 4700 1600
+F 0 "#PWR015" H 4700 1450 50  0001 C CNN
+F 1 "+BATT" H 4715 1773 50  0000 C CNN
+F 2 "" H 4700 1600 50  0001 C CNN
+F 3 "" H 4700 1600 50  0001 C CNN
+	1    4700 1600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4700 1850 4700 1600
+Connection ~ 5400 1850
+Wire Wire Line
+	5800 1850 6450 1850
+Wire Wire Line
+	4850 1850 4700 1850
+Wire Wire Line
+	6650 2100 6650 1850
+Wire Wire Line
+	6650 2400 6650 2550
+Wire Wire Line
+	6450 2550 6450 1850
+Connection ~ 6450 1850
+Wire Wire Line
+	6450 1850 6650 1850
+Wire Wire Line
+	5400 1850 5400 1950
+Wire Wire Line
+	5800 1850 5800 1950
+Wire Wire Line
+	6550 4300 7100 4300
+Wire Wire Line
+	7100 4300 7100 3850
+Wire Wire Line
+	7100 3850 7050 3850
+Connection ~ 6550 4300
+$Comp
+L Connector_Generic:Conn_01x02 J3
+U 1 1 5EE732BE
+P 9250 3400
+F 0 "J3" H 9330 3392 50  0000 L CNN
+F 1 "Conn_01x02" H 9330 3301 50  0000 L CNN
+F 2 "" H 9250 3400 50  0001 C CNN
+F 3 "~" H 9250 3400 50  0001 C CNN
+	1    9250 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9050 3500 8900 3500
+Wire Wire Line
+	8900 3500 8900 3550
+Wire Wire Line
+	8900 3550 7050 3550
+Wire Wire Line
+	7050 3350 8900 3350
+Wire Wire Line
+	8900 3350 8900 3400
+Wire Wire Line
+	8900 3400 9050 3400
+Text Notes 8900 3700 0    50   ~ 0
+TO 12VDC BLDC MOTOR
+Text Notes 4600 1150 0    200  ~ 0
+MOTOR DRIVER
+Text Notes 1550 7000 0    50   ~ 0
+I_trip (uA) * A_ipropi (uA/A) = V_vref(V) / R_ipropi(Ohm)\n\nR_ipropi  = V_ref / (I_trip * A_ipropi)\nR_ipropi = 2V / (6A * 0.000444A/A)\nR_ipropi = 750 Ohms
+Text Notes 3300 4100 0    50   ~ 0
+R_ipropi
+Text Notes 1550 6500 0    50   ~ 0
+A_ipropi = 444uA/A  (Chose as middle of OUT1/2 between -20 and 40C)\nI_trip =6A\nV_ref = 2.0V
+Text Label 5050 5200 2    50   ~ 0
+V_ref
+Text Notes 4850 5300 0    50   ~ 0
+2.0VDC
+Text Notes 1600 5600 0    50   ~ 0
+Proportional Current Output\nwith R_ipropi=750 and V_ref= 2V\nV_propi = 0 - 2.0V\ncorresponding to 0 - 6A drive current.
+Text Notes 1550 6200 0    100  ~ 0
+Defined Values
+Text Notes 1600 5250 0    100  ~ 0
+IPROPI
+Text HLabel 2250 2000 0    50   Input ~ 0
+MD_POWER_EN
+$EndSCHEMATC

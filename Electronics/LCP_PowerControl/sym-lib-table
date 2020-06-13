@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name PMEL_BatteryManagement)(type Legacy)(uri ${KIPRJMOD}/PMEL_BatteryManagement.lib)(options "")(descr ""))
+  (lib (name PMEL_MotorDriver)(type Legacy)(uri ${KIPRJMOD}/PMEL_MotorDriver.lib)(options "")(descr ""))
+  (lib (name PMEL_Microcontroller)(type Legacy)(uri ${KIPRJMOD}/PMEL_Microcontroller.lib)(options "")(descr ""))
+)
