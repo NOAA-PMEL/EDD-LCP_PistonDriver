@@ -1,0 +1,202 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 11 11
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Text HLabel 7150 3350 2    50   Input ~ 0
+DEBUG_TX
+Text HLabel 7150 3250 2    50   Output ~ 0
+DEBUG_RX
+Text HLabel 7150 4700 2    50   Input ~ 0
+DEBUG_LED_1
+Text HLabel 7150 4800 2    50   Input ~ 0
+DEBUG_LED_2
+$Comp
+L Device:LED D?
+U 1 1 5EF924B3
+P 3650 4450
+F 0 "D?" V 3689 4333 50  0000 R CNN
+F 1 "LED_BLUE" V 3598 4333 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 3650 4450 50  0001 C CNN
+F 3 "~" H 3650 4450 50  0001 C CNN
+	1    3650 4450
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:LED D?
+U 1 1 5EF93B88
+P 4250 4450
+F 0 "D?" V 4289 4332 50  0000 R CNN
+F 1 "LED_GREEN" V 4198 4332 50  0000 R CNN
+F 2 "LED_SMD:LED_0805_2012Metric" H 4250 4450 50  0001 C CNN
+F 3 "~" H 4250 4450 50  0001 C CNN
+	1    4250 4450
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	7150 4700 4250 4700
+Wire Wire Line
+	4250 4700 4250 4600
+Wire Wire Line
+	3650 4600 3650 4800
+Wire Wire Line
+	3650 4800 7150 4800
+$Comp
+L Device:R_Pack02 RN?
+U 1 1 5EF94B86
+P 4000 3800
+F 0 "RN?" H 4088 3846 50  0000 L CNN
+F 1 "R_Pack02" H 4088 3755 50  0000 L CNN
+F 2 "" V 4175 3800 50  0001 C CNN
+F 3 "~" H 4000 3800 50  0001 C CNN
+	1    4000 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5EF95664
+P 3950 3400
+F 0 "#PWR?" H 3950 3250 50  0001 C CNN
+F 1 "+3V3" H 3965 3573 50  0000 C CNN
+F 2 "" H 3950 3400 50  0001 C CNN
+F 3 "" H 3950 3400 50  0001 C CNN
+	1    3950 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3950 3400 3950 3500
+Wire Wire Line
+	3950 3500 3900 3500
+Wire Wire Line
+	3900 3500 3900 3600
+Wire Wire Line
+	4000 3500 4000 3600
+Wire Wire Line
+	4000 3500 3950 3500
+Connection ~ 3950 3500
+Wire Wire Line
+	3650 4300 3650 4150
+Wire Wire Line
+	3650 4150 3900 4150
+Wire Wire Line
+	3900 4150 3900 4000
+Wire Wire Line
+	4250 4300 4250 4150
+Wire Wire Line
+	4250 4150 4000 4150
+Wire Wire Line
+	4000 4150 4000 4000
+$Comp
+L Connector_Generic:Conn_01x06 J?
+U 1 1 5EF976F0
+P 5750 3450
+AR Path="/5EE2A864/5EF976F0" Ref="J?"  Part="1" 
+AR Path="/5EF8E8EB/5EF976F0" Ref="J?"  Part="1" 
+F 0 "J?" H 5668 2925 50  0000 C CNN
+F 1 "Conn_01x06" H 5668 3016 50  0000 C CNN
+F 2 "" H 5750 3450 50  0001 C CNN
+F 3 "~" H 5750 3450 50  0001 C CNN
+	1    5750 3450
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7150 3250 6900 3250
+Wire Wire Line
+	5950 3350 6450 3350
+$Comp
+L power:GND #PWR?
+U 1 1 5EF9B9D2
+P 6200 3900
+AR Path="/5EE2A864/5EF9B9D2" Ref="#PWR?"  Part="1" 
+AR Path="/5EF8E8EB/5EF9B9D2" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 6200 3650 50  0001 C CNN
+F 1 "GND" H 6205 3727 50  0000 C CNN
+F 2 "" H 6200 3900 50  0001 C CNN
+F 3 "" H 6200 3900 50  0001 C CNN
+	1    6200 3900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5950 3650 6200 3650
+Wire Wire Line
+	6200 3650 6200 3900
+NoConn ~ 5950 3150
+NoConn ~ 5950 3450
+NoConn ~ 5950 3550
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EF9DADA
+P 6450 2900
+AR Path="/5EE2AB43/5EF9DADA" Ref="TP?"  Part="1" 
+AR Path="/5EE7B8CC/5EF9DADA" Ref="TP?"  Part="1" 
+F 0 "TP?" H 6508 3018 50  0000 L CNN
+F 1 "TestPoint" H 6508 2927 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 6650 2900 50  0001 C CNN
+F 3 "~" H 6650 2900 50  0001 C CNN
+	1    6450 2900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EF9DAE1
+P 6900 2900
+AR Path="/5EE2AB43/5EF9DAE1" Ref="TP?"  Part="1" 
+AR Path="/5EE7B8CC/5EF9DAE1" Ref="TP?"  Part="1" 
+F 0 "TP?" H 6958 3018 50  0000 L CNN
+F 1 "TestPoint" H 6958 2927 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 7100 2900 50  0001 C CNN
+F 3 "~" H 7100 2900 50  0001 C CNN
+	1    6900 2900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6900 2900 6900 3250
+Connection ~ 6900 3250
+Wire Wire Line
+	6900 3250 5950 3250
+Wire Wire Line
+	6450 2900 6450 3350
+Connection ~ 6450 3350
+Wire Wire Line
+	6450 3350 7150 3350
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EF9E9A7
+P 5400 4500
+AR Path="/5EE2AB43/5EF9E9A7" Ref="TP?"  Part="1" 
+AR Path="/5EE7B8CC/5EF9E9A7" Ref="TP?"  Part="1" 
+F 0 "TP?" H 5458 4618 50  0000 L CNN
+F 1 "TestPoint" H 5458 4527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 5600 4500 50  0001 C CNN
+F 3 "~" H 5600 4500 50  0001 C CNN
+	1    5400 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5400 4500 5400 4800
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EF9E9AE
+P 5850 4500
+AR Path="/5EE2AB43/5EF9E9AE" Ref="TP?"  Part="1" 
+AR Path="/5EE7B8CC/5EF9E9AE" Ref="TP?"  Part="1" 
+F 0 "TP?" H 5908 4618 50  0000 L CNN
+F 1 "TestPoint" H 5908 4527 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 6050 4500 50  0001 C CNN
+F 3 "~" H 6050 4500 50  0001 C CNN
+	1    5850 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5850 4500 5850 4700
+$EndSCHEMATC

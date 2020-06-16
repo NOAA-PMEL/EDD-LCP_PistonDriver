@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 8 8
+Sheet 7 11
 Title ""
 Date ""
 Rev ""
@@ -13,6 +13,500 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text HLabel 9600 3200 0    50   Input ~ 0
+Text HLabel 9850 5450 2    50   Input ~ 0
 12V_ENABLE
+$Comp
+L PMEL_PowerICs:LMR50410 U?
+U 1 1 5EF38167
+P 5200 1950
+F 0 "U?" H 5175 2315 50  0000 C CNN
+F 1 "LMR50410" H 5175 2224 50  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23-6_Handsoldering" H 5150 1650 50  0001 C CNN
+F 3 "https://www.ti.com/lit/ds/symlink/lmr50410.pdf?ts=1591402847494&ref_url=https://www.ti.com/product/LMR50410" H 5050 2100 50  0001 C CNN
+	1    5200 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5EF38EC6
+P 8600 1600
+F 0 "#PWR?" H 8600 1450 50  0001 C CNN
+F 1 "+3V3" H 8615 1773 50  0000 C CNN
+F 2 "" H 8600 1600 50  0001 C CNN
+F 3 "" H 8600 1600 50  0001 C CNN
+	1    8600 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+BATT #PWR?
+U 1 1 5EF39847
+P 3200 1550
+F 0 "#PWR?" H 3200 1400 50  0001 C CNN
+F 1 "+BATT" H 3215 1723 50  0000 C CNN
+F 2 "" H 3200 1550 50  0001 C CNN
+F 3 "" H 3200 1550 50  0001 C CNN
+	1    3200 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5EF3A56E
+P 3300 2100
+F 0 "C?" H 3415 2146 50  0000 L CNN
+F 1 "1uF" H 3415 2055 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3338 1950 50  0001 C CNN
+F 3 "~" H 3300 2100 50  0001 C CNN
+	1    3300 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5EF3B4D1
+P 3650 2100
+F 0 "C?" H 3765 2146 50  0000 L CNN
+F 1 "0.1uF" H 3765 2055 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3688 1950 50  0001 C CNN
+F 3 "~" H 3650 2100 50  0001 C CNN
+	1    3650 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5EF3B84D
+P 6350 2050
+F 0 "C?" H 6465 2096 50  0000 L CNN
+F 1 "0.1uF" H 6465 2005 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 6465 1959 50  0001 L CNN
+F 3 "~" H 6350 2050 50  0001 C CNN
+	1    6350 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5EF3C1D4
+P 7750 2050
+F 0 "C?" H 7865 2096 50  0000 L CNN
+F 1 "10uF" H 7865 2005 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 7788 1900 50  0001 C CNN
+F 3 "~" H 7750 2050 50  0001 C CNN
+	1    7750 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5EF3C643
+P 8150 2050
+F 0 "C?" H 8265 2096 50  0000 L CNN
+F 1 "10uF" H 8265 2005 50  0000 L CNN
+F 2 "Capacitor_SMD:C_1206_3216Metric" H 8188 1900 50  0001 C CNN
+F 3 "~" H 8150 2050 50  0001 C CNN
+	1    8150 2050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5500 1850 6350 1850
+Wire Wire Line
+	6350 1850 6350 1900
+Wire Wire Line
+	5500 1950 6000 1950
+Wire Wire Line
+	6000 1950 6000 2250
+Wire Wire Line
+	6000 2250 6350 2250
+Wire Wire Line
+	6350 2250 6350 2200
+$Comp
+L Device:L L?
+U 1 1 5EF3E9E5
+P 6750 1850
+F 0 "L?" V 6940 1850 50  0000 C CNN
+F 1 "L" V 6849 1850 50  0000 C CNN
+F 2 "" H 6750 1850 50  0001 C CNN
+F 3 "~" H 6750 1850 50  0001 C CNN
+	1    6750 1850
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	6600 1850 6350 1850
+Connection ~ 6350 1850
+Wire Wire Line
+	8150 1850 8150 1900
+Wire Wire Line
+	7750 1900 7750 1850
+Connection ~ 7750 1850
+Wire Wire Line
+	7750 1850 8150 1850
+$Comp
+L power:GND #PWR?
+U 1 1 5EF3F866
+P 5200 2450
+F 0 "#PWR?" H 5200 2200 50  0001 C CNN
+F 1 "GND" H 5205 2277 50  0000 C CNN
+F 2 "" H 5200 2450 50  0001 C CNN
+F 3 "" H 5200 2450 50  0001 C CNN
+	1    5200 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EF3FD44
+P 7750 2400
+F 0 "#PWR?" H 7750 2150 50  0001 C CNN
+F 1 "GND" H 7755 2227 50  0000 C CNN
+F 2 "" H 7750 2400 50  0001 C CNN
+F 3 "" H 7750 2400 50  0001 C CNN
+	1    7750 2400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7750 2400 7750 2300
+Wire Wire Line
+	7750 2300 8150 2300
+Wire Wire Line
+	8150 2300 8150 2200
+Connection ~ 7750 2300
+Wire Wire Line
+	7750 2300 7750 2200
+Wire Wire Line
+	8150 1850 8600 1850
+Wire Wire Line
+	8600 1850 8600 1600
+Connection ~ 8150 1850
+Wire Wire Line
+	6900 1850 7050 1850
+$Comp
+L Device:R R?
+U 1 1 5EF42F65
+P 7050 2150
+F 0 "R?" H 7120 2196 50  0000 L CNN
+F 1 "51k" H 7120 2105 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 6980 2150 50  0001 C CNN
+F 3 "~" H 7050 2150 50  0001 C CNN
+	1    7050 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 5EF433B6
+P 7050 2650
+F 0 "R?" H 7120 2696 50  0000 L CNN
+F 1 "22.1k" H 7120 2605 50  0000 L CNN
+F 2 "Resistor_SMD:R_0402_1005Metric" V 6980 2650 50  0001 C CNN
+F 3 "~" H 7050 2650 50  0001 C CNN
+	1    7050 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EF43697
+P 7050 2900
+F 0 "#PWR?" H 7050 2650 50  0001 C CNN
+F 1 "GND" H 7055 2727 50  0000 C CNN
+F 2 "" H 7050 2900 50  0001 C CNN
+F 3 "" H 7050 2900 50  0001 C CNN
+	1    7050 2900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7050 2800 7050 2900
+Wire Wire Line
+	7050 2500 7050 2400
+Wire Wire Line
+	6350 2250 6350 2400
+Wire Wire Line
+	6350 2400 7050 2400
+Connection ~ 6350 2250
+Connection ~ 7050 2400
+Wire Wire Line
+	7050 2400 7050 2300
+Wire Wire Line
+	7050 2000 7050 1850
+Connection ~ 7050 1850
+Wire Wire Line
+	7050 1850 7750 1850
+Wire Wire Line
+	4850 1850 4600 1850
+Wire Wire Line
+	3200 1850 3200 1550
+Connection ~ 3300 1850
+Wire Wire Line
+	3300 1850 3200 1850
+Wire Wire Line
+	3300 1850 3300 1950
+Wire Wire Line
+	3650 1950 3650 1850
+Connection ~ 3650 1850
+Wire Wire Line
+	3650 1850 3300 1850
+Wire Wire Line
+	5200 2450 5200 2300
+$Comp
+L power:GND #PWR?
+U 1 1 5EF475D1
+P 3500 2500
+F 0 "#PWR?" H 3500 2250 50  0001 C CNN
+F 1 "GND" H 3505 2327 50  0000 C CNN
+F 2 "" H 3500 2500 50  0001 C CNN
+F 3 "" H 3500 2500 50  0001 C CNN
+	1    3500 2500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3500 2500 3500 2400
+Wire Wire Line
+	3500 2400 3650 2400
+Wire Wire Line
+	3650 2400 3650 2250
+Wire Wire Line
+	3300 2250 3300 2400
+Wire Wire Line
+	3300 2400 3500 2400
+Connection ~ 3500 2400
+Wire Wire Line
+	4850 1950 4600 1950
+Wire Wire Line
+	4600 1950 4600 1850
+Connection ~ 4600 1850
+Wire Wire Line
+	4600 1850 3650 1850
+Text Notes 5300 1100 0    100  ~ 0
+3V3 Regulator
+Text Notes 5450 4200 0    100  ~ 0
+12V Regulator
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE966A4
+P 2400 6450
+AR Path="/5EE2A7AF/5EE966A4" Ref="TP?"  Part="1" 
+AR Path="/5EE4388C/5EE966A4" Ref="TP?"  Part="1" 
+F 0 "TP?" H 2458 6568 50  0000 L CNN
+F 1 "TestPoint" H 2458 6477 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 2600 6450 50  0001 C CNN
+F 3 "~" H 2600 6450 50  0001 C CNN
+F 4 "5000" H 2400 6450 50  0001 C CNN "MPN"
+	1    2400 6450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE9710E
+P 9100 5350
+F 0 "TP?" H 9158 5468 50  0000 L CNN
+F 1 "TestPoint" H 9158 5377 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 9300 5350 50  0001 C CNN
+F 3 "~" H 9300 5350 50  0001 C CNN
+F 4 "5001" H 9100 5350 50  0001 C CNN "MPN"
+	1    9100 5350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE97C87
+P 2900 6450
+AR Path="/5EE2A7AF/5EE97C87" Ref="TP?"  Part="1" 
+AR Path="/5EE4388C/5EE97C87" Ref="TP?"  Part="1" 
+F 0 "TP?" H 2958 6568 50  0000 L CNN
+F 1 "TestPoint" H 2958 6477 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 3100 6450 50  0001 C CNN
+F 3 "~" H 3100 6450 50  0001 C CNN
+F 4 "5000" H 2900 6450 50  0001 C CNN "MPN"
+	1    2900 6450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE98832
+P 3350 6450
+AR Path="/5EE2A7AF/5EE98832" Ref="TP?"  Part="1" 
+AR Path="/5EE4388C/5EE98832" Ref="TP?"  Part="1" 
+F 0 "TP?" H 3408 6568 50  0000 L CNN
+F 1 "TestPoint" H 3408 6477 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 3550 6450 50  0001 C CNN
+F 3 "~" H 3550 6450 50  0001 C CNN
+F 4 "5000" H 3350 6450 50  0001 C CNN "MPN"
+	1    3350 6450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE9902D
+P 3800 6450
+AR Path="/5EE2A7AF/5EE9902D" Ref="TP?"  Part="1" 
+AR Path="/5EE4388C/5EE9902D" Ref="TP?"  Part="1" 
+F 0 "TP?" H 3858 6568 50  0000 L CNN
+F 1 "TestPoint" H 3858 6477 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 4000 6450 50  0001 C CNN
+F 3 "~" H 4000 6450 50  0001 C CNN
+F 4 "5000" H 3800 6450 50  0001 C CNN "MPN"
+	1    3800 6450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE9A555
+P 2400 7200
+F 0 "TP?" H 2458 7318 50  0000 L CNN
+F 1 "TestPoint" H 2458 7227 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 2600 7200 50  0001 C CNN
+F 3 "~" H 2600 7200 50  0001 C CNN
+F 4 "5001" H 2400 7200 50  0001 C CNN "MPN"
+	1    2400 7200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE9A55C
+P 2900 7200
+F 0 "TP?" H 2958 7318 50  0000 L CNN
+F 1 "TestPoint" H 2958 7227 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 3100 7200 50  0001 C CNN
+F 3 "~" H 3100 7200 50  0001 C CNN
+F 4 "5001" H 2900 7200 50  0001 C CNN "MPN"
+	1    2900 7200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE9A563
+P 3350 7200
+F 0 "TP?" H 3408 7318 50  0000 L CNN
+F 1 "TestPoint" H 3408 7227 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 3550 7200 50  0001 C CNN
+F 3 "~" H 3550 7200 50  0001 C CNN
+F 4 "5001" H 3350 7200 50  0001 C CNN "MPN"
+	1    3350 7200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE9A56A
+P 3800 7200
+F 0 "TP?" H 3858 7318 50  0000 L CNN
+F 1 "TestPoint" H 3858 7227 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 4000 7200 50  0001 C CNN
+F 3 "~" H 4000 7200 50  0001 C CNN
+F 4 "5001" H 3800 7200 50  0001 C CNN "MPN"
+	1    3800 7200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EE9D7F2
+P 2400 7350
+F 0 "#PWR?" H 2400 7100 50  0001 C CNN
+F 1 "GND" H 2405 7177 50  0000 C CNN
+F 2 "" H 2400 7350 50  0001 C CNN
+F 3 "" H 2400 7350 50  0001 C CNN
+	1    2400 7350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EE9DD4E
+P 2900 7350
+F 0 "#PWR?" H 2900 7100 50  0001 C CNN
+F 1 "GND" H 2905 7177 50  0000 C CNN
+F 2 "" H 2900 7350 50  0001 C CNN
+F 3 "" H 2900 7350 50  0001 C CNN
+	1    2900 7350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EE9DFE6
+P 3350 7350
+F 0 "#PWR?" H 3350 7100 50  0001 C CNN
+F 1 "GND" H 3355 7177 50  0000 C CNN
+F 2 "" H 3350 7350 50  0001 C CNN
+F 3 "" H 3350 7350 50  0001 C CNN
+	1    3350 7350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EE9E1B5
+P 3800 7350
+F 0 "#PWR?" H 3800 7100 50  0001 C CNN
+F 1 "GND" H 3805 7177 50  0000 C CNN
+F 2 "" H 3800 7350 50  0001 C CNN
+F 3 "" H 3800 7350 50  0001 C CNN
+	1    3800 7350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3800 7200 3800 7350
+Wire Wire Line
+	3350 7200 3350 7350
+Wire Wire Line
+	2900 7200 2900 7350
+Wire Wire Line
+	2400 7200 2400 7350
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5EEA0E5C
+P 3950 6700
+F 0 "#PWR?" H 3950 6550 50  0001 C CNN
+F 1 "+3V3" H 3965 6873 50  0000 C CNN
+F 2 "" H 3950 6700 50  0001 C CNN
+F 3 "" H 3950 6700 50  0001 C CNN
+	1    3950 6700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+12V #PWR?
+U 1 1 5EEA1BA0
+P 3050 6700
+F 0 "#PWR?" H 3050 6550 50  0001 C CNN
+F 1 "+12V" H 3065 6873 50  0000 C CNN
+F 2 "" H 3050 6700 50  0001 C CNN
+F 3 "" H 3050 6700 50  0001 C CNN
+	1    3050 6700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+BATT #PWR?
+U 1 1 5EEA2081
+P 2550 6700
+F 0 "#PWR?" H 2550 6550 50  0001 C CNN
+F 1 "+BATT" H 2565 6873 50  0000 C CNN
+F 2 "" H 2550 6700 50  0001 C CNN
+F 3 "" H 2550 6700 50  0001 C CNN
+	1    2550 6700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5EEA399F
+P 3500 6700
+F 0 "#PWR?" H 3500 6550 50  0001 C CNN
+F 1 "+3V3" H 3515 6873 50  0000 C CNN
+F 2 "" H 3500 6700 50  0001 C CNN
+F 3 "" H 3500 6700 50  0001 C CNN
+	1    3500 6700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2400 6450 2400 6800
+Wire Wire Line
+	2400 6800 2550 6800
+Wire Wire Line
+	2550 6800 2550 6700
+Wire Wire Line
+	2900 6450 2900 6800
+Wire Wire Line
+	2900 6800 3050 6800
+Wire Wire Line
+	3050 6800 3050 6700
+Wire Wire Line
+	3350 6450 3350 6800
+Wire Wire Line
+	3350 6800 3500 6800
+Wire Wire Line
+	3500 6800 3500 6700
+Wire Wire Line
+	3800 6450 3800 6800
+Wire Wire Line
+	3800 6800 3950 6800
+Wire Wire Line
+	3950 6800 3950 6700
 $EndSCHEMATC

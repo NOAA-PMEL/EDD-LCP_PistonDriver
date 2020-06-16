@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 8
+Sheet 3 11
 Title ""
 Date ""
 Rev ""
@@ -78,7 +78,7 @@ Text HLabel 1650 5300 0    50   Output ~ 0
 BATT_V-
 Connection ~ 5450 5300
 Wire Wire Line
-	1650 5300 5450 5300
+	1650 5300 3450 5300
 Text HLabel 1600 2300 0    50   Input ~ 0
 BATT_V+
 $Comp
@@ -174,15 +174,13 @@ Connection ~ 8250 3250
 Text HLabel 10350 3250 2    50   BiDi ~ 0
 BM_SDA
 Wire Wire Line
-	10350 3250 8900 3250
+	10350 3250 9600 3250
 Text HLabel 10350 3500 2    50   Input ~ 0
 BM_SCL
 Text HLabel 10350 3750 2    50   Output ~ 0
 BM_IRQ
 Wire Wire Line
-	10350 3500 8900 3500
-Wire Wire Line
-	8900 3750 10350 3750
+	10350 3500 9500 3500
 Wire Wire Line
 	4000 3600 5400 3600
 Wire Wire Line
@@ -455,5 +453,103 @@ $EndComp
 Wire Wire Line
 	8150 2300 8150 2050
 Wire Wire Line
-	4900 2300 8150 2300
+	4900 2300 6600 2300
+$Comp
+L power:GND #PWR?
+U 1 1 5EEDB371
+P 9400 5100
+AR Path="/5EE2AA1B/5EEDB371" Ref="#PWR?"  Part="1" 
+AR Path="/5EE2A7AF/5EEDB371" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 9400 4850 50  0001 C CNN
+F 1 "GND" H 9405 4927 50  0000 C CNN
+F 2 "" H 9400 5100 50  0001 C CNN
+F 3 "" H 9400 5100 50  0001 C CNN
+	1    9400 5100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9400 5100 9400 4950
+Wire Wire Line
+	9500 4900 9500 4950
+Wire Wire Line
+	9500 4950 9400 4950
+Connection ~ 9400 4950
+Wire Wire Line
+	9400 4950 9400 4900
+Wire Wire Line
+	9600 4900 9600 4950
+Connection ~ 9500 4950
+$Comp
+L Connector_Generic:Conn_02x04_Odd_Even J?
+U 1 1 5EEDB37F
+P 9500 4600
+AR Path="/5EE2AA1B/5EEDB37F" Ref="J?"  Part="1" 
+AR Path="/5EE2A7AF/5EEDB37F" Ref="J?"  Part="1" 
+F 0 "J?" V 9459 4312 50  0000 R CNN
+F 1 "Conn_02x04_Odd_Even" V 9550 4312 50  0000 R CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_2x04_P2.54mm_Vertical" H 9500 4600 50  0001 C CNN
+F 3 "~" H 9500 4600 50  0001 C CNN
+F 4 "SALEAE_TEST" V 9641 4312 50  0000 R CNN "Field4"
+	1    9500 4600
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	9700 4900 9700 4950
+Wire Wire Line
+	9500 4950 9600 4950
+Wire Wire Line
+	9600 4950 9700 4950
+Connection ~ 9600 4950
+Wire Wire Line
+	9400 4400 9400 3750
+Wire Wire Line
+	8900 3750 9400 3750
+Connection ~ 9400 3750
+Wire Wire Line
+	9400 3750 10350 3750
+Wire Wire Line
+	9500 4400 9500 3500
+Connection ~ 9500 3500
+Wire Wire Line
+	9500 3500 8900 3500
+Wire Wire Line
+	9600 4400 9600 3250
+Connection ~ 9600 3250
+Wire Wire Line
+	9600 3250 8900 3250
+NoConn ~ 9700 4400
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE905FF
+P 6600 2200
+F 0 "TP?" H 6658 2318 50  0000 L CNN
+F 1 "TestPoint" H 6658 2227 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 6800 2200 50  0001 C CNN
+F 3 "~" H 6800 2200 50  0001 C CNN
+F 4 "5000" H 6600 2200 50  0001 C CNN "MPN"
+	1    6600 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6600 2200 6600 2300
+Connection ~ 6600 2300
+Wire Wire Line
+	6600 2300 8150 2300
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5EE92BE6
+P 3450 5250
+F 0 "TP?" H 3508 5368 50  0000 L CNN
+F 1 "TestPoint" H 3508 5277 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 3650 5250 50  0001 C CNN
+F 3 "~" H 3650 5250 50  0001 C CNN
+F 4 "5001" H 3450 5250 50  0001 C CNN "MPN"
+	1    3450 5250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3450 5250 3450 5300
+Connection ~ 3450 5300
+Wire Wire Line
+	3450 5300 5450 5300
 $EndSCHEMATC
