@@ -5,10 +5,10 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 2 11
 Title ""
-Date ""
-Rev ""
+Date "2020-06-17"
+Rev "R0.1"
 Comp ""
-Comment1 ""
+Comment1 "Design by: Matt Casari"
 Comment2 ""
 Comment3 ""
 Comment4 ""
@@ -18,68 +18,69 @@ BATT_V+
 Text HLabel 9600 1950 2    50   Input ~ 0
 BATT_V-
 $Comp
-L Connector_Generic:Conn_01x02 J?
+L Connector_Generic:Conn_01x02 J3
 U 1 1 5EF29935
 P 3900 1950
-F 0 "J?" H 3818 1625 50  0000 C CNN
+F 0 "J3" H 3818 1625 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 1716 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 3900 1950 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 1950 50  0001 C CNN
 F 3 "~" H 3900 1950 50  0001 C CNN
 	1    3900 1950
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J?
+L Connector_Generic:Conn_01x02 J9
 U 1 1 5EF2A22F
 P 3900 2850
-F 0 "J?" H 3818 2525 50  0000 C CNN
+F 0 "J9" H 3818 2525 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 2616 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 3900 2850 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 2850 50  0001 C CNN
 F 3 "~" H 3900 2850 50  0001 C CNN
 	1    3900 2850
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J?
+L Connector_Generic:Conn_01x02 J10
 U 1 1 5EF2A6FE
 P 3900 3850
-F 0 "J?" H 3818 3525 50  0000 C CNN
+F 0 "J10" H 3818 3525 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 3616 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 3900 3850 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 3850 50  0001 C CNN
 F 3 "~" H 3900 3850 50  0001 C CNN
 	1    3900 3850
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J?
+L Connector_Generic:Conn_01x02 J11
 U 1 1 5EF2AC09
 P 3900 4850
-F 0 "J?" H 3818 4525 50  0000 C CNN
+F 0 "J11" H 3818 4525 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 4616 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 3900 4850 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 4850 50  0001 C CNN
 F 3 "~" H 3900 4850 50  0001 C CNN
 	1    3900 4850
 	-1   0    0    1   
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x02 J?
+L Connector_Generic:Conn_01x02 J12
 U 1 1 5EF2B236
 P 3900 5950
-F 0 "J?" H 3818 5625 50  0000 C CNN
+F 0 "J12" H 3818 5625 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 5716 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 3900 5950 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 5950 50  0001 C CNN
 F 3 "~" H 3900 5950 50  0001 C CNN
 	1    3900 5950
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:D D?
+L Device:D D5
 U 1 1 5EF2F687
 P 5150 5850
-F 0 "D?" H 5150 6066 50  0000 C CNN
+F 0 "D5" H 5150 6066 50  0000 C CNN
 F 1 "D" H 5150 5975 50  0000 C CNN
-F 2 "" H 5150 5850 50  0001 C CNN
+F 2 "Diode_SMD:D_SMA" H 5150 5850 50  0001 C CNN
 F 3 "~" H 5150 5850 50  0001 C CNN
+F 4 "SK53A-LTP" H 5150 5850 50  0001 C CNN "MPN"
 	1    5150 5850
 	-1   0    0    -1  
 $EndComp
@@ -105,10 +106,10 @@ Connection ~ 4450 4850
 Wire Wire Line
 	4450 4850 4450 3850
 $Comp
-L power:GND #PWR?
+L power:GND #PWR015
 U 1 1 5EF31DCF
 P 4450 6300
-F 0 "#PWR?" H 4450 6050 50  0001 C CNN
+F 0 "#PWR015" H 4450 6050 50  0001 C CNN
 F 1 "GND" H 4455 6127 50  0000 C CNN
 F 2 "" H 4450 6300 50  0001 C CNN
 F 3 "" H 4450 6300 50  0001 C CNN
@@ -139,13 +140,9 @@ Wire Wire Line
 Wire Wire Line
 	4100 1850 5650 1850
 Connection ~ 5650 2750
-Wire Wire Line
-	9600 1850 5650 1850
 Connection ~ 5650 1850
 Wire Wire Line
 	5650 1850 5650 2750
-Wire Wire Line
-	9600 1950 4450 1950
 Connection ~ 4450 1950
 Text Notes 2650 5950 0    50   ~ 0
 External Power Connector\n(DC Supply)
@@ -159,4 +156,48 @@ Text Notes 2850 4800 0    50   ~ 0
 Battery #4 Connector
 Text Notes 1050 1300 0    50   ~ 0
 Battery Connections:\nExpected Battery Pack\n18SP1 Stacks, Alkaline, Diode Protected
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5F052069
+P 6600 1600
+AR Path="/5EE2A7AF/5F052069" Ref="TP?"  Part="1" 
+AR Path="/5EE4388C/5F052069" Ref="TP?"  Part="1" 
+AR Path="/5EE2A57D/5F052069" Ref="TP22"  Part="1" 
+F 0 "TP22" H 6658 1718 50  0000 L CNN
+F 1 "TestPoint" H 6658 1627 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 6800 1600 50  0001 C CNN
+F 3 "~" H 6800 1600 50  0001 C CNN
+F 4 "5000" H 6600 1600 50  0001 C CNN "MPN"
+	1    6600 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint TP?
+U 1 1 5F052070
+P 7050 1600
+AR Path="/5EE2A7AF/5F052070" Ref="TP?"  Part="1" 
+AR Path="/5EE4388C/5F052070" Ref="TP?"  Part="1" 
+AR Path="/5EE2A57D/5F052070" Ref="TP23"  Part="1" 
+F 0 "TP23" H 7108 1718 50  0000 L CNN
+F 1 "TestPoint" H 7108 1627 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 7250 1600 50  0001 C CNN
+F 3 "~" H 7250 1600 50  0001 C CNN
+F 4 "5001" H 7050 1600 50  0001 C CNN "MPN"
+	1    7050 1600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6600 1600 6600 1850
+Wire Wire Line
+	5650 1850 6600 1850
+Connection ~ 6600 1850
+Wire Wire Line
+	6600 1850 9600 1850
+Wire Wire Line
+	7050 1600 7050 1950
+Wire Wire Line
+	4450 1950 7050 1950
+Connection ~ 7050 1950
+Wire Wire Line
+	7050 1950 9600 1950
 $EndSCHEMATC

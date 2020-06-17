@@ -5,10 +5,10 @@ $Descr B 17000 11000
 encoding utf-8
 Sheet 8 11
 Title ""
-Date ""
-Rev ""
+Date "2020-06-17"
+Rev "R0.1"
 Comp ""
-Comment1 ""
+Comment1 "Design by: Matt Casari"
 Comment2 ""
 Comment3 ""
 Comment4 ""
@@ -41,14 +41,14 @@ Text HLabel 15050 4300 2    50   Output ~ 0
 MD_PMODE
 Text HLabel 15050 4000 2    50   Output ~ 0
 ~MD_SLEEP
-Text HLabel 3900 8550 0    50   Output ~ 0
+Text HLabel 3900 5550 0    50   Output ~ 0
 12V_ENABLE
 $Comp
 L PMEL_Microcontroller:MSP430FR5989 U3
 U 1 1 5EE55967
 P 8300 4750
-F 0 "U3" H 8275 7281 50  0000 C CNN
-F 1 "MSP430FR5989" H 8275 7190 50  0000 C CNN
+F 0 "U3" H 9750 7050 50  0000 C CNN
+F 1 "MSP430FR5989" H 7100 7050 50  0000 C CNN
 F 2 "Package_QFP:LQFP-64_10x10mm_P0.5mm" H 7700 6450 50  0001 C CNN
 F 3 "https://www.ti.com/lit/ds/symlink/msp430fr5989.pdf?ts=1591995725922&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FMSP430FR5989" H 7700 6450 50  0001 C CNN
 F 4 "https://www.ti.com/lit/ug/slau367p/slau367p.pdf?ts=1591999289180&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FMSP430FR5989" H 8450 1800 50  0001 C CNN "UserGuide"
@@ -117,7 +117,7 @@ U 1 1 5EE58F4C
 P 8300 7300
 F 0 "JP1" H 8300 7400 50  0000 C CNN
 F 1 "SolderJumper_2_Bridged" H 8300 7000 50  0001 C CNN
-F 2 "" H 8300 7300 50  0001 C CNN
+F 2 "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm" H 8300 7300 50  0001 C CNN
 F 3 "~" H 8300 7300 50  0001 C CNN
 	1    8300 7300
 	1    0    0    -1  
@@ -128,7 +128,7 @@ U 1 1 5EE5C9EF
 P 11500 2300
 F 0 "J5" V 11459 2580 50  0000 L CNN
 F 1 "Conn_02x05_Odd_Even" V 11550 2580 50  0000 L CNN
-F 2 "" H 11500 2300 50  0001 C CNN
+F 2 "Connector_PinSocket_1.27mm:PinSocket_2x05_P1.27mm_Vertical" H 11500 2300 50  0001 C CNN
 F 3 "~" H 11500 2300 50  0001 C CNN
 F 4 "JTAG_MINI" V 11641 2580 50  0000 L CNN "Field4"
 	1    11500 2300
@@ -355,7 +355,7 @@ U 1 1 5EE440C9
 P 10100 6500
 F 0 "Y1" V 10054 6631 50  0000 L CNN
 F 1 "32.768kHz" V 10145 6631 50  0000 L CNN
-F 2 "" H 10100 6500 50  0001 C CNN
+F 2 "Crystal:Crystal_SMD_HC49-SD" H 10100 6500 50  0001 C CNN
 F 3 "~" H 10100 6500 50  0001 C CNN
 	1    10100 6500
 	0    1    1    0   
@@ -482,7 +482,7 @@ U 1 1 5EE6DC32
 P 12150 3300
 F 0 "R13" H 12220 3346 50  0000 L CNN
 F 1 "470" H 12220 3255 50  0000 L CNN
-F 2 "" V 12080 3300 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 12080 3300 50  0001 C CNN
 F 3 "~" H 12150 3300 50  0001 C CNN
 	1    12150 3300
 	1    0    0    -1  
@@ -492,8 +492,8 @@ L Device:C C16
 U 1 1 5EE6DF21
 P 12150 3700
 F 0 "C16" H 12265 3746 50  0000 L CNN
-F 1 "1n" H 12265 3655 50  0000 L CNN
-F 2 "" H 12188 3550 50  0001 C CNN
+F 1 "1000pF" H 12265 3655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 12188 3550 50  0001 C CNN
 F 3 "~" H 12150 3700 50  0001 C CNN
 	1    12150 3700
 	1    0    0    -1  
@@ -536,8 +536,9 @@ U 1 1 5EE80380
 P 12650 3500
 F 0 "SW1" H 12650 3785 50  0000 C CNN
 F 1 "SW_Push" H 12650 3694 50  0000 C CNN
-F 2 "" H 12650 3700 50  0001 C CNN
+F 2 "Button_Switch_SMD:SW_SPST_TL3305A" H 12650 3700 50  0001 C CNN
 F 3 "~" H 12650 3700 50  0001 C CNN
+F 4 "PTS810 SJS 250 SMTR LFS" H 12650 3500 50  0001 C CNN "MPN"
 	1    12650 3500
 	1    0    0    -1  
 $EndComp
@@ -606,7 +607,7 @@ U 1 1 5EECAF59
 P 8700 2200
 F 0 "JP2" V 8600 2050 50  0000 L CNN
 F 1 "SolderJumper_2_Bridged" V 8745 2268 50  0001 L CNN
-F 2 "" H 8700 2200 50  0001 C CNN
+F 2 "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm" H 8700 2200 50  0001 C CNN
 F 3 "~" H 8700 2200 50  0001 C CNN
 	1    8700 2200
 	0    1    1    0   
@@ -707,8 +708,6 @@ Text GLabel 6200 5500 0    50   UnSpc ~ 0
 ADC2
 Wire Wire Line
 	6200 5500 6650 5500
-NoConn ~ 9900 3950
-NoConn ~ 9900 4050
 Wire Wire Line
 	13850 4350 13950 4350
 Connection ~ 13950 4350
@@ -728,7 +727,7 @@ U 1 1 5EFC98B3
 P 13850 4750
 F 0 "J4" V 13946 4562 50  0000 R CNN
 F 1 "Conn_02x02_Odd_Even" V 13855 4562 50  0000 R CNN
-F 2 "" H 13850 4750 50  0001 C CNN
+F 2 "Connector_PinHeader_2.00mm:PinHeader_2x02_P2.00mm_Vertical" H 13850 4750 50  0001 C CNN
 F 3 "~" H 13850 4750 50  0001 C CNN
 	1    13850 4750
 	0    -1   -1   0   
@@ -749,10 +748,6 @@ Text GLabel 14750 4200 0    50   UnSpc ~ 0
 ADC2
 Wire Wire Line
 	14750 4200 15050 4200
-NoConn ~ 9900 4150
-NoConn ~ 6650 5800
-NoConn ~ 6650 4700
-NoConn ~ 6650 4600
 Text GLabel 14750 4300 0    50   BiDi ~ 0
 P5.1
 Wire Wire Line
@@ -779,7 +774,7 @@ U 1 1 5F0F003E
 P 12700 8050
 F 0 "J6" H 12750 8350 50  0000 C CNN
 F 1 "Conn_02x06_Odd_Even" H 12750 7650 50  0000 C CNN
-F 2 "" H 12700 8050 50  0001 C CNN
+F 2 "Connector_PinHeader_2.00mm:PinHeader_2x06_P2.00mm_Vertical" H 12700 8050 50  0001 C CNN
 F 3 "~" H 12700 8050 50  0001 C CNN
 	1    12700 8050
 	1    0    0    -1  
@@ -856,7 +851,7 @@ U 1 1 5F17BAA5
 P 14200 6150
 F 0 "J7" H 14250 6250 50  0000 C CNN
 F 1 "Conn_02x02_Odd_Even" H 14250 5950 50  0000 C CNN
-F 2 "" H 14200 6150 50  0001 C CNN
+F 2 "Connector_PinHeader_2.00mm:PinHeader_2x02_P2.00mm_Vertical" H 14200 6150 50  0001 C CNN
 F 3 "~" H 14200 6150 50  0001 C CNN
 	1    14200 6150
 	1    0    0    -1  
@@ -867,7 +862,7 @@ U 1 1 5F17C61B
 P 14200 6650
 F 0 "J8" H 14250 6750 50  0000 C CNN
 F 1 "Conn_02x02_Odd_Even" H 14250 6450 50  0000 C CNN
-F 2 "" H 14200 6650 50  0001 C CNN
+F 2 "Connector_PinHeader_2.00mm:PinHeader_2x02_P2.00mm_Vertical" H 14200 6650 50  0001 C CNN
 F 3 "~" H 14200 6650 50  0001 C CNN
 	1    14200 6650
 	1    0    0    -1  
@@ -914,39 +909,41 @@ Text GLabel 13850 6750 0    50   Input ~ 0
 P2.5
 Wire Wire Line
 	13850 6750 14000 6750
-Text GLabel 4350 8550 2    50   Input ~ 0
+Text GLabel 4350 5550 2    50   Input ~ 0
 P2.5
 Wire Wire Line
-	3900 8550 4350 8550
+	3900 5550 4350 5550
 Wire Wire Line
 	9900 3500 11300 3500
 $Comp
-L Device:R_Pack02 RN?
+L Device:R_Pack02 RN1
 U 1 1 5EEA03AB
 P 4350 2450
-F 0 "RN?" H 4438 2496 50  0000 L CNN
+F 0 "RN1" H 4438 2496 50  0000 L CNN
 F 1 "R_Pack02" H 4438 2405 50  0000 L CNN
-F 2 "" V 4525 2450 50  0001 C CNN
+F 2 "Resistor_SMD:R_Array_Concave_2x0603" V 4525 2450 50  0001 C CNN
 F 3 "~" H 4350 2450 50  0001 C CNN
+F 4 "EXB-V4V472JV" H 4350 2450 50  0001 C CNN "MPN"
 	1    4350 2450
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_Pack02 RN?
+L Device:R_Pack02 RN2
 U 1 1 5EEA12D1
 P 5050 2450
-F 0 "RN?" H 5138 2496 50  0000 L CNN
+F 0 "RN2" H 5138 2496 50  0000 L CNN
 F 1 "R_Pack02" H 5138 2405 50  0000 L CNN
-F 2 "" V 5225 2450 50  0001 C CNN
+F 2 "Resistor_SMD:R_Array_Concave_2x0603" V 5225 2450 50  0001 C CNN
 F 3 "~" H 5050 2450 50  0001 C CNN
+F 4 "EXB-V4V472JV" H 5050 2450 50  0001 C CNN "MPN"
 	1    5050 2450
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+3V3 #PWR?
+L power:+3V3 #PWR059
 U 1 1 5EEA1A6A
 P 4250 2100
-F 0 "#PWR?" H 4250 1950 50  0001 C CNN
+F 0 "#PWR059" H 4250 1950 50  0001 C CNN
 F 1 "+3V3" H 4265 2273 50  0000 C CNN
 F 2 "" H 4250 2100 50  0001 C CNN
 F 3 "" H 4250 2100 50  0001 C CNN
@@ -992,4 +989,103 @@ Wire Wire Line
 Connection ~ 5050 3800
 Wire Wire Line
 	5050 3800 3900 3800
+Text GLabel 7250 8750 0    50   BiDi ~ 0
+P4.0
+Text GLabel 7250 8850 0    50   BiDi ~ 0
+P4.1
+Text GLabel 7250 8950 0    50   BiDi ~ 0
+P5.2
+Text GLabel 6500 2950 0    50   BiDi ~ 0
+P1.4
+Wire Wire Line
+	6500 2950 6650 2950
+Text GLabel 6500 3500 0    50   BiDi ~ 0
+P5.3
+Wire Wire Line
+	6500 3500 6650 3500
+Text GLabel 7250 9050 0    50   BiDi ~ 0
+P5.3
+Text GLabel 6500 8750 0    50   BiDi ~ 0
+P1.4
+Text GLabel 10150 3950 2    50   BiDi ~ 0
+P2.6
+Text GLabel 10150 4050 2    50   BiDi ~ 0
+P2.7
+Text GLabel 10150 4150 2    50   BiDi ~ 0
+P1.3
+Wire Wire Line
+	10150 4150 9900 4150
+Wire Wire Line
+	9900 4050 10150 4050
+Wire Wire Line
+	10150 3950 9900 3950
+Text GLabel 6500 9050 0    50   BiDi ~ 0
+P2.6
+Text GLabel 6500 9150 0    50   BiDi ~ 0
+P2.7
+Text GLabel 6500 8650 0    50   BiDi ~ 0
+P1.3
+Text GLabel 6450 4700 0    50   BiDi ~ 0
+P2.2
+Text GLabel 6450 4600 0    50   BiDi ~ 0
+P2.3
+Wire Wire Line
+	6650 4600 6450 4600
+Wire Wire Line
+	6650 4700 6450 4700
+Text GLabel 6500 8850 0    50   BiDi ~ 0
+P2.2
+Text GLabel 6500 8950 0    50   BiDi ~ 0
+P2.3
+Text GLabel 6200 5800 0    50   BiDi ~ 0
+P3.3
+Wire Wire Line
+	6650 5800 6200 5800
+Text GLabel 7250 8650 0    50   BiDi ~ 0
+P3.3
+NoConn ~ 6500 8650
+NoConn ~ 6500 8750
+NoConn ~ 6500 8850
+NoConn ~ 6500 8950
+NoConn ~ 6500 9050
+NoConn ~ 6500 9150
+NoConn ~ 7250 9050
+NoConn ~ 7250 8950
+NoConn ~ 7250 8850
+NoConn ~ 7250 8750
+NoConn ~ 7250 8650
+Text Notes 6400 8450 0    100  ~ 0
+Unused Nets
+$Comp
+L power:PWR_FLAG #FLG0106
+U 1 1 5F032956
+P 8450 1750
+F 0 "#FLG0106" H 8450 1825 50  0001 C CNN
+F 1 "PWR_FLAG" H 8450 1923 50  0000 C CNN
+F 2 "" H 8450 1750 50  0001 C CNN
+F 3 "~" H 8450 1750 50  0001 C CNN
+	1    8450 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8450 1750 8450 2350
+Wire Wire Line
+	8450 2350 8700 2350
+Connection ~ 8700 2350
+$Comp
+L power:PWR_FLAG #FLG0107
+U 1 1 5F03FA58
+P 8950 7250
+F 0 "#FLG0107" H 8950 7325 50  0001 C CNN
+F 1 "PWR_FLAG" H 8950 7423 50  0000 C CNN
+F 2 "" H 8950 7250 50  0001 C CNN
+F 3 "~" H 8950 7250 50  0001 C CNN
+	1    8950 7250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8950 7250 8950 7300
+Wire Wire Line
+	8950 7300 8750 7300
+Connection ~ 8750 7300
 $EndSCHEMATC

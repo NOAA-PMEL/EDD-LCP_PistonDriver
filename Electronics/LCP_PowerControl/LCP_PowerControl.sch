@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 11
 Title "Low Cost Profiler - Power Control Board"
-Date ""
-Rev ""
+Date "2020-06-17"
+Rev "R0.1"
 Comp "NOAA Pacific Marine Environmental Lab"
 Comment1 "Design by: Matt Casari"
 Comment2 ""
@@ -101,7 +101,7 @@ S 2600 2300 1300 1150
 U 5EE4388C
 F0 "Power Regulators" 50
 F1 "PowerRegulators.sch" 50
-F2 "POWER_EN" I R 3900 2650 50 
+F2 "12V_ENABLE" I R 3900 2650 50 
 $EndSheet
 Wire Wire Line
 	3900 2650 4300 2650
@@ -132,8 +132,6 @@ F20 "DEBUG_LED_2" O L 4300 5250 50
 F21 "ENCODER_CH_A" I R 7000 4550 50 
 F22 "ENCODER_CH_B" I R 7000 4650 50 
 $EndSheet
-Text Notes 7900 1400 0    100  ~ 0
-To Do:\n1. 12V Power Regulator\n2. Fix connectors for battery (Use Molex) 
 $Sheet
 S 8100 4050 1300 1150
 U 5EE7B8CC

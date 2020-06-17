@@ -5,10 +5,10 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 6 11
 Title ""
-Date ""
-Rev ""
+Date "2020-06-17"
+Rev "R0.1"
 Comp ""
-Comment1 ""
+Comment1 "Design by: Matt Casari"
 Comment2 ""
 Comment3 ""
 Comment4 ""
@@ -217,8 +217,6 @@ F 6 "" H 7100 2650 50  0001 C CNN "MPN"
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5600 2250 5850 2250
-Wire Wire Line
 	5850 2250 6250 2250
 $Comp
 L Device:C C5
@@ -251,8 +249,9 @@ U 1 1 5EE53B4B
 P 5850 2500
 F 0 "C4" H 5968 2546 50  0000 L CNN
 F 1 "CP" H 5968 2455 50  0000 L CNN
-F 2 "" H 5888 2350 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D12.5mm_P5.00mm" H 5888 2350 50  0001 C CNN
 F 3 "~" H 5850 2500 50  0001 C CNN
+F 4 "UVR1H102MHD" H 5850 2500 50  0001 C CNN "MPN"
 	1    5850 2500
 	1    0    0    -1  
 $EndComp
@@ -269,24 +268,11 @@ F 3 "" H 5850 2750 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5850 2750 5850 2650
-$Comp
-L Device:Polyfuse F2
-U 1 1 5EE55CEE
-P 5450 2250
-F 0 "F2" V 5225 2250 50  0000 C CNN
-F 1 "Polyfuse" V 5316 2250 50  0000 C CNN
-F 2 "" H 5500 2050 50  0001 L CNN
-F 3 "~" H 5450 2250 50  0001 C CNN
-	1    5450 2250
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	5150 2250 5150 2000
 Connection ~ 5850 2250
 Wire Wire Line
 	6250 2250 6900 2250
-Wire Wire Line
-	5300 2250 5150 2250
 Wire Wire Line
 	7100 2500 7100 2250
 Wire Wire Line
@@ -338,8 +324,8 @@ L power:GND #PWR?
 U 1 1 5EF03805
 P 3000 5300
 AR Path="/5EE2AA1B/5EF03805" Ref="#PWR?"  Part="1" 
-AR Path="/5EE2AB43/5EF03805" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 3000 5050 50  0001 C CNN
+AR Path="/5EE2AB43/5EF03805" Ref="#PWR035"  Part="1" 
+F 0 "#PWR035" H 3000 5050 50  0001 C CNN
 F 1 "GND" H 3005 5127 50  0000 C CNN
 F 2 "" H 3000 5300 50  0001 C CNN
 F 3 "" H 3000 5300 50  0001 C CNN
@@ -363,8 +349,8 @@ L Connector_Generic:Conn_02x04_Odd_Even J?
 U 1 1 5EF03813
 P 3100 4850
 AR Path="/5EE2AA1B/5EF03813" Ref="J?"  Part="1" 
-AR Path="/5EE2AB43/5EF03813" Ref="J?"  Part="1" 
-F 0 "J?" V 3059 4562 50  0000 R CNN
+AR Path="/5EE2AB43/5EF03813" Ref="J16"  Part="1" 
+F 0 "J16" V 3059 4562 50  0000 R CNN
 F 1 "Conn_02x04_Odd_Even" V 3150 4562 50  0000 R CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_2x04_P2.54mm_Vertical" H 3100 4850 50  0001 C CNN
 F 3 "~" H 3100 4850 50  0001 C CNN
@@ -386,10 +372,10 @@ Wire Wire Line
 Wire Wire Line
 	3200 4650 3200 3600
 $Comp
-L Connector:TestPoint TP?
+L Connector:TestPoint TP5
 U 1 1 5EF1DD9D
 P 8400 3650
-F 0 "TP?" H 8458 3768 50  0000 L CNN
+F 0 "TP5" H 8458 3768 50  0000 L CNN
 F 1 "TestPoint" H 8458 3677 50  0000 L CNN
 F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 8600 3650 50  0001 C CNN
 F 3 "~" H 8600 3650 50  0001 C CNN
@@ -402,10 +388,10 @@ Connection ~ 8400 3750
 Wire Wire Line
 	8400 3750 9350 3750
 $Comp
-L Connector:TestPoint TP?
+L Connector:TestPoint TP6
 U 1 1 5EF21475
 P 8850 3650
-F 0 "TP?" H 8908 3768 50  0000 L CNN
+F 0 "TP6" H 8908 3768 50  0000 L CNN
 F 1 "TestPoint" H 8908 3677 50  0000 L CNN
 F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 9050 3650 50  0001 C CNN
 F 3 "~" H 9050 3650 50  0001 C CNN
@@ -426,10 +412,10 @@ Wire Wire Line
 Wire Wire Line
 	9350 3900 9900 3900
 $Comp
-L power:+12V #PWR?
+L power:+12V #PWR036
 U 1 1 5EEFB289
 P 5150 2000
-F 0 "#PWR?" H 5150 1850 50  0001 C CNN
+F 0 "#PWR036" H 5150 1850 50  0001 C CNN
 F 1 "+12V" H 5165 2173 50  0000 C CNN
 F 2 "" H 5150 2000 50  0001 C CNN
 F 3 "" H 5150 2000 50  0001 C CNN
@@ -437,10 +423,10 @@ F 3 "" H 5150 2000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:TestPoint TP?
+L Connector:TestPoint TP4
 U 1 1 5EF070DA
 P 4900 3800
-F 0 "TP?" H 4958 3918 50  0000 L CNN
+F 0 "TP4" H 4958 3918 50  0000 L CNN
 F 1 "TestPoint" H 4958 3827 50  0000 L CNN
 F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 5100 3800 50  0001 C CNN
 F 3 "~" H 5100 3800 50  0001 C CNN
@@ -448,10 +434,10 @@ F 3 "~" H 5100 3800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:TestPoint TP?
+L Connector:TestPoint TP3
 U 1 1 5EF092C0
 P 4500 5450
-F 0 "TP?" H 4558 5568 50  0000 L CNN
+F 0 "TP3" H 4558 5568 50  0000 L CNN
 F 1 "TestPoint" H 4558 5477 50  0000 L CNN
 F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 4700 5450 50  0001 C CNN
 F 3 "~" H 4700 5450 50  0001 C CNN
@@ -491,4 +477,6 @@ Wire Wire Line
 	1900 3300 3100 3300
 Wire Wire Line
 	1950 4250 3300 4250
+Wire Wire Line
+	5150 2250 5850 2250
 $EndSCHEMATC

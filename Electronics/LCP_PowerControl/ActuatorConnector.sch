@@ -5,10 +5,10 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 10 11
 Title ""
-Date ""
-Rev ""
+Date "2020-06-17"
+Rev "R0.1"
 Comp ""
-Comment1 ""
+Comment1 "Design by: Matt Casari"
 Comment2 ""
 Comment3 ""
 Comment4 ""
@@ -30,10 +30,10 @@ L Connector_Generic:Conn_01x02 J?
 U 1 1 5EE8A2E1
 P 7450 3150
 AR Path="/5EE2AB43/5EE8A2E1" Ref="J?"  Part="1" 
-AR Path="/5EE7B956/5EE8A2E1" Ref="J?"  Part="1" 
-F 0 "J?" H 7530 3142 50  0000 L CNN
+AR Path="/5EE7B956/5EE8A2E1" Ref="J17"  Part="1" 
+F 0 "J17" H 7530 3142 50  0000 L CNN
 F 1 "Conn_01x02" H 7530 3051 50  0000 L CNN
-F 2 "" H 7450 3150 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 7450 3150 50  0001 C CNN
 F 3 "~" H 7450 3150 50  0001 C CNN
 	1    7450 3150
 	1    0    0    -1  
@@ -45,12 +45,12 @@ Wire Wire Line
 Wire Wire Line
 	4850 3250 7250 3250
 $Comp
-L Connector_Generic:Conn_01x04 J?
+L Connector_Generic:Conn_01x04 J18
 U 1 1 5EE8A71A
 P 7450 4050
-F 0 "J?" H 7530 4042 50  0000 L CNN
+F 0 "J18" H 7530 4042 50  0000 L CNN
 F 1 "Conn_01x04" H 7530 3951 50  0000 L CNN
-F 2 "" H 7450 4050 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0400_2x02_P3.00mm_Horizontal" H 7450 4050 50  0001 C CNN
 F 3 "~" H 7450 4050 50  0001 C CNN
 	1    7450 4050
 	1    0    0    -1  
