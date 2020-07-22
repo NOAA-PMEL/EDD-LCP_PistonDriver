@@ -23,7 +23,7 @@ U 1 1 5EF29935
 P 3900 1950
 F 0 "J3" H 3818 1625 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 1716 50  0000 C CNN
-F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 1950 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical" H 3900 1950 50  0001 C CNN
 F 3 "~" H 3900 1950 50  0001 C CNN
 	1    3900 1950
 	-1   0    0    1   
@@ -34,7 +34,7 @@ U 1 1 5EF2A22F
 P 3900 2850
 F 0 "J9" H 3818 2525 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 2616 50  0000 C CNN
-F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 2850 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical" H 3900 2850 50  0001 C CNN
 F 3 "~" H 3900 2850 50  0001 C CNN
 	1    3900 2850
 	-1   0    0    1   
@@ -45,7 +45,7 @@ U 1 1 5EF2A6FE
 P 3900 3850
 F 0 "J10" H 3818 3525 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 3616 50  0000 C CNN
-F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 3850 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical" H 3900 3850 50  0001 C CNN
 F 3 "~" H 3900 3850 50  0001 C CNN
 	1    3900 3850
 	-1   0    0    1   
@@ -56,7 +56,7 @@ U 1 1 5EF2AC09
 P 3900 4850
 F 0 "J11" H 3818 4525 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 4616 50  0000 C CNN
-F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 4850 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical" H 3900 4850 50  0001 C CNN
 F 3 "~" H 3900 4850 50  0001 C CNN
 	1    3900 4850
 	-1   0    0    1   
@@ -67,7 +67,7 @@ U 1 1 5EF2B236
 P 3900 5950
 F 0 "J12" H 3818 5625 50  0000 C CNN
 F 1 "Conn_01x02" H 3818 5716 50  0000 C CNN
-F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 3900 5950 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical" H 3900 5950 50  0001 C CNN
 F 3 "~" H 3900 5950 50  0001 C CNN
 	1    3900 5950
 	-1   0    0    1   
@@ -105,20 +105,6 @@ Wire Wire Line
 Connection ~ 4450 4850
 Wire Wire Line
 	4450 4850 4450 3850
-$Comp
-L power:GND #PWR015
-U 1 1 5EF31DCF
-P 4450 6300
-F 0 "#PWR015" H 4450 6050 50  0001 C CNN
-F 1 "GND" H 4455 6127 50  0000 C CNN
-F 2 "" H 4450 6300 50  0001 C CNN
-F 3 "" H 4450 6300 50  0001 C CNN
-	1    4450 6300
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4450 6300 4450 5950
-Connection ~ 4450 5950
 Wire Wire Line
 	4100 5850 5000 5850
 Wire Wire Line

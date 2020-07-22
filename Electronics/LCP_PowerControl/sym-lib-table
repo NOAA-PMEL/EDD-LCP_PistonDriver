@@ -3,4 +3,5 @@
   (lib (name PMEL_MotorDriver)(type Legacy)(uri ${KIPRJMOD}/PMEL_MotorDriver.lib)(options "")(descr ""))
   (lib (name PMEL_Microcontroller)(type Legacy)(uri ${KIPRJMOD}/PMEL_Microcontroller.lib)(options "")(descr ""))
   (lib (name PMEL_PowerICs)(type Legacy)(uri ${KIPRJMOD}/PMEL_PowerICs.lib)(options "")(descr ""))
+  (lib (name LCP_PowerControl-rescue)(type Legacy)(uri ${KIPRJMOD}/LCP_PowerControl-rescue.lib)(options "")(descr ""))
 )
