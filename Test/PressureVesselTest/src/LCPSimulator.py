@@ -1,4 +1,6 @@
+from datetime import datetime
 import sys
+import logging
 from threading import Event, Thread
 import time
 # import threading
@@ -12,12 +14,17 @@ DRIVE_RELAY_1 = 3
 DRIVE_RELAY_2 = 2
 
 
-PISTON_LENGTH_INCHES = 8
+# PISTON_LENGTH_INCHES = 8
+# ACTUAL_PISTON_DISPLACEMENT_INCHES = 11.77
+# COUNTS_PER_INCH = 145334 / ACTUAL_PISTON_DISPLACEMENT_INCHES
+# ACTUAL_PISTON_DISPLACEMENT_INCHES = 7.75
+# COUNTS_PER_INCH = 188900 / ACTUAL_PISTON_DISPLACEMENT_INCHES
+
 ACTUAL_PISTON_DISPLACEMENT_INCHES = 7.75
-COUNTS_PER_INCH = 188900 / ACTUAL_PISTON_DISPLACEMENT_INCHES
+COUNTS_PER_INCH = 376688 / ACTUAL_PISTON_DISPLACEMENT_INCHES
 
 class LCP:
-    def __init__(self, relay_port, he_port):
+    def __init__(self, relay_port, he_port, piston_length):
         """
         __init__ LCP Init
 
@@ -27,10 +34,12 @@ class LCP:
         :type relay_port: Com Port
         :param he_port: Hall Encoder Port
         :type he_port: Com Port
+        :param piston_length: Length of piston (inches)
+        :type piston_length: float
         """
         self._relay = Relay(relay_port)
         self._he = HE(he_port, COUNTS_PER_INCH)
-
+        self._piston_length = piston_length
         self._power = False
 
     def close(self):
@@ -92,6 +101,16 @@ class LCP:
         self._relay.clear_relay(POWER_RELAY_1)
         self.power = False
 
+    def position(self):
+        """
+        position Return the piston position
+
+        Run the current piston position (in inches)
+
+        :return: Position (inches)
+        :rtype: float
+        """
+        return self._he.position
     def run_full_cycles(self, 
                         num_cycles):
         """
@@ -104,6 +123,7 @@ class LCP:
         :type num_cycles: int
         """
         print("Run full cycle {num_cycles} times")
+        logging.info("Run full cycle {num_cycles} times")
         while num_cycles > 0:
             self.run_to_full()
             self.run_to_home()
@@ -130,13 +150,16 @@ class LCP:
         """
 
         print(f"Run from {start_pos} inches to {end_pos} inches {num_cycles} times")
+        logging.info(f"Run from {start_pos} inches to {end_pos} inches {num_cycles} times")
         self.run_to_XX(start_pos)
 
         for i in range(num_cycles):
-            print(f"Cycles: {i+1} of {num_cycles}, Current Position: {self._he.position:.2f}")
+            print(f"Cycles: {i+1} of {num_cycles}, Commanded Position: {start_pos}, Current Position: {self._he.position:.3f}")
+            logging.debug(f"Cycles: {i+1} of {num_cycles}, Commanded Position: {start_pos}, Current Position: {self._he.position:.3f}")
             time.sleep(dwell_time)
             self.run_to_XX(end_pos)
-            print(f"Cycles: {i+1} of {num_cycles}, Current Position: {self._he.position:.2f}")
+            print(f"Cycles: {i+1} of {num_cycles}, Commanded Position: {end_pos}, Current Position: {self._he.position:.3f}")
+            logging.debug(f"Cycles: {i+1} of {num_cycles}, Commanded Position: {end_pos}, Current Position: {self._he.position:.3f}")
             time.sleep(dwell_time)
             self.run_to_XX(start_pos)
 
@@ -151,6 +174,7 @@ class LCP:
         :raises ValueError: Power is Off
         :raises TimeoutError: Piston runs > 10 minutes
         """
+        logging.info("run_to_home called")
         if self.power != True:
             raise ValueError('Power is not on')
 
@@ -173,6 +197,7 @@ class LCP:
         :raises ValueError: Power is not on
         :raises TimeoutError: If piston extends for > 10 minutes
         """
+        logging.info("run_to_full called")
         if self.power != True:
             raise ValueError('Power is not on')
 
@@ -194,11 +219,21 @@ class LCP:
 
         Runs the piston to XX inches
 
-        :param value: Inches to move to]
+        :param value: Inches to move to
         :type value: float
         :raises ValueError: If power is not on.
         """
         print(f"Run to {value} inches")
+        logging.info(f"Run to {value} inches")
+
+        if value > self._piston_length:
+            logging.error(f'{value=} is greater than piston length {self._piston_length}')
+            raise ValueError(f'{value=} is greater than piston length {self._piston_length}')
+        if value < 0:
+            logging.error(f'{value=} is less than zero')
+            raise ValueError(f'{value=} is less than zero')
+
+        
         if self.power != True:
             raise ValueError('Power is not on')
         
@@ -215,8 +250,8 @@ class LCP:
             dir = 1
 
         # If position is greater than 0.01", set piston state
-        if abs(pos_diff) > 0.01:
-            while pos_diff > 0.01:
+        if abs(pos_diff) > 0.005:
+            while pos_diff > 0.005:
                 if(dir == -1):
                     pos_diff = self._he.position - value
                 else:
@@ -231,7 +266,9 @@ class LCP:
         Run the piston to home and zero the count.
         """
         print("Zero commanded")
+        logging.info("Zero commanded")
         self.run_to_home()
+        time.sleep(2)
         self._he.zero_count()
             
     def run_count_range(self):
@@ -244,14 +281,23 @@ class LCP:
 
         """
         print("Run count range commanded")
+        logging.info("Run count range commanded")
         self.zero()
         self._piston_brake()
         self.run_to_full()
         self._piston_brake()
-
-        self._he.counts_per_inch = self._he.count / ACTUAL_PISTON_DISPLACEMENT_INCHES
+        time.sleep(5)
+        print(f"Counts= {self._he.count}")
+        counts = self._he.count
+        self._he.counts_per_inch = self._he.count / self._piston_length
+        counts_per_inch = self._he.counts_per_inch
         print(f"Counts/in = {self._he.counts_per_inch}")
+        logging.debug(f"Counts= {self._he.count}")
+        logging.debug(f"Counts/in = {self._he.counts_per_inch}")
         self.run_to_home()
+
+        print(f"Counts= {counts}")
+        print(f"Counts/in = {counts_per_inch}")
 
     def _piston_extend(self):
         """
@@ -290,15 +336,20 @@ class ReadThread(Thread):
         :param event: Event
         :type event: Event
         """
+        print("Initializing Read Thread")
         Thread.__init__(self)
         self.stopped = event
     def run(self):
-        while not self.stopped.wait(0.125):
+        while not self.stopped.wait(0.025):
             dev._he._get_message()
 
 
 if __name__ == "__main__":
-    dev = LCP("COM13", "COM16")
+
+    logging.basicConfig(filename='lcp.log', level=logging.DEBUG)
+    logging.info(f'Start Program at {datetime.now()}')
+    print("Start Program")
+    dev = LCP("COM13", "COM16", ACTUAL_PISTON_DISPLACEMENT_INCHES)
     dev.power_on()
 
     stopFlag = Event()
@@ -360,21 +411,34 @@ if __name__ == "__main__":
         # print("Move to 2.5 inches")
         # dev.run_to_XX(2.5)
 
-        print("Zero")
-        dev.zero()
+        # print("Zero")
+        # dev.zero()
 
-        print("Run 3 Cycles between 2 inches and 3.5 inches")
-        dev.run_partial_cycles(2, 3, 3, 2)
+        # print("Find Full Range Counts")
+        # dev.run_count_range()
+
+        # print("Run 3 Cycles between 2 inches and 3.5 inches")
+        # dev.run_partial_cycles(1.0, 2.0, 3, 2)
         
+        print("Find Full Range Counts")
+        dev.run_count_range()
 
-        print(f"Final position is: {dev._he.position:.2f}")
+        dev.run_partial_cycles(1.0, 2.0, 5, 1.0)
+
+        dev.run_partial_cycles(2.5, 6.0, 5, 2)
+
+        dev.run_partial_cycles(1, 7.5, 5, 2)
+
+        print(f"Final position is: {dev._he.position:.4f}")
     except Exception as e:
         print(e)
+        logging.error(e)
     finally:
         stopFlag.set()
         dev.power_off()
         sys.exit()
         dev.close()
+        logging.info('Program exiting')
         
     
 

@@ -493,11 +493,11 @@ X B 2 150 0 100 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# LCP_PowerControl-rescue_MAX17205-PMEL_BatteryManagement
+# LCP_PowerControl-rescue_MAX17205-PMEL_BatteryManagement-LCP_PowerControl-rescue
 #
-DEF LCP_PowerControl-rescue_MAX17205-PMEL_BatteryManagement U 0 40 Y Y 1 F N
+DEF LCP_PowerControl-rescue_MAX17205-PMEL_BatteryManagement-LCP_PowerControl-rescue U 0 40 Y Y 1 F N
 F0 "U" 200 700 50 H V C CNN
-F1 "LCP_PowerControl-rescue_MAX17205-PMEL_BatteryManagement" -250 700 50 H V C CNN
+F1 "LCP_PowerControl-rescue_MAX17205-PMEL_BatteryManagement-LCP_PowerControl-rescue" -250 700 50 H V C CNN
 F2 "Package_DFN_QFN:DFN-14-1EP_3x3mm_P0.4mm_EP1.78x2.35mm" 200 -1100 50 H I C CNN
 F3 "" -350 650 50 H I C CNN
 DRAW

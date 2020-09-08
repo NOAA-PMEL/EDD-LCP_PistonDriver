@@ -3,7 +3,7 @@ import threading
 
 class HallEffect:
     def __init__(self, port, inches):
-        self._ser = serial.Serial(port, 115200, timeout=1)
+        self._ser = serial.Serial(port, 115200, timeout=0.05)
         self.count = 0
         self.rate = 0
         self.__counts_per_inch = 15000;
@@ -59,10 +59,27 @@ class HallEffect:
 
 
     def _get_message(self):
-        self._ser.flushInput()
-        line = self._ser.read_until().decode()
-        # print(line)
+        # self._ser.flush()
+        # line = self._ser.read_until().decode()
+        # line = self._ser.read_until().decode()
+        # print(f"{line=}")
+        # line = line.split('\r\n')[-2]
+
         try:
+            line = self._ser.read_all().decode()
+            # print(line)
+            
+            line = line.split('\r\n')
+            # print(line)
+            if line[-1].find(',') > 0:
+                line = line[-1]
+            else:
+                line = line[-2]
+        except Exception as e:
+            print(e)
+        
+        try:
+            # print(line)
             (count, rate) = line[1:].rstrip().split(',')
             self.count = int(count)
             self.rate = int(rate)
