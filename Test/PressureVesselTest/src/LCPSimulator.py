@@ -15,13 +15,13 @@ DRIVE_RELAY_2 = 2
 
 
 # PISTON_LENGTH_INCHES = 8
-# ACTUAL_PISTON_DISPLACEMENT_INCHES = 11.77
-# COUNTS_PER_INCH = 145334 / ACTUAL_PISTON_DISPLACEMENT_INCHES
+ACTUAL_PISTON_DISPLACEMENT_INCHES = 11.77
+COUNTS_PER_INCH = 569409 / ACTUAL_PISTON_DISPLACEMENT_INCHES
 # ACTUAL_PISTON_DISPLACEMENT_INCHES = 7.75
 # COUNTS_PER_INCH = 188900 / ACTUAL_PISTON_DISPLACEMENT_INCHES
 
-ACTUAL_PISTON_DISPLACEMENT_INCHES = 7.75
-COUNTS_PER_INCH = 376688 / ACTUAL_PISTON_DISPLACEMENT_INCHES
+# ACTUAL_PISTON_DISPLACEMENT_INCHES = 7.75
+# COUNTS_PER_INCH = 376688 / ACTUAL_PISTON_DISPLACEMENT_INCHES
 
 class LCP:
     def __init__(self, relay_port, he_port, piston_length):
@@ -240,6 +240,7 @@ class LCP:
         pos_diff = 0
         # Get the current position
         dir = 0
+        time.sleep(0.25)
         if(self._he.position > value):
             pos_diff = self._he.position - value
             self._piston_retract()
@@ -251,11 +252,14 @@ class LCP:
 
         # If position is greater than 0.01", set piston state
         if abs(pos_diff) > 0.005:
+            # print(f"{abs(pos_diff)=}")
             while pos_diff > 0.005:
+                # print(f"{dir=}")
                 if(dir == -1):
                     pos_diff = self._he.position - value
                 else:
                     pos_diff = value  - self._he.position
+                # print(f"{pos_diff=}")
                 
         self._piston_brake()
 
@@ -349,7 +353,7 @@ if __name__ == "__main__":
     logging.basicConfig(filename='lcp.log', level=logging.DEBUG)
     logging.info(f'Start Program at {datetime.now()}')
     print("Start Program")
-    dev = LCP("COM13", "COM16", ACTUAL_PISTON_DISPLACEMENT_INCHES)
+    dev = LCP("COM13", "COM17", ACTUAL_PISTON_DISPLACEMENT_INCHES)
     dev.power_on()
 
     stopFlag = Event()
@@ -419,15 +423,28 @@ if __name__ == "__main__":
 
         # print("Run 3 Cycles between 2 inches and 3.5 inches")
         # dev.run_partial_cycles(1.0, 2.0, 3, 2)
+        # dev.run_to_full()
+        # dev.zero()
+        # dev.run_to_XX(5.2)
+        # dev.run_partial_cycles(1.0, 2.0, 1, 2)
         
-        print("Find Full Range Counts")
-        dev.run_count_range()
+        # print("Find Full Range Counts")
+        # dev.run_count_range()
 
-        dev.run_partial_cycles(1.0, 2.0, 5, 1.0)
+        # dev.run_partial_cycles(1.0, 2.0, 5, 1.0)
 
-        dev.run_partial_cycles(2.5, 6.0, 5, 2)
+        # dev.run_partial_cycles(2.5, 6.0, 5, 2)
 
-        dev.run_partial_cycles(1, 7.5, 5, 2)
+        # dev.run_partial_cycles(1, 7.5, 5, 2)
+
+        # dev.run_to_XX(8.0)
+
+        # dev.zero()
+        # dev.run_to_XX(5.2)
+        # dev.run_to_XX(7.7)
+
+        # dev.run_to_full()
+        dev.run_to_XX(10.5)
 
         print(f"Final position is: {dev._he.position:.4f}")
     except Exception as e:
@@ -442,5 +459,7 @@ if __name__ == "__main__":
         
     
 
+# NOTES:
 
+# Pressure vessel, with RA connector is ~7.7inches
 
