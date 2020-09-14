@@ -1,0 +1,7 @@
+/.venv/
+/.pytest_cache
+/build/
+/PACKAGENAME.egg-info/
+/source/
+
+Current_*.txt
