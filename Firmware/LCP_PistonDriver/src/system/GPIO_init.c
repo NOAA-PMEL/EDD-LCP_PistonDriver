@@ -14,6 +14,7 @@
  */
 #include <driverlib/inc/hw_memmap.h>      
 #include <driverlib/pmm.h>
+#include <driverlib/gpio.h>
 #include <system/System.h>
 
 /* USER CODE START (section: GPIO_init_c_prologue) */
@@ -67,7 +68,12 @@ void GPIO_Init(void)
     P2OUT = 0;
 
     /* Port 2 Port Select Register 1 */
-    P2SEL1 = BIT0 | BIT1 | BIT5 | BIT6;
+    GPIO_setAsPeripheralModuleFunctionOutputPin(
+              GPIO_PORT_P2, 
+              (GPIO_PIN0 | GPIO_PIN1), 
+              GPIO_PRIMARY_MODULE_FUNCTION
+    );
+//    P2SEL1 = BIT0 | BIT1 | BIT5 | BIT6;
 
     /* Port 2 Direction Register */
     P2DIR = 0;
@@ -78,6 +84,14 @@ void GPIO_Init(void)
     /* Port 2 Interrupt Flag Register */
     P2IFG = 0;
 
+    
+    /* Port 3 */
+    GPIO_setAsPeripheralModuleFunctionOutputPin(
+              GPIO_PORT_P3, 
+              (GPIO_PIN4 | GPIO_PIN5), 
+              GPIO_PRIMARY_MODULE_FUNCTION
+    );
+    
     /* Port 3 Output Register */
     P3OUT = 0;
 

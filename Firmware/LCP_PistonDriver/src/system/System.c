@@ -75,13 +75,15 @@ void SYS_init(void)
 
     /* initialize Config for the MSP430 eUSCI_A0 */
     EUSCI_A0_Init();
-
-    /* initialize Config for the MSP430 EUSCI_A1 */
+    
+    /* initialize Config for the MSP430 eUSCI_A1 */
     EUSCI_A1_Init();
 
     /* initialize Config for the MSP430 EUSCI_B0 */
     EUSCI_B0_Init();
-
+    
+    /* initialize Config for the MSP430 EUSCI_B1 */
+    EUSCI_B1_Init();
     /* initialize Interrupt vector support */
     InterruptVectors_Init();
 

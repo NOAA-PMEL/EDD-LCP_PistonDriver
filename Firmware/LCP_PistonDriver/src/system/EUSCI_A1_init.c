@@ -11,6 +11,7 @@
  *
  *  Do not move these sections within this file or change the START and
  *  END comments in any way.
+ *
  */
 #include <stdint.h>
 #include <driverlib/inc/hw_memmap.h>
@@ -31,6 +32,35 @@ void EUSCI_A1_Init(void)
     /* USER CODE START (section: EUSCI_A1_Init_prologue) */
     /* User initialization code */
     /* USER CODE END (section: EUSCI_A1_Init_prologue) */
+  EUSCI_A_UART_initParam param = {
+    .selectClockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,
+    .clockPrescalar = 13,
+    .firstModReg = 0,
+    .secondModReg = 0,
+    .parity = EUSCI_A_UART_NO_PARITY,
+    .msborLsbFirst = EUSCI_A_UART_LSB_FIRST,
+    .numberofStopBits = EUSCI_A_UART_ONE_STOP_BIT,
+    .uartMode = EUSCI_A_UART_MODE,
+    .overSampling = 1
+  };
+  
+
+    /* initialize UART for 115200 baud (based on a 2000000 Hz clock) */
+    if (STATUS_FAIL == EUSCI_A_UART_init(EUSCI_A1_BASE, &param) ){
+        return;
+    }
+
+    /* enable eUSCI UART */
+    EUSCI_A_UART_enable(EUSCI_A1_BASE);
+
+    /* set deglitch time */
+    EUSCI_A_UART_selectDeglitchTime(EUSCI_A1_BASE, EUSCI_A_UART_DEGLITCH_TIME_200ns);
+
+    /* disable eUSCI UART transmit interrupt */
+    EUSCI_A_UART_disableInterrupt(EUSCI_A1_BASE, EUSCI_A_UART_TRANSMIT_INTERRUPT);
+
+    /* enable eUSCI UART receive interrupt */
+    EUSCI_A_UART_enableInterrupt(EUSCI_A1_BASE, EUSCI_A_UART_RECEIVE_INTERRUPT);
 
     /* USER CODE START (section: EUSCI_A1_Init_epilogue) */
     /* User code */

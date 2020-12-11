@@ -51,6 +51,7 @@ void PMM_Init(void);
 void EUSCI_A0_Init(void);
 void EUSCI_A1_Init(void);
 void EUSCI_B0_Init(void);
+void EUSCI_B1_Init(void);
 void InterruptVectors_Init(void);
 void SYS_init(void);
 void DMA_Init(void);

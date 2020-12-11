@@ -2551,6 +2551,9 @@
                 <name>$PROJ_DIR$\src\system\EUSCI_B0_init.c</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\src\system\EUSCI_B1_init.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\src\system\FRCTL_init.c</name>
             </file>
             <file>
