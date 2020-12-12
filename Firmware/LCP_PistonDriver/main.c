@@ -14,8 +14,9 @@ int main( void )
     P3OUT ^= BIT6;
     __delay_cycles(1000000);
     EUSCI_A_UART_transmitData(EUSCI_A0_BASE, 'c');
-    EUSCI_A_UART_transmitData(EUSCI_A1_BASE, 'a');
-//    EUSCI_B_I2C_masterSendSingleByteWithTimeout(EUSCI_B1_BASE, 'c', 500);
+    EUSCI_A_UART_transmitData(EUSCI_A1_BASE, 'a');  
+    EUSCI_B_I2C_masterSendSingleByteWithTimeout(EUSCI_B0_BASE, 0xaf, 300);
+    EUSCI_B_I2C_masterSendSingleByteWithTimeout(EUSCI_B1_BASE, 0xAA, 300);
   }
 
   return 0;

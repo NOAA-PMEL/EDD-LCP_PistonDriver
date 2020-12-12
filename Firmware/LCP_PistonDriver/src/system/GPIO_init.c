@@ -53,7 +53,11 @@ void GPIO_Init(void)
     P1OUT = 0;
 
     /* Port 1 Port Select Register 1 */
-    P1SEL1 = BIT6 | BIT7;
+    GPIO_setAsPeripheralModuleFunctionOutputPin(
+              GPIO_PORT_P1, 
+              (GPIO_PIN6 | GPIO_PIN7), 
+              GPIO_PRIMARY_MODULE_FUNCTION
+    );
 
     /* Port 1 Direction Register */
     P1DIR = 0;
@@ -88,7 +92,7 @@ void GPIO_Init(void)
     /* Port 3 */
     GPIO_setAsPeripheralModuleFunctionOutputPin(
               GPIO_PORT_P3, 
-              (GPIO_PIN4 | GPIO_PIN5), 
+              (GPIO_PIN1 | GPIO_PIN2 |GPIO_PIN4 | GPIO_PIN5), 
               GPIO_PRIMARY_MODULE_FUNCTION
     );
     
