@@ -1,6 +1,11 @@
 ﻿C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\PistonDriver_bringup.pbd
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\adc12_b.pbi
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\aes256.pbi
+C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\bsp.pbi
+C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\bsp_gpio.pbi
+C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\bsp_led.pbi
+C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\bsp_pins.pbi
+C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\bsp_uart.pbi
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\comp_e.pbi
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\crc.pbi
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\crc32.pbi
@@ -8,6 +13,7 @@ C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\D
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\CS_A_init.pbi
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\dma.pbi
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\DMA_init.pbi
+C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\esi.pbi
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\EUSCI_A0_init.pbi
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\EUSCI_A1_init.pbi
 C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\Debug\Obj\eusci_a_spi.pbi

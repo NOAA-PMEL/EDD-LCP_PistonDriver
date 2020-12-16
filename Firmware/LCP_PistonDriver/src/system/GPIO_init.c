@@ -61,6 +61,7 @@ void GPIO_Init(void)
 
     /* Port 1 Direction Register */
     P1DIR = 0;
+    GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
 
     /* Port 1 Interrupt Edge Select Register */
     P1IES = 0;
@@ -81,6 +82,7 @@ void GPIO_Init(void)
 
     /* Port 2 Direction Register */
     P2DIR = 0;
+//    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN5);
 
     /* Port 2 Interrupt Edge Select Register */
     P2IES = 0;
@@ -113,12 +115,30 @@ void GPIO_Init(void)
 
     /* Port 4 Direction Register */
     P4DIR = 0;
+    GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN2);
+    GPIO_setAsInputPin(GPIO_PORT_P4, GPIO_PIN3);
 
     /* Port 4 Interrupt Edge Select Register */
     P4IES = 0;
 
     /* Port 4 Interrupt Flag Register */
     P4IFG = 0;
+    
+    /* Port 5 Output Register */
+    P5OUT = 0;
+
+    /* Port 5 Direction Register */
+    P5DIR = 0;
+    GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN1);
+    GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN0);
+
+    /* Port 5 Interrupt Edge Select Register */
+//    P5IES = 0;
+
+    /* Port 5 Interrupt Flag Register */
+//    P5IFG = 0;
+    
+    
 
     /* Port J Output Register */
     PJOUT = 0;

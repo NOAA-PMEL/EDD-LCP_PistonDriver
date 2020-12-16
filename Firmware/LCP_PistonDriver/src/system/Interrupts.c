@@ -83,7 +83,7 @@ __interrupt void TIMER2_A0_ISR(void)
 __interrupt void TIMER2_A1_ISR(void)
 {
     /* USER CODE START (section: TIMER2_A1_ISR) */
-    P3OUT ^= BIT7;
+//    P3OUT ^= BIT7;
     /* USER CODE END (section: TIMER2_A1_ISR) */
 
 }
@@ -98,7 +98,7 @@ __interrupt void TIMER3_A0_ISR(void)
     /* USER CODE START (section: TIMER3_A0_ISR) */
     /* replace this comment with your code */
     /* USER CODE END (section: TIMER3_A0_ISR) */
-  P3OUT ^= BIT7;
+//  P3OUT ^= BIT7;
 }
 
 

@@ -263,6 +263,10 @@ C:\Users\casari\version-control\EDD-LCP_PistonDriver\Firmware\LCP_PistonDriver\s
 -D__EDG_SYSV=0
 -D__EDG_ANSIC=1
 -D__EDG_CPP11_IL_EXTENSIONS_SUPPORTED=1
+-DDEBUG=1
+-DDEBUG_LED=1
+-DDEBUG_UART=1
+-DINCLUDE_CONSOLE=1
 -D__MSP430FR5989__=1
 -D_DLIB_CONFIG_FILE_HEADER_NAME="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\430\lib\dlib\dl430xlldn.h"
 -D_DLIB_CONFIG_FILE_STRING="C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.0\\430\\lib\\dlib\\dl430xlldn.h"

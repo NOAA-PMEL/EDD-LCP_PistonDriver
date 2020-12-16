@@ -34,14 +34,14 @@ void EUSCI_A1_Init(void)
     /* USER CODE END (section: EUSCI_A1_Init_prologue) */
   EUSCI_A_UART_initParam param = {
     .selectClockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,
-    .clockPrescalar = 13,
+    .clockPrescalar = 17,
     .firstModReg = 0,
-    .secondModReg = 0,
+    .secondModReg = 74,
     .parity = EUSCI_A_UART_NO_PARITY,
     .msborLsbFirst = EUSCI_A_UART_LSB_FIRST,
     .numberofStopBits = EUSCI_A_UART_ONE_STOP_BIT,
     .uartMode = EUSCI_A_UART_MODE,
-    .overSampling = 1
+    .overSampling = 0
   };
   
 

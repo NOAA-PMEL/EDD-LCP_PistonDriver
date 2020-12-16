@@ -252,7 +252,10 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state></state>
+                    <state>DEBUG</state>
+                    <state>DEBUG_LED</state>
+                    <state>DEBUG_UART</state>
+                    <state>INCLUDE_CONSOLE</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -2303,6 +2306,39 @@
     <group>
         <name>src</name>
         <group>
+            <name>bsp</name>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_gpio.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_gpio.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_led.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_led.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_pins.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_pins.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_uart.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_uart.h</name>
+            </file>
+        </group>
+        <group>
             <name>driverlib</name>
             <group>
                 <name>inc</name>
@@ -2360,15 +2396,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\src\driverlib\esi.c</name>
-                <excluded>
-                    <configuration>Debug</configuration>
-                </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\src\driverlib\esi.h</name>
-                <excluded>
-                    <configuration>Debug</configuration>
-                </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\src\driverlib\eusci_a_spi.c</name>

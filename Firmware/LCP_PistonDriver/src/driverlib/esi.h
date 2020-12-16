@@ -491,8 +491,8 @@ void ESI_testChannel1SourceSelect(uint16_t sourceSelect);
 void ESI_enable(void);
 void ESI_disable(void);
 
-void ESI_enableInternalOscillator();
-void ESI_disableInternalOscillator();
+void ESI_enableInternalOscillator(void);
+void ESI_disableInternalOscillator(void);
 void ESI_startInternalOscCal(void);
 void ESI_stopInternalOscCal(void);
 
@@ -508,6 +508,7 @@ void ESI_stopInternalOscCal(void);
 #define ESI_ESIOSC_OVERSAMPLE_8				8
 uint16_t ESI_measureESIOSC(uint8_t oversample);
 uint8_t ESI_getESICLKFQ(void);
+void ESI_setESICLKFQ(uint8_t setting);
 
 //*****************************************************************************
 //
@@ -736,7 +737,7 @@ typedef struct ESI_TSM_StateParams {
 void ESI_setTSMstateReg(ESI_TSM_StateParams *params,
     uint8_t stateRegNum);
 
-uint16_t ESIgetInterruptVectorRegister(void);
+uint16_t ESI_getInterruptVectorRegister(void);
 
 //*****************************************************************************
 //
