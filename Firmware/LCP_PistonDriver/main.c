@@ -7,6 +7,7 @@ int main( void )
 {
   // Initialize the system  
   BSP_Init();
+  __bis_SR_register(GIE);
   
   BSP_LED_Set(LED_GREEN); 
   
@@ -15,7 +16,7 @@ int main( void )
   while(1){
     BSP_LED_Toggle(LED_BLUE);
     
-    __delay_cycles(1000000);
+     __delay_cycles(1000000);
     BSP_DBG_puts("DEBUG UART");
     BSP_CNSL_puts("CONSOLE UART");
 

@@ -65,7 +65,7 @@ void SYS_init(void)
     FRCTL_Init();
 
     /* initialize Config for the MSP430 GPIO */
-//    GPIO_Init();
+    GPIO_Init();
 
     /* initialize Config for the MSP430 FR57xx family clock systems (CS_A) */
     CS_A_Init();

@@ -48,6 +48,36 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_12V_ENABLE = {
 };
 
 /***********************************************
+ * Debug UART Pins
+ **********************************************/
+const driverlib_gpio_cfg_t BSP_UART_DEBUG_RX = {
+  .port = BSP_UART_DEBUG_RX_PORT,
+  .pin = BSP_UART_DEBUG_RX_PIN,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
+};
+
+const driverlib_gpio_cfg_t BSP_UART_DEBUG_TX = {
+  .port = BSP_UART_DEBUG_TX_PORT,
+  .pin = BSP_UART_DEBUG_TX_PIN,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
+};
+
+/***********************************************
+ * Console UART Pins
+ **********************************************/
+const driverlib_gpio_cfg_t BSP_UART_CONSOLE_RX = {
+  .port = BSP_UART_CONSOLE_TX_PORT,
+  .pin = BSP_UART_CONSOLE_TX_PIN,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
+};
+
+const driverlib_gpio_cfg_t BSP_UART_CONSOLE_TX = {
+  .port = BSP_I2C_BM_SCL_PORT,
+  .pin = BSP_I2C_BM_SCL_PIN,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
+};
+
+/***********************************************
  * Battery Management Pins
  **********************************************/
 const driverlib_gpio_cfg_t g_BSP_GPIO_BM_IRQ = {
@@ -72,6 +102,8 @@ const driverlib_gpio_cfg_t g_BSP_I2C_BM_SCL = {
   .pin = BSP_I2C_BM_SCL_PIN,
   .function = GPIO_PRIMARY_MODULE_FUNCTION
 };
+
+  
 
 
 /***********************************************
@@ -145,11 +177,13 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IPROPI = {
 const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_A = {
   .port = BSP_GPIO_ENCODER_A_PORT,
   .pin = BSP_GPIO_ENCODER_A_PIN,
-  .mode = GPIO_SET_AS_INPUT
+  .mode = GPIO_SET_AS_INPUT,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
 };
 
 const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_B = {
   .port = BSP_GPIO_ENCODER_B_PORT,
   .pin = BSP_GPIO_ENCODER_B_PIN,
-  .mode = GPIO_SET_AS_INPUT
+  .mode = GPIO_SET_AS_INPUT,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
 };

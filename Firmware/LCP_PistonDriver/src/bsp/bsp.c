@@ -3,16 +3,54 @@
 
 void BSP_Init(void)
 {
+  
+  SYS_init();
 #if DEBUG && DEBUG_LED
   BSP_LED_Init(LED_BLUE);
   BSP_LED_Init(LED_GREEN);
 #endif
   
+#ifdef DEBUG & DEBUG_UART
+  BSP_GPIO_Init(&BSP_UART_DEBUG_RX);
+  BSP_GPIO_Init(&BSP_UART_DEBUG_TX);
+#endif
+  
+  /** Console */
+#if INCLUDE_CONSOLE
+  BSP_GPIO_Init(&BSP_UART_CONSOLE_RX);
+  BSP_GPIO_Init(&BSP_UART_CONSOLE_TX);
+#endif
+  
+  
+  /** 12V Power */
   BSP_GPIO_Init(&g_BSP_GPIO_12V_ENABLE);
+
+  /** Battery Managment Pins */
+  BSP_GPIO_Init(&g_BSP_GPIO_BM_IRQ);
+  BSP_GPIO_Init(&g_BSP_I2C_BM_SDA);
+  BSP_GPIO_Init(&g_BSP_I2C_BM_SCL);
   
-  SYS_init();
+  /** Control Comms */
+  BSP_GPIO_Init(&g_BSP_GPIO_CONTROL_IRQ);
+  BSP_GPIO_Init(&g_BSP_I2C_CONTROL_SDA);
+  BSP_GPIO_Init(&g_BSP_I2C_CONTROL_SCL);
   
+  /** Motor Driver */
+  BSP_GPIO_Init(&g_BSP_GPIO_MD_ENABLE);
+  BSP_GPIO_Init(&g_BSP_GPIO_MD_PH);
+  BSP_GPIO_Init(&g_BSP_GPIO_MD_SLEEP);
+  BSP_GPIO_Init(&g_BSP_GPIO_MD_FAULT);
+  BSP_GPIO_Init(&g_BSP_GPIO_MD_PMODE);
+  BSP_GPIO_Init(&g_BSP_GPIO_MD_IPROPI);
+  
+  /** Encoder (Hall Effect) */
+  BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
+  BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
+    
   PMM_unlockLPM5();
+  
+  BSP_DBG_UART_Init();
+  BSP_CNSL_UART_Init();
 }
 
 #if DEBUG && DEBUG_UART

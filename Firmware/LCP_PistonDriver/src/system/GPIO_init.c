@@ -53,15 +53,10 @@ void GPIO_Init(void)
     P1OUT = 0;
 
     /* Port 1 Port Select Register 1 */
-    GPIO_setAsPeripheralModuleFunctionOutputPin(
-              GPIO_PORT_P1, 
-              (GPIO_PIN6 | GPIO_PIN7), 
-              GPIO_PRIMARY_MODULE_FUNCTION
-    );
-
+    P1SEL1 = 0;
+    
     /* Port 1 Direction Register */
     P1DIR = 0;
-    GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
 
     /* Port 1 Interrupt Edge Select Register */
     P1IES = 0;
@@ -73,12 +68,7 @@ void GPIO_Init(void)
     P2OUT = 0;
 
     /* Port 2 Port Select Register 1 */
-    GPIO_setAsPeripheralModuleFunctionOutputPin(
-              GPIO_PORT_P2, 
-              (GPIO_PIN0 | GPIO_PIN1), 
-              GPIO_PRIMARY_MODULE_FUNCTION
-    );
-//    P2SEL1 = BIT0 | BIT1 | BIT5 | BIT6;
+    P2SEL1 = 0;
 
     /* Port 2 Direction Register */
     P2DIR = 0;
@@ -91,18 +81,12 @@ void GPIO_Init(void)
     P2IFG = 0;
 
     
-    /* Port 3 */
-    GPIO_setAsPeripheralModuleFunctionOutputPin(
-              GPIO_PORT_P3, 
-              (GPIO_PIN1 | GPIO_PIN2 |GPIO_PIN4 | GPIO_PIN5), 
-              GPIO_PRIMARY_MODULE_FUNCTION
-    );
-    
+    /* Port 3 */    
     /* Port 3 Output Register */
     P3OUT = 0;
 
     /* Port 3 Direction Register */
-    P3DIR = BIT6 | BIT7;
+    P3DIR = 0;
 
     /* Port 3 Interrupt Edge Select Register */
     P3IES = 0;
@@ -115,8 +99,6 @@ void GPIO_Init(void)
 
     /* Port 4 Direction Register */
     P4DIR = 0;
-    GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN2);
-    GPIO_setAsInputPin(GPIO_PORT_P4, GPIO_PIN3);
 
     /* Port 4 Interrupt Edge Select Register */
     P4IES = 0;
@@ -129,8 +111,6 @@ void GPIO_Init(void)
 
     /* Port 5 Direction Register */
     P5DIR = 0;
-    GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN1);
-    GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN0);
 
     /* Port 5 Interrupt Edge Select Register */
 //    P5IES = 0;

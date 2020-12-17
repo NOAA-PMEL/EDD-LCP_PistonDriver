@@ -10,7 +10,7 @@ void BSP_GPIO_Init(const driverlib_gpio_cfg_t *p)
     } else {
       GPIO_setAsInputPin(p->port, p->pin);
     }
-  } else if (p->function == GPIO_SECONDARY_MODULE_FUNCTION) {
+  } else {
     GPIO_setAsPeripheralModuleFunctionOutputPin(p->port, p->pin, p->function);
   }
   
