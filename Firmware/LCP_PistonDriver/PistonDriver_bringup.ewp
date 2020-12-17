@@ -2600,6 +2600,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\src\system\System.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\src\system\System.h</name>

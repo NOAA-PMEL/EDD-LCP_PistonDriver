@@ -72,7 +72,6 @@ void GPIO_Init(void)
 
     /* Port 2 Direction Register */
     P2DIR = 0;
-//    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN5);
 
     /* Port 2 Interrupt Edge Select Register */
     P2IES = 0;
@@ -80,8 +79,6 @@ void GPIO_Init(void)
     /* Port 2 Interrupt Flag Register */
     P2IFG = 0;
 
-    
-    /* Port 3 */    
     /* Port 3 Output Register */
     P3OUT = 0;
 
@@ -110,16 +107,8 @@ void GPIO_Init(void)
     P5OUT = 0;
 
     /* Port 5 Direction Register */
-    P5DIR = 0;
-
-    /* Port 5 Interrupt Edge Select Register */
-//    P5IES = 0;
-
-    /* Port 5 Interrupt Flag Register */
-//    P5IFG = 0;
+    P5DIR = 0;    
     
-    
-
     /* Port J Output Register */
     PJOUT = 0;
 
@@ -128,11 +117,6 @@ void GPIO_Init(void)
 
     /* Port J Direction Register */
     PJDIR = 0;
-
-    /* USER CODE START (section: GPIO_Init_epilogue) */
-    /* User code */
-    /* USER CODE END (section: GPIO_Init_epilogue) */
-
 
     /* Disable the GPIO power-on default high-impedance mode to activate previously configured port settings */
     PMM_unlockLPM5();
