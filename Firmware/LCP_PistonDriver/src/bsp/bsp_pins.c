@@ -47,12 +47,109 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_12V_ENABLE = {
   
 };
 
+/***********************************************
+ * Battery Management Pins
+ **********************************************/
+const driverlib_gpio_cfg_t g_BSP_GPIO_BM_IRQ = {
+  .port = BSP_GPIO_BM_IRQ_PORT,
+  .pin = BSP_GPIO_BM_IRQ_PIN,
+  .mode = GPIO_SET_AS_INPUT,
+  .function = GPIO_NORMAL_MODULE_FUNCTION,
+  .inverted = false,
+  .pullups = 2,
+  .interrupt = true,
+  .interruptEdge = 0
+};
 
-//const driverlib_gpio_cfg_t g_BSP_GPIO_MDM_RX =
-//{
-//    .port = BSP_GPIO_MDM_RX_PORT,
-//    .pin = BSP_GPIO_MDM_RX_PIN,
-//    .configured = false,
-//    .function = GPIO_SECONDARY_MODULE_FUNCTION,
-//    .pullups = 1
-//};
+const driverlib_gpio_cfg_t g_BSP_I2C_BM_SDA = {
+  .port = BSP_I2C_BM_SDA_PORT,
+  .pin = BSP_I2C_BM_SDA_PIN,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
+};
+
+const driverlib_gpio_cfg_t g_BSP_I2C_BM_SCL = {
+  .port = BSP_I2C_BM_SCL_PORT,
+  .pin = BSP_I2C_BM_SCL_PIN,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
+};
+
+
+/***********************************************
+ * Control Communications Pins
+ **********************************************/
+const driverlib_gpio_cfg_t g_BSP_GPIO_CONTROL_IRQ = {
+  .port = BSP_GPIO_CONTROL_IRQ_PORT,
+  .pin = BSP_GPIO_CONTROL_IRQ_PIN,
+  .mode = GPIO_SET_AS_INPUT,
+  .function = GPIO_NORMAL_MODULE_FUNCTION,
+  .inverted = false,
+  .pullups = 2,
+  .interrupt = true,
+  .interruptEdge = 0
+};
+
+const driverlib_gpio_cfg_t g_BSP_I2C_CONTROL_SDA = {
+  .port = BSP_I2C_CONTROL_SDA_PORT,
+  .pin = BSP_I2C_CONTROL_SDA_PIN,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
+};
+
+const driverlib_gpio_cfg_t g_BSP_I2C_CONTROL_SCL = {
+  .port = BSP_I2C_CONTROL_SCL_PORT,
+  .pin = BSP_I2C_CONTROL_SCL_PIN,
+  .function = GPIO_PRIMARY_MODULE_FUNCTION
+};
+
+
+/***********************************************
+ * H-Bridge (Motor Driver) Pins
+ **********************************************/
+const driverlib_gpio_cfg_t g_BSP_GPIO_MD_ENABLE = {
+  .port = BSP_GPIO_MD_ENABLE_PORT,
+  .pin = BSP_GPIO_MD_ENABLE_PIN,
+  .mode = GPIO_SET_AS_OUTPUT
+};
+
+const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PH = {
+  .port = BSP_GPIO_MD_ENABLE_PORT,
+  .pin = BSP_GPIO_MD_ENABLE_PIN,
+  .mode = GPIO_SET_AS_OUTPUT
+};
+
+const driverlib_gpio_cfg_t g_BSP_GPIO_MD_SLEEP = {
+  .port = BSP_GPIO_MD_SLEEP_PORT,
+  .pin = BSP_GPIO_MD_SLEEP_PIN,
+  .mode = GPIO_SET_AS_INPUT
+};
+
+const driverlib_gpio_cfg_t g_BSP_GPIO_MD_FAULT = {
+  .port = BSP_GPIO_MD_FAULT_PORT,
+  .pin = BSP_GPIO_MD_FAULT_PIN,
+  .mode = GPIO_SET_AS_INPUT
+};
+
+const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PMODE = {
+  .port = BSP_GPIO_MD_PMODE_PORT,
+  .pin = BSP_GPIO_MD_PMODE_PIN,
+  .mode = GPIO_SET_AS_INPUT
+};
+
+const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IPROPI = {
+  .port = BSP_GPIO_MD_IPROPI_PORT,
+  .pin = BSP_GPIO_MD_IPROPI_PIN,
+  .function = GPIO_TERNARY_MODULE_FUNCTION,
+};
+/***********************************************
+ * Encoder Pins
+ **********************************************/
+const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_A = {
+  .port = BSP_GPIO_ENCODER_A_PORT,
+  .pin = BSP_GPIO_ENCODER_A_PIN,
+  .mode = GPIO_SET_AS_INPUT
+};
+
+const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_B = {
+  .port = BSP_GPIO_ENCODER_B_PORT,
+  .pin = BSP_GPIO_ENCODER_B_PIN,
+  .mode = GPIO_SET_AS_INPUT
+};

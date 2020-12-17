@@ -54,4 +54,120 @@ extern const driverlib_gpio_cfg_t g_BSP_GPIO_BLUE_LED;
 #define BSP_GPIO_12V_ENABLE_PIN         ( GPIO_PIN5 )
 extern const driverlib_gpio_cfg_t g_BSP_GPIO_12V_ENABLE;
 
+
+/***********************************************
+ * Battery Management Pins
+ **********************************************/
+
+/***********************************************
+ * Battery Management IRQ Pin
+ **********************************************/
+#define BSP_GPIO_BM_IRQ_PORT            ( GPIO_PORT_P1)
+#define BSP_GPIO_BM_IRQ_PIN             ( GPIO_PIN5)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_BM_IRQ;
+
+/***********************************************
+ * Battery Management I2C SDA Pin
+ **********************************************/
+#define BSP_I2C_BM_SDA_PORT             ( GPIO_PORT_P1 )
+#define BSP_I2C_BM_SDA_PIN              ( GPIO_PORT_P6 )
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_BM_IRQ;
+
+/***********************************************
+ * Battery Management I2C SCL Pin
+ **********************************************/
+#define BSP_I2C_BM_SCL_PORT             ( GPIO_PORT_P1 )
+#define BSP_I2C_BM_SCL_PIN              ( GPIO_PORT_P7 )
+extern const driverlib_gpio_cfg_t g_BSP_I2C_BM_SCL;
+
+
+/***********************************************
+ * Control Communications Pins
+ **********************************************/
+
+/***********************************************
+ * Control Enable Pin
+ **********************************************/
+#define BSP_GPIO_CONTROL_IRQ_PORT            ( GPIO_PORT_P3)
+#define BSP_GPIO_CONTROL_IRQ_PIN             ( GPIO_PIN0)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_CONTROL_IRQ;
+
+/***********************************************
+ * Control I2C SDA Pin
+ **********************************************/
+#define BSP_I2C_CONTROL_SDA_PORT             ( GPIO_PORT_P3 )
+#define BSP_I2C_CONTROL_SDA_PIN              ( GPIO_PORT_P1 )
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_CONTROL_IRQ;
+
+/***********************************************
+ * Control I2C SCL Pin
+ **********************************************/
+#define BSP_I2C_CONTROL_SCL_PORT             ( GPIO_PORT_P3 )
+#define BSP_I2C_CONTROL_SCL_PIN              ( GPIO_PORT_P2 )
+extern const driverlib_gpio_cfg_t g_BSP_I2C_CONTROL_SCL;
+
+/***********************************************
+ * H-Bridge (Motor Driver) Pins
+ **********************************************/
+
+/***********************************************
+ * H-Bridge Enable Pin
+ **********************************************/
+#define BSP_GPIO_MD_ENABLE_PORT            ( GPIO_PORT_P1)
+#define BSP_GPIO_MD_ENABLE_PIN             ( GPIO_PIN0)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_ENABLE;
+
+/***********************************************
+ * H-Bridge Phase Pin
+ **********************************************/
+#define BSP_GPIO_MD_PH_PORT            ( GPIO_PORT_P1)
+#define BSP_GPIO_MD_PH_PIN             ( GPIO_PIN0)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PH;
+
+/***********************************************
+ * H-Bridge Sleep Pin
+ **********************************************/
+#define BSP_GPIO_MD_SLEEP_PORT            ( GPIO_PORT_P1)
+#define BSP_GPIO_MD_SLEEP_PIN             ( GPIO_PIN0)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_SLEEP;
+
+/***********************************************
+ * H-Bridge Fault Pin
+ **********************************************/
+#define BSP_GPIO_MD_FAULT_PORT            ( GPIO_PORT_P1)
+#define BSP_GPIO_MD_FAULT_PIN             ( GPIO_PIN0)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_FAULT;
+
+/***********************************************
+ * H-Bridge Mode Pin
+ **********************************************/
+#define BSP_GPIO_MD_PMODE_PORT            ( GPIO_PORT_P1)
+#define BSP_GPIO_MD_PMODE_PIN             ( GPIO_PIN0)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PMODE;
+
+/***********************************************
+ * H-Bridge ADC IPROPI Pin
+ **********************************************/
+#define BSP_GPIO_MD_IPROPI_PORT            ( GPIO_PORT_P1)
+#define BSP_GPIO_MD_IPROPI_PIN             ( GPIO_PIN0)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IPROPI;
+
+/***********************************************
+ * Encoder Pins
+ **********************************************/
+
+/***********************************************
+ * Encoder Pin A
+ **********************************************/
+#define BSP_GPIO_ENCODER_A_PORT           ( GPIO_PORT_P1)
+#define BSP_GPIO_ENCODER_A_PIN            ( GPIO_PIN0)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_A;
+
+/***********************************************
+ * Encoder Pin B
+ **********************************************/
+#define BSP_GPIO_ENCODER_B_PORT           ( GPIO_PORT_P1)
+#define BSP_GPIO_ENCODER_B_PIN            ( GPIO_PIN0)
+extern const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_B;
+
 #endif
