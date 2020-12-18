@@ -22,7 +22,7 @@ int main( void )
   while(1){
     BSP_LED_Toggle(LED_BLUE);
     
-     __delay_cycles(100000);
+     __delay_cycles(10000);
     BSP_DBG_puts("DEBUG UART");
     BSP_CNSL_puts("CONSOLE UART");
 //    BPS_PWM_SetPWM(i++);
