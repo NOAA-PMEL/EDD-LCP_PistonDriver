@@ -1,8 +1,12 @@
+#include "config.h"
 #include "bsp.h"
 
 
 void BSP_Init(void)
 {
+  /* Stop watchdog timer from timing out during initial start-up. */
+  WDTCTL = WDTPW + WDTHOLD;
+    
   /** Initialize Timers */
   Timer0_A3_Init();
   Timer3_A2_Init();
@@ -30,6 +34,8 @@ void BSP_Init(void)
   
   /** Initialize the DMA */
   DMA_Init();
+  
+
   
   /** Initialize RTC C */
   RTC_C_Init();
@@ -68,7 +74,12 @@ void BSP_Init(void)
   BSP_GPIO_Init(&g_BSP_I2C_CONTROL_SCL);
   
   /** Motor Driver */
+//#if MD_CONFIG_MODE == 0
+//  BSP_GPIO_Init(&g_BSP_GPIO_MD_IN1);
+//#elif (MD_CONFIG_MODE == 1)
   BSP_GPIO_Init(&g_BSP_GPIO_MD_ENABLE);
+//#endif
+  
   BSP_GPIO_Init(&g_BSP_GPIO_MD_PH);
   BSP_GPIO_Init(&g_BSP_GPIO_MD_SLEEP);
   BSP_GPIO_Init(&g_BSP_GPIO_MD_FAULT);
@@ -80,6 +91,11 @@ void BSP_Init(void)
   BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
     
   PMM_unlockLPM5();
+  
+    /** Initialize the PWM Channel */
+//#if MD_CONFIG_MODE == 0
+  BSP_PWM_Init();
+//#endif
   
   BSP_DBG_UART_Init();
   BSP_CNSL_UART_Init();
@@ -125,3 +141,5 @@ void BSP_12V_Off(void)
   
   BSP_GPIO_Clear(&g_BSP_GPIO_12V_ENABLE);  
 }
+
+//void BSP_

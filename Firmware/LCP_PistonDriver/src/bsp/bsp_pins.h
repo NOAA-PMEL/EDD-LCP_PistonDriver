@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include <driverlib/driverlib.h>
-
+#include "config.h"
 typedef struct {
     uint8_t port;
     uint16_t pin;
@@ -146,25 +146,35 @@ extern const driverlib_gpio_cfg_t g_BSP_I2C_CONTROL_SCL;
 /***********************************************
  * H-Bridge (Motor Driver) Pins
  **********************************************/
+
+//#if MD_CONFIG_MODE == 0
 /***********************************************
  * H-Bridge Enable Pin
  **********************************************/
-#define BSP_GPIO_MD_ENABLE_PORT            ( GPIO_PORT_P1)
-#define BSP_GPIO_MD_ENABLE_PIN             ( GPIO_PIN0)
+#define BSP_GPIO_MD_ENABLE_PORT            ( GPIO_PORT_P2)
+#define BSP_GPIO_MD_ENABLE_PIN             ( GPIO_PIN4)
 extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_ENABLE;
+//#elif MD_CONFIG_MODE == 1
+/***********************************************
+ * H-Bridge PWM Pin
+ **********************************************/
+//#define BSP_GPIO_MD_PWM_PORT            ( GPIO_PORT_P2)
+//#define BSP_GPIO_MD_PWM_PIN             ( GPIO_PIN4)
+//extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IN1;
+//#endif
 
 /***********************************************
  * H-Bridge Phase Pin
  **********************************************/
 #define BSP_GPIO_MD_PH_PORT            ( GPIO_PORT_P4)
-#define BSP_GPIO_MD_PH_PIN             ( GPIO_PIN2)
+#define BSP_GPIO_MD_PH_PIN             ( GPIO_PIN3)
 extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PH;
 
 /***********************************************
  * H-Bridge Sleep Pin
  **********************************************/
 #define BSP_GPIO_MD_SLEEP_PORT            ( GPIO_PORT_P4)
-#define BSP_GPIO_MD_SLEEP_PIN             ( GPIO_PIN3)
+#define BSP_GPIO_MD_SLEEP_PIN             ( GPIO_PIN2)
 extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_SLEEP;
 
 /***********************************************

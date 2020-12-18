@@ -2185,6 +2185,12 @@
                 <name>$PROJ_DIR$\src\bsp\bsp_pins.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_pwm.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_pwm.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_uart.c</name>
             </file>
             <file>
@@ -2470,6 +2476,9 @@
                 <name>$PROJ_DIR$\src\system\WDT_A_init.c</name>
             </file>
         </group>
+        <file>
+            <name>$PROJ_DIR$\src\config.h</name>
+        </file>
     </group>
     <group>
         <name>ThirdParty</name>

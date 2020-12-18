@@ -136,22 +136,31 @@ const driverlib_gpio_cfg_t g_BSP_I2C_CONTROL_SCL = {
 /***********************************************
  * H-Bridge (Motor Driver) Pins
  **********************************************/
+//#if MD_CONFIG_MODE == 0
+//const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IN1 = {
+//  .port = BSP_GPIO_MD_PWM_PORT,
+//  .pin = BSP_GPIO_MD_PWM_PIN,
+//  .function = GPIO_PRIMARY_MODULE_FUNCTION
+//};
+//#elif MD_CONFIG_MODE == 1
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_ENABLE = {
   .port = BSP_GPIO_MD_ENABLE_PORT,
   .pin = BSP_GPIO_MD_ENABLE_PIN,
-  .mode = GPIO_SET_AS_OUTPUT
+  .mode = GPIO_SET_AS_OUTPUT,
+  .function = GPIO_NORMAL_MODULE_FUNCTION
 };
+//#endif
 
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PH = {
-  .port = BSP_GPIO_MD_ENABLE_PORT,
-  .pin = BSP_GPIO_MD_ENABLE_PIN,
+  .port = BSP_GPIO_MD_PH_PORT,
+  .pin = BSP_GPIO_MD_PH_PIN,
   .mode = GPIO_SET_AS_OUTPUT
 };
 
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_SLEEP = {
   .port = BSP_GPIO_MD_SLEEP_PORT,
   .pin = BSP_GPIO_MD_SLEEP_PIN,
-  .mode = GPIO_SET_AS_INPUT
+  .mode = GPIO_SET_AS_OUTPUT
 };
 
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_FAULT = {
@@ -163,7 +172,7 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_MD_FAULT = {
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PMODE = {
   .port = BSP_GPIO_MD_PMODE_PORT,
   .pin = BSP_GPIO_MD_PMODE_PIN,
-  .mode = GPIO_SET_AS_INPUT
+  .mode = GPIO_SET_AS_OUTPUT
 };
 
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IPROPI = {

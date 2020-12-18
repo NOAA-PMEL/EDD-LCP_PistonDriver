@@ -1,8 +1,10 @@
 #include <driverlib/driverlib.h>
+#include "config.h"
 #include "bsp_pins.h"
 #include "bsp_gpio.h"
 #include "bsp_led.h"
 #include "bsp_uart.h"
+#include "bsp_pwm.h"
 
 /** !brief Initialize System
  * 
