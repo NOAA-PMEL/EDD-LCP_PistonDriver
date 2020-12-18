@@ -2179,6 +2179,18 @@
                 <name>$PROJ_DIR$\src\bsp\bsp_dma.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_esi.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_esi.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_esi_cal.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_esi_cal.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_gpio.c</name>
             </file>
             <file>

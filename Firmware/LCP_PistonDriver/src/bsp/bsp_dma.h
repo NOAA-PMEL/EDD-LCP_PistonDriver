@@ -3,6 +3,6 @@
 
 #include <driverlib/driverlib.h>
 
-void BSP_DMA_Init(uint32_t addr);
+void BSP_DMA_Init(uint32_t memAddr, uint32_t varAddr);
 
 #endif

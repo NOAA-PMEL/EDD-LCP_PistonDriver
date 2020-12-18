@@ -7,6 +7,7 @@
 #include "bsp_pwm.h"
 #include "bsp_adc12.h"
 #include "bsp_dma.h"
+#include "bsp_esi.h"
 
 /** !brief Initialize System
  * 

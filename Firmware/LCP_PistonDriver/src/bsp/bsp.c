@@ -104,12 +104,19 @@ void BSP_Init(void)
   /** Initialize the Console UART */
   BSP_CNSL_UART_Init();
   
+  /** Initialize the DMA for ADC12 */
+  uint32_t adcAddr = BSP_ADC12_Address_for_DMA();
+  BSP_DMA_Init( adcAddr, (uint32_t) &adc2);
+  
   /** Initialize the ADC12 */
   BSP_ADC12_Init((uint32_t) &adc2);
   
-  /** Initialize the DMA for ADC12 */
-  BSP_DMA_Init((uint32_t) &adc2);
+
   
+  /** Initialze the Extended Scan Interface (encoder) */
+//  esiConfig();
+  
+  __bis_SR_register(GIE);
 }
 
 #if DEBUG && DEBUG_UART

@@ -2,24 +2,24 @@
 
 static DMA_initParam param = {
     .channelSelect = DMA_CHANNEL_0,
-    .transferModeSelect = DMA_TRANSFER_SINGLE,
+    .transferModeSelect = DMA_TRANSFER_REPEATED_SINGLE,
     .transferSize = 1,
-    .triggerSourceSelect = DMA_TRIGGERSOURCE_0,
+    .triggerSourceSelect = DMA_TRIGGERSOURCE_26,
     .transferUnitSelect = DMA_SIZE_SRCWORD_DSTWORD,
     .triggerTypeSelect = DMA_TRIGGER_RISINGEDGE,
     
 };
 
-void BSP_DMA_Init(uint32_t addr)
+void BSP_DMA_Init(uint32_t memAddr, uint32_t varAddr)
 {
   DMA_init(&param);
   
   DMA_setSrcAddress(DMA_CHANNEL_0,
-        0x0860,
+        memAddr,
         DMA_DIRECTION_UNCHANGED);
   
   DMA_setDstAddress(DMA_CHANNEL_0,
-        addr,
+        varAddr,
         DMA_DIRECTION_UNCHANGED);
   
   DMA_enableTransfers(DMA_CHANNEL_0);
