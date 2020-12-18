@@ -1,6 +1,7 @@
 #include "config.h"
 #include "bsp.h"
 
+static uint16_t adc2 = 0;
 
 void BSP_Init(void)
 {
@@ -97,8 +98,18 @@ void BSP_Init(void)
   BSP_PWM_Init();
 //#endif
   
+  /** Initialize the Debug UART */
   BSP_DBG_UART_Init();
+  
+  /** Initialize the Console UART */
   BSP_CNSL_UART_Init();
+  
+  /** Initialize the ADC12 */
+  BSP_ADC12_Init((uint32_t) &adc2);
+  
+  /** Initialize the DMA for ADC12 */
+  BSP_DMA_Init((uint32_t) &adc2);
+  
 }
 
 #if DEBUG && DEBUG_UART
@@ -142,4 +153,4 @@ void BSP_12V_Off(void)
   BSP_GPIO_Clear(&g_BSP_GPIO_12V_ENABLE);  
 }
 
-//void BSP_
+

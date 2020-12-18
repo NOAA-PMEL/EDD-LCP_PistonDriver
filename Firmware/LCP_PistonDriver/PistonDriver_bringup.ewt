@@ -2167,6 +2167,18 @@
                 <name>$PROJ_DIR$\src\bsp\bsp.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_adc12.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_adc12.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_dma.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_dma.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_gpio.c</name>
             </file>
             <file>

@@ -19,6 +19,7 @@ int main( void )
   BSP_GPIO_Set(&g_BSP_GPIO_MD_PH);
 //  __bis_SR_register(LPM0_bits);
   uint16_t i = 0;
+  float temp;
   while(1){
     BSP_LED_Toggle(LED_BLUE);
     
@@ -31,7 +32,9 @@ int main( void )
       BSP_GPIO_Toggle(&g_BSP_GPIO_MD_PH);
 //      BSP_GPIO_Toggle(&g_BSP_GPIO_MD_ENABLE);
     }
-
+    
+    temp = BSP_ADC12_Read();
+    temp = temp + 1.0;
   }
 
   return 0;

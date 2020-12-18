@@ -5,6 +5,8 @@
 #include "bsp_led.h"
 #include "bsp_uart.h"
 #include "bsp_pwm.h"
+#include "bsp_adc12.h"
+#include "bsp_dma.h"
 
 /** !brief Initialize System
  * 
@@ -60,3 +62,7 @@ void BSP_12V_On(void);
  * 
  */
 void BSP_12V_Off(void);
+
+void BSP_MD_ADC_Init(void);
+
+float BSP_MD_Read_ADC(void);

@@ -9,7 +9,7 @@
 //  .dutyCycle = 0
 //};
 
-Timer_B_outputPWMParam param = {
+static Timer_B_outputPWMParam param = {
   .clockSource = TIMER_B_CLOCKSOURCE_SMCLK,
   .clockSourceDivider = TIMER_B_CLOCKSOURCE_DIVIDER_1,
   .timerPeriod = 1023,
