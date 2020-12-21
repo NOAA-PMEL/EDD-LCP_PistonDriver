@@ -2509,6 +2509,24 @@
         <file>
             <name>$PROJ_DIR$\src\config.h</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\src\DRV8874.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\DRV8874.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\shell.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\shell.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\shell_commands.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\shell_commands.h</name>
+        </file>
     </group>
     <group>
         <name>ThirdParty</name>

@@ -1,3 +1,6 @@
+#ifndef _BSP_LED_H
+#define _BSP_LED_H
+
 #include <driverlib/driverlib.h>
 #include "bsp_pins.h"
 #include "bsp_gpio.h"
@@ -17,5 +20,7 @@ void BSP_LED_Toggle(eLED_t led);
 void BSP_LED_Set(eLED_t led);
 
 void BSP_LED_Clear(eLED_t led);
+
+#endif
 
 #endif

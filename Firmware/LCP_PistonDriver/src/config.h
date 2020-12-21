@@ -6,6 +6,7 @@
 //#define MD_CONFIG_MODE_PHEN
 #define MD_CONFIG_MODE_PWM
 
+#define FIRMWARE        ("v0.1")
 
 /*******************************************************************************
  * Extended Scan Interface Settings

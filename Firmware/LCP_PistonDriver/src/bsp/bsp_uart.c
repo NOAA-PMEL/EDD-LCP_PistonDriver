@@ -19,21 +19,26 @@ void BSP_UART_Init(uint16_t baseAddr)
   }
 }
 
-void BSP_UART_puts(uint16_t baseAddr, const char *str)
+int BSP_UART_puts(uint16_t baseAddr, const char *str)
 {
   
   assert( (baseAddr == EUSCI_A0_BASE) || (baseAddr == EUSCI_A1_BASE) );
+  int cnt = 0;
   do{
     EUSCI_A_UART_transmitData(baseAddr, *str++);  
+    cnt++;
   }while(*str != 0);
   
-  EUSCI_A_UART_transmitData(baseAddr,'\n');
+//  EUSCI_A_UART_transmitData(baseAddr,'\n');
+  
+  return cnt;
 }
 
 
-void BSP_UART_putc(uint16_t baseAddr, const char c)
+int BSP_UART_putc(uint16_t baseAddr, const char c)
 {
   EUSCI_A_UART_transmitData(baseAddr, c);  
+  return 1;
 }
 
 void BSP_UART_getc(uint16_t baseAddr, char *c)

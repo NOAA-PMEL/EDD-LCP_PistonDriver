@@ -48,10 +48,11 @@ void BSP_CNSL_UART_Init(void);
  * Send string over console
  * 
  */
-void BSP_CNSL_puts(char *str);
-void BSP_CNSL_putc(char c);
+int BSP_CNSL_puts(char *str);
+int BSP_CNSL_putc(char c);
 
-void BSP_CNSL_getc(char *c);
+char BSP_CNSL_getc(void);
+
 #endif
 
 /** !brief 12V Power ON
