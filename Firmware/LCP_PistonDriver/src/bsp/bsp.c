@@ -131,6 +131,11 @@ void BSP_DBG_puts(char *str)
 
  BSP_UART_puts(EUSCI_A1_BASE, str); 
 }
+
+void BSP_DBG_putc(char c)
+{
+  BSP_UART_putc(EUSCI_A1_BASE, c); 
+}
 #endif 
 
 #if INCLUDE_CONSOLE
@@ -144,6 +149,16 @@ void BSP_CNSL_puts(char *str)
 {
 
  BSP_UART_puts(EUSCI_A0_BASE, str); 
+}
+
+void BSP_CNSL_putc(char c)
+{
+  BSP_UART_putc(EUSCI_A0_BASE, c); 
+}
+
+void BSP_CNSL_getc(char *c)
+{
+  BSP_UART_getc(EUSCI_A0_BASE, c);
 }
 #endif 
 

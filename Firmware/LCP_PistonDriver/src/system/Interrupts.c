@@ -24,8 +24,6 @@ __interrupt void TIMER2_A1_ISR(void);
 __interrupt void TIMER3_A0_ISR(void);
 __interrupt void UNMI_ISR(void);
 __interrupt void RTC_ISR(void);
-__interrupt void USCI_A0_ISR(void);
-__interrupt void USCI_A1_ISR(void);
 __interrupt void USCI_B0_ISR(void);
 __interrupt void DMA_ISR(void);
 
@@ -177,27 +175,7 @@ __interrupt void RTC_ISR(void)
     /* USER CODE END (section: RTC_ISR) */
 }
 
-/*
- *  ======== eUSCI_A0 Interrupt Service Routine ========
- */
-#pragma vector=USCI_A0_VECTOR
-__interrupt void USCI_A0_ISR(void)
-{
-    /* USER CODE START (section: USCI_A0_ISR) */
-    /* replace this comment with your code */
-    /* USER CODE END (section: USCI_A0_ISR) */
-}
 
-/*
- *  ======== eUSCI_A1 Interrupt Service Routine ========
- */
-#pragma vector=USCI_A1_VECTOR
-__interrupt void USCI_A1_ISR(void)
-{
-    /* USER CODE START (section: USCI_A1_ISR) */
-    /* replace this comment with your code */
-    /* USER CODE END (section: USCI_A1_ISR) */
-}
 
 /*
  *  ======== eUSCI_B0 Interrupt Service Routine ========

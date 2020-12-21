@@ -2651,6 +2651,12 @@
             </file>
         </group>
         <file>
+            <name>$PROJ_DIR$\src\buffer_c.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\buffer_c.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\config.h</name>
         </file>
     </group>

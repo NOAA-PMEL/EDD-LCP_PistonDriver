@@ -66,14 +66,14 @@ const driverlib_gpio_cfg_t BSP_UART_DEBUG_TX = {
  * Console UART Pins
  **********************************************/
 const driverlib_gpio_cfg_t BSP_UART_CONSOLE_RX = {
-  .port = BSP_UART_CONSOLE_TX_PORT,
-  .pin = BSP_UART_CONSOLE_TX_PIN,
+  .port = BSP_UART_CONSOLE_RX_PORT,
+  .pin = BSP_UART_CONSOLE_RX_PIN,
   .function = GPIO_PRIMARY_MODULE_FUNCTION
 };
 
 const driverlib_gpio_cfg_t BSP_UART_CONSOLE_TX = {
-  .port = BSP_I2C_BM_SCL_PORT,
-  .pin = BSP_I2C_BM_SCL_PIN,
+  .port = BSP_UART_CONSOLE_TX_PORT,
+  .pin = BSP_UART_CONSOLE_TX_PIN,
   .function = GPIO_PRIMARY_MODULE_FUNCTION
 };
 

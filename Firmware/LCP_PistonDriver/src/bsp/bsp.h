@@ -31,6 +31,7 @@ void BSP_DBG_UART_Init(void);
  * 
  */
 void BSP_DBG_puts(char *str);
+void BSP_DBG_putc(char c);
 #endif 
 
 #if INCLUDE_CONSOLE
@@ -48,6 +49,9 @@ void BSP_CNSL_UART_Init(void);
  * 
  */
 void BSP_CNSL_puts(char *str);
+void BSP_CNSL_putc(char c);
+
+void BSP_CNSL_getc(char *c);
 #endif
 
 /** !brief 12V Power ON

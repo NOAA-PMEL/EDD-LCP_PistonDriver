@@ -3,7 +3,9 @@
 #include <system/System.h>
 #include <stdint.h>
 #include <assert.h>
-
+#include "buffer_c.h"
 
 void BSP_UART_Init(uint16_t baseAddr);
 void BSP_UART_puts(uint16_t baseAddr, const char *str);
+void BSP_UART_putc(uint16_t baseAddr, const char c);
+void BSP_UART_getc(uint16_t baseAddr, char *str);
