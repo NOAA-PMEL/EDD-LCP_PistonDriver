@@ -1,4 +1,6 @@
+#ifndef TEST
 #include <driverlib/driverlib.h>
+#endif
 #include "bsp_pins.h"
 #include <system/System.h>
 #include <stdint.h>

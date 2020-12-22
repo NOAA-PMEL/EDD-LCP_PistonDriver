@@ -21,7 +21,7 @@
 
 /** Remove STATIC and PERSISTENT values if running TEST */
 /** Add the actual values if running release */
-#ifdef UNIT_TESTING
+#ifdef TEST
 #ifndef STATIC
 #define STATIC  
 #endif

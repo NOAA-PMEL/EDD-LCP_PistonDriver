@@ -1,7 +1,9 @@
 #ifndef _BSP_LED_H
 #define _BSP_LED_H
 
+#ifndef TEST
 #include <driverlib/driverlib.h>
+#endif
 #include "bsp_pins.h"
 #include "bsp_gpio.h"
 

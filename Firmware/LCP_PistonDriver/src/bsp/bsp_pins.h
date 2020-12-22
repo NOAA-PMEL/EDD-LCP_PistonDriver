@@ -2,7 +2,9 @@
 #define _BSP_PINS_H_
 
 #include <stdbool.h>
+#ifndef TEST
 #include <driverlib/driverlib.h>
+#endif
 #include "config.h"
 typedef struct {
     uint8_t port;

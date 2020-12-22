@@ -1,4 +1,7 @@
+#ifndef TEST
 #include <driverlib/driverlib.h>
+#endif
+
 #include "config.h"
 #include "bsp_pins.h"
 #include "bsp_gpio.h"
@@ -8,6 +11,7 @@
 #include "bsp_adc12.h"
 #include "bsp_dma.h"
 #include "bsp_esi.h"
+
 
 /** !brief Initialize System
  * 

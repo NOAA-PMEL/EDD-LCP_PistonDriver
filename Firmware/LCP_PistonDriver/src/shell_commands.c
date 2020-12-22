@@ -9,11 +9,23 @@ bool kv_store_write(const char *key, const void *val, uint32_t len) {
 }
 
 bool cli_get(const char *key, const void *val, uint32_t len) {
-  
+    float temp_f = 0.0f;
+    uint16_t temp_u16 = 0u;
+    char t_str[64]; 
     if(strncmp(key, "firmware", 8)==0)
     {
       shell_put_line(FIRMWARE);
     }
+    
+    if(strncmp(key, "motor", 5)==0) {
+      if(strncmp(val, "current", 7) == 0) {
+        temp_f = DRV8847_read_current();
+        sprintf(t_str, "%0.7f", temp_f);
+        shell_put_line(t_str);
+      }
+    }
+    
+    return true;
 }
 
 bool cli_set(const char *key, const void *val, uint32_t len) {
@@ -118,7 +130,7 @@ int cli_cmd_get(int argc, char *argv[]) {
     * 2. Key
     * 3. Value
     */
-  if (argc != 2) {
+  if (argc < 2 || argc > 3) {
     shell_put_line("> FAIL,1");
     return 1;
   }

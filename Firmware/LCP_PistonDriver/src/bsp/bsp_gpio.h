@@ -1,4 +1,6 @@
+#ifndef TEST
 #include <driverlib/driverlib.h>
+#endif
 #include "bsp_pins.h"
 
 void BSP_GPIO_Init(const driverlib_gpio_cfg_t *p);
