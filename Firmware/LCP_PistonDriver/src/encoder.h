@@ -44,7 +44,8 @@ typedef struct EncoderSettings {
 
 void ENC_Init(void);
 void ENC_FactoryReset(void);
-void ENC_Set_Length(float val) ;
+float ENC_Get_Length(void);
+void ENC_Set_MaxLength(float val) ;
 
 
 #ifdef TEST

@@ -4,8 +4,9 @@ STATIC PERSISTENT volatile int32_t g_encoder_counter;
 STATIC PERSISTENT sEncoderSettings_t encSettings = {
     .min_count = ENCODER_MIN_COUNT_DEFAULT,
     .max_count = ENCODER_MAX_COUNT_DEFAULT,
-    .distance = 0,
-    .conversion_factor = ENCODER_LENGTH_DEFAULT
+    .distance = ENCODER_MAX_COUNT_DEFAULT - ENCODER_MIN_COUNT_DEFAULT,
+    .length = ENCODER_LENGTH_DEFAULT,
+    .conversion_factor = (ENCODER_LENGTH_DEFAULT / ENCODER_MAX_COUNT_DEFAULT)
 };
 
 
@@ -13,7 +14,13 @@ void ENC_Init(void) {
     esiConfig();
 }
 
-void ENC_Set_Length(float val) {
+float ENC_Get_Length(void)
+{
+    assert(encSettings.distance > 0);
+    return _calculate_length();
+}
+
+void ENC_Set_MaxLength(float val) {
      _calculate_encoder_distance();
     assert(encSettings.distance > 0);
     encSettings.length = val;
@@ -23,6 +30,10 @@ void ENC_Set_Length(float val) {
 void ENC_FactoryReset(void) {
     encSettings.min_count = ENCODER_MIN_COUNT_DEFAULT;
     encSettings.max_count = ENCODER_MAX_COUNT_DEFAULT;
+    // encSettings.distance = ENCODER_MAX_COUNT_DEFAULT - ENCODER_MIN_COUNT_DEFAULT;
+    // encSettings.length = ENCODER_LENGTH_DEFAULT;
+    // encSettings.conversion_factor = (ENCODER_LENGTH_DEFAULT / ENCODER_MAX_COUNT_DEFAULT);
+    ENC_Set_MaxLength(ENCODER_LENGTH_DEFAULT);
 }
 
 STATIC bool _set_min_count(int32_t val) {
@@ -61,9 +72,14 @@ STATIC void _calculate_encoder_distance(void) {
 STATIC float _calculate_length(void) {
     
    
-    float temp = (float) g_encoder_counter; // / encSettings.distance;
-    
-    temp *= encSettings.conversion_factor;
+    // float temp = (float) (g_encoder_counter - encSettings.min_count); // / encSettings.distance;
+    // printf("%f, %f", encSettings.length, encSettings.conversion_factor); 
+    // temp *= encSettings.conversion_factor;
 
-    return temp;
+    int32_t temp_u = g_encoder_counter - encSettings.min_count;
+
+    printf("%ld, %ld", temp_u, encSettings.distance);
+    float temp_f = (float) temp_u;
+    temp_f *= encSettings.conversion_factor;
+    return temp_f;
 }
