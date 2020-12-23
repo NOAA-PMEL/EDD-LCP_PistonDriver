@@ -105,6 +105,7 @@ F 0 "J19" H 5668 2925 50  0000 C CNN
 F 1 "Conn_01x06" H 5668 3016 50  0000 C CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical" H 5750 3450 50  0001 C CNN
 F 3 "~" H 5750 3450 50  0001 C CNN
+F 4 "61300611121" H 5750 3450 50  0001 C CNN "MPN"
 	1    5750 3450
 	-1   0    0    1   
 $EndComp
