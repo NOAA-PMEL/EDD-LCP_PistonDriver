@@ -147,6 +147,13 @@ Text Notes 2850 4800 0    50   ~ 0
 Battery #4 Connector
 Text Notes 1050 1300 0    50   ~ 0
 Battery Connections:\nExpected Battery Pack\n18SP1 Stacks, Alkaline, Diode Protected
+Wire Wire Line
+	6600 1850 9600 1850
+Wire Wire Line
+	5650 1850 6600 1850
+Connection ~ 6600 1850
+Wire Wire Line
+	6600 1600 6600 1850
 $Comp
 L Connector:TestPoint TP?
 U 1 1 5F052069
@@ -162,33 +169,6 @@ F 4 "5000" H 6600 1600 50  0001 C CNN "MPN"
 	1    6600 1600
 	1    0    0    -1  
 $EndComp
-$Comp
-L Connector:TestPoint TP?
-U 1 1 5F052070
-P 7050 1600
-AR Path="/5EE2A7AF/5F052070" Ref="TP?"  Part="1" 
-AR Path="/5EE4388C/5F052070" Ref="TP?"  Part="1" 
-AR Path="/5EE2A57D/5F052070" Ref="TP23"  Part="1" 
-F 0 "TP23" H 7108 1718 50  0000 L CNN
-F 1 "TestPoint" H 7108 1627 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 7250 1600 50  0001 C CNN
-F 3 "~" H 7250 1600 50  0001 C CNN
-F 4 "5001" H 7050 1600 50  0001 C CNN "MPN"
-	1    7050 1600
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	6600 1600 6600 1850
-Wire Wire Line
-	5650 1850 6600 1850
-Connection ~ 6600 1850
-Wire Wire Line
-	6600 1850 9600 1850
-Wire Wire Line
-	7050 1600 7050 1950
-Wire Wire Line
-	4450 1950 7050 1950
-Connection ~ 7050 1950
-Wire Wire Line
-	7050 1950 9600 1950
+	4450 1950 9600 1950
 $EndSCHEMATC

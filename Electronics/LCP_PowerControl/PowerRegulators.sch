@@ -327,20 +327,6 @@ F 4 "5000" H 1950 6450 50  0001 C CNN "MPN"
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:TestPoint TP?
-U 1 1 5EE9902D
-P 2400 6450
-AR Path="/5EE2A7AF/5EE9902D" Ref="TP?"  Part="1" 
-AR Path="/5EE4388C/5EE9902D" Ref="TP14"  Part="1" 
-F 0 "TP14" H 2458 6568 50  0000 L CNN
-F 1 "TestPoint" H 2458 6477 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 2600 6450 50  0001 C CNN
-F 3 "~" H 2600 6450 50  0001 C CNN
-F 4 "5000" H 2400 6450 50  0001 C CNN "MPN"
-	1    2400 6450
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector:TestPoint TP8
 U 1 1 5EE9A555
 P 1000 7200
@@ -350,42 +336,6 @@ F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 1200 7200 50  0001 C CN
 F 3 "~" H 1200 7200 50  0001 C CNN
 F 4 "5001" H 1000 7200 50  0001 C CNN "MPN"
 	1    1000 7200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP10
-U 1 1 5EE9A55C
-P 1500 7200
-F 0 "TP10" H 1558 7318 50  0000 L CNN
-F 1 "TestPoint" H 1558 7227 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 1700 7200 50  0001 C CNN
-F 3 "~" H 1700 7200 50  0001 C CNN
-F 4 "5001" H 1500 7200 50  0001 C CNN "MPN"
-	1    1500 7200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP12
-U 1 1 5EE9A563
-P 1950 7200
-F 0 "TP12" H 2008 7318 50  0000 L CNN
-F 1 "TestPoint" H 2008 7227 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 2150 7200 50  0001 C CNN
-F 3 "~" H 2150 7200 50  0001 C CNN
-F 4 "5001" H 1950 7200 50  0001 C CNN "MPN"
-	1    1950 7200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP15
-U 1 1 5EE9A56A
-P 2400 7200
-F 0 "TP15" H 2458 7318 50  0000 L CNN
-F 1 "TestPoint" H 2458 7227 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 2600 7200 50  0001 C CNN
-F 3 "~" H 2600 7200 50  0001 C CNN
-F 4 "5001" H 2400 7200 50  0001 C CNN "MPN"
-	1    2400 7200
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -399,58 +349,8 @@ F 3 "" H 1000 7350 50  0001 C CNN
 	1    1000 7350
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR040
-U 1 1 5EE9DD4E
-P 1500 7350
-F 0 "#PWR040" H 1500 7100 50  0001 C CNN
-F 1 "GND" H 1505 7177 50  0000 C CNN
-F 2 "" H 1500 7350 50  0001 C CNN
-F 3 "" H 1500 7350 50  0001 C CNN
-	1    1500 7350
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR042
-U 1 1 5EE9DFE6
-P 1950 7350
-F 0 "#PWR042" H 1950 7100 50  0001 C CNN
-F 1 "GND" H 1955 7177 50  0000 C CNN
-F 2 "" H 1950 7350 50  0001 C CNN
-F 3 "" H 1950 7350 50  0001 C CNN
-	1    1950 7350
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR044
-U 1 1 5EE9E1B5
-P 2400 7350
-F 0 "#PWR044" H 2400 7100 50  0001 C CNN
-F 1 "GND" H 2405 7177 50  0000 C CNN
-F 2 "" H 2400 7350 50  0001 C CNN
-F 3 "" H 2400 7350 50  0001 C CNN
-	1    2400 7350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2400 7200 2400 7350
-Wire Wire Line
-	1950 7200 1950 7350
-Wire Wire Line
-	1500 7200 1500 7350
 Wire Wire Line
 	1000 7200 1000 7350
-$Comp
-L power:+3V3 #PWR045
-U 1 1 5EEA0E5C
-P 2550 6700
-F 0 "#PWR045" H 2550 6550 50  0001 C CNN
-F 1 "+3V3" H 2565 6873 50  0000 C CNN
-F 2 "" H 2550 6700 50  0001 C CNN
-F 3 "" H 2550 6700 50  0001 C CNN
-	1    2550 6700
-	1    0    0    -1  
-$EndComp
 $Comp
 L power:+12V #PWR041
 U 1 1 5EEA1BA0
@@ -502,12 +402,6 @@ Wire Wire Line
 	1950 6800 2100 6800
 Wire Wire Line
 	2100 6800 2100 6700
-Wire Wire Line
-	2400 6450 2400 6800
-Wire Wire Line
-	2400 6800 2550 6800
-Wire Wire Line
-	2550 6800 2550 6700
 $Comp
 L Device:L L2
 U 1 1 5EEB68B5
