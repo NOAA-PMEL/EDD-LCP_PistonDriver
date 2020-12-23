@@ -46,13 +46,9 @@ F 4 "LTST-C171GKT" V 4250 4450 50  0001 C CNN "MPN"
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	7150 4700 5850 4700
-Wire Wire Line
 	4250 4700 4250 4600
 Wire Wire Line
 	3650 4600 3650 4800
-Wire Wire Line
-	3650 4800 5400 4800
 $Comp
 L Device:R_Pack02 RN4
 U 1 1 5EF94B86
@@ -112,10 +108,6 @@ F 3 "~" H 5750 3450 50  0001 C CNN
 	1    5750 3450
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	7150 3250 6900 3250
-Wire Wire Line
-	5950 3350 6450 3350
 $Comp
 L power:GND #PWR?
 U 1 1 5EF9B9D2
@@ -136,80 +128,12 @@ Wire Wire Line
 NoConn ~ 5950 3150
 NoConn ~ 5950 3450
 NoConn ~ 5950 3550
-$Comp
-L Connector:TestPoint TP?
-U 1 1 5EF9DADA
-P 6450 2900
-AR Path="/5EE2AB43/5EF9DADA" Ref="TP?"  Part="1" 
-AR Path="/5EE7B8CC/5EF9DADA" Ref="TP?"  Part="1" 
-AR Path="/5EF8E8EB/5EF9DADA" Ref="TP20"  Part="1" 
-F 0 "TP20" H 6508 3018 50  0000 L CNN
-F 1 "TestPoint" H 6508 2927 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 6650 2900 50  0001 C CNN
-F 3 "~" H 6650 2900 50  0001 C CNN
-	1    6450 2900
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP?
-U 1 1 5EF9DAE1
-P 6900 2900
-AR Path="/5EE2AB43/5EF9DAE1" Ref="TP?"  Part="1" 
-AR Path="/5EE7B8CC/5EF9DAE1" Ref="TP?"  Part="1" 
-AR Path="/5EF8E8EB/5EF9DAE1" Ref="TP21"  Part="1" 
-F 0 "TP21" H 6958 3018 50  0000 L CNN
-F 1 "TestPoint" H 6958 2927 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 7100 2900 50  0001 C CNN
-F 3 "~" H 7100 2900 50  0001 C CNN
-	1    6900 2900
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	6900 2900 6900 3250
-Connection ~ 6900 3250
+	3650 4800 7150 4800
 Wire Wire Line
-	6900 3250 5950 3250
+	4250 4700 7150 4700
 Wire Wire Line
-	6450 2900 6450 3350
-Connection ~ 6450 3350
+	5950 3250 7150 3250
 Wire Wire Line
-	6450 3350 7150 3350
-$Comp
-L Connector:TestPoint TP?
-U 1 1 5EF9E9A7
-P 5400 4500
-AR Path="/5EE2AB43/5EF9E9A7" Ref="TP?"  Part="1" 
-AR Path="/5EE7B8CC/5EF9E9A7" Ref="TP?"  Part="1" 
-AR Path="/5EF8E8EB/5EF9E9A7" Ref="TP18"  Part="1" 
-F 0 "TP18" H 5458 4618 50  0000 L CNN
-F 1 "TestPoint" H 5458 4527 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 5600 4500 50  0001 C CNN
-F 3 "~" H 5600 4500 50  0001 C CNN
-	1    5400 4500
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP?
-U 1 1 5EF9E9AE
-P 5850 4500
-AR Path="/5EE2AB43/5EF9E9AE" Ref="TP?"  Part="1" 
-AR Path="/5EE7B8CC/5EF9E9AE" Ref="TP?"  Part="1" 
-AR Path="/5EF8E8EB/5EF9E9AE" Ref="TP19"  Part="1" 
-F 0 "TP19" H 5908 4618 50  0000 L CNN
-F 1 "TestPoint" H 5908 4527 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 6050 4500 50  0001 C CNN
-F 3 "~" H 6050 4500 50  0001 C CNN
-	1    5850 4500
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5400 4500 5400 4800
-Connection ~ 5400 4800
-Wire Wire Line
-	5400 4800 7150 4800
-Wire Wire Line
-	5850 4500 5850 4700
-Connection ~ 5850 4700
-Wire Wire Line
-	5850 4700 4250 4700
+	5950 3350 7150 3350
 $EndSCHEMATC

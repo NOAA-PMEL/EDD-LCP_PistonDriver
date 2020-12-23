@@ -120,10 +120,6 @@ F 4 "RNCP0805FTD10K0" H 4350 2900 50  0001 C CNN "MPN"
 	1    4350 2900
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	6350 3400 4350 3400
-Wire Wire Line
-	4350 3400 4350 3050
 $Comp
 L power:+3V3 #PWR012
 U 1 1 5EE46911
@@ -173,17 +169,10 @@ MD_IPROPI
 Text HLabel 1950 4250 0    50   Input ~ 0
 MD_PMODE
 Wire Wire Line
-	6350 3300 3100 3300
-Wire Wire Line
-	6350 3850 4900 3850
-Wire Wire Line
 	4350 4350 4350 3850
 Connection ~ 4350 3850
 Text HLabel 1900 3400 0    50   Input ~ 0
 ~MD_SLEEP
-Wire Wire Line
-	1900 3400 4350 3400
-Connection ~ 4350 3400
 $Comp
 L Device:C C7
 U 1 1 5EE4D335
@@ -303,10 +292,6 @@ Connection ~ 7000 4700
 Wire Wire Line
 	9350 3900 9350 3950
 Wire Wire Line
-	9350 3950 8850 3950
-Wire Wire Line
-	7500 3750 8400 3750
-Wire Wire Line
 	9350 3750 9350 3800
 Text Notes 5050 1550 0    200  ~ 0
 MOTOR DRIVER
@@ -326,90 +311,6 @@ Text Notes 1300 6400 0    100  ~ 0
 Defined Values
 Text Notes 1300 5700 0    100  ~ 0
 IPROPI
-$Comp
-L power:GND #PWR?
-U 1 1 5EF03805
-P 3000 5300
-AR Path="/5EE2AA1B/5EF03805" Ref="#PWR?"  Part="1" 
-AR Path="/5EE2AB43/5EF03805" Ref="#PWR035"  Part="1" 
-F 0 "#PWR035" H 3000 5050 50  0001 C CNN
-F 1 "GND" H 3005 5127 50  0000 C CNN
-F 2 "" H 3000 5300 50  0001 C CNN
-F 3 "" H 3000 5300 50  0001 C CNN
-	1    3000 5300
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3000 5300 3000 5200
-Wire Wire Line
-	3100 5150 3100 5200
-Wire Wire Line
-	3100 5200 3000 5200
-Connection ~ 3000 5200
-Wire Wire Line
-	3000 5200 3000 5150
-Wire Wire Line
-	3200 5150 3200 5200
-Connection ~ 3100 5200
-$Comp
-L Connector_Generic:Conn_02x04_Odd_Even J?
-U 1 1 5EF03813
-P 3100 4850
-AR Path="/5EE2AA1B/5EF03813" Ref="J?"  Part="1" 
-AR Path="/5EE2AB43/5EF03813" Ref="J16"  Part="1" 
-F 0 "J16" V 3059 4562 50  0000 R CNN
-F 1 "Conn_02x04_Odd_Even" V 3150 4562 50  0000 R CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_2x04_P2.54mm_Vertical" H 3100 4850 50  0001 C CNN
-F 3 "~" H 3100 4850 50  0001 C CNN
-F 4 "SALEAE_TEST" V 3241 4562 50  0000 R CNN "Field4"
-	1    3100 4850
-	0    -1   1    0   
-$EndComp
-Wire Wire Line
-	3300 5150 3300 5200
-Wire Wire Line
-	3100 5200 3200 5200
-Wire Wire Line
-	3200 5200 3300 5200
-Connection ~ 3200 5200
-Wire Wire Line
-	3000 4650 3000 3200
-Wire Wire Line
-	3100 4650 3100 3300
-Wire Wire Line
-	3200 4650 3200 3600
-$Comp
-L Connector:TestPoint TP5
-U 1 1 5EF1DD9D
-P 8400 3650
-F 0 "TP5" H 8458 3768 50  0000 L CNN
-F 1 "TestPoint" H 8458 3677 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 8600 3650 50  0001 C CNN
-F 3 "~" H 8600 3650 50  0001 C CNN
-	1    8400 3650
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8400 3650 8400 3750
-Connection ~ 8400 3750
-Wire Wire Line
-	8400 3750 9350 3750
-$Comp
-L Connector:TestPoint TP6
-U 1 1 5EF21475
-P 8850 3650
-F 0 "TP6" H 8908 3768 50  0000 L CNN
-F 1 "TestPoint" H 8908 3677 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 9050 3650 50  0001 C CNN
-F 3 "~" H 9050 3650 50  0001 C CNN
-	1    8850 3650
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8850 3650 8850 3950
-Connection ~ 8850 3950
-Wire Wire Line
-	8850 3950 7500 3950
 Text HLabel 9900 3800 2    50   Output ~ 0
 ACTUATOR_POWER+
 Text HLabel 9900 3900 2    50   Output ~ 0
@@ -429,61 +330,31 @@ F 3 "" H 5150 2000 50  0001 C CNN
 	1    5150 2000
 	1    0    0    -1  
 $EndComp
-$Comp
-L Connector:TestPoint TP4
-U 1 1 5EF070DA
-P 4900 3800
-F 0 "TP4" H 4958 3918 50  0000 L CNN
-F 1 "TestPoint" H 4958 3827 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 5100 3800 50  0001 C CNN
-F 3 "~" H 5100 3800 50  0001 C CNN
-	1    4900 3800
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP3
-U 1 1 5EF092C0
-P 4500 5450
-F 0 "TP3" H 4558 5568 50  0000 L CNN
-F 1 "TestPoint" H 4558 5477 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 4700 5450 50  0001 C CNN
-F 3 "~" H 4700 5450 50  0001 C CNN
-	1    4500 5450
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4500 5450 4500 5600
-Wire Wire Line
-	4500 5600 5150 5600
 Wire Wire Line
 	1900 3850 4350 3850
 Wire Wire Line
-	4900 3800 4900 3850
-Connection ~ 4900 3850
-Wire Wire Line
-	4900 3850 4350 3850
-Wire Wire Line
-	3300 4650 3300 4250
-Wire Wire Line
 	5950 5600 5150 5600
-Connection ~ 3000 3200
-Wire Wire Line
-	3000 3200 6350 3200
-Connection ~ 3100 3300
-Connection ~ 3200 3600
-Wire Wire Line
-	3200 3600 6350 3600
-Connection ~ 3300 4250
-Wire Wire Line
-	3300 4250 6350 4250
-Wire Wire Line
-	1900 3200 3000 3200
-Wire Wire Line
-	1900 3600 3200 3600
-Wire Wire Line
-	1900 3300 3100 3300
-Wire Wire Line
-	1950 4250 3300 4250
 Wire Wire Line
 	5150 2250 5850 2250
+Wire Wire Line
+	1900 3400 6350 3400
+Wire Wire Line
+	4350 3050 4350 3600
+Connection ~ 4350 3600
+Wire Wire Line
+	4350 3600 6350 3600
+Wire Wire Line
+	1900 3200 6350 3200
+Wire Wire Line
+	1900 3300 6350 3300
+Wire Wire Line
+	1900 3600 4350 3600
+Wire Wire Line
+	1950 4250 6350 4250
+Wire Wire Line
+	7500 3750 9350 3750
+Wire Wire Line
+	7500 3950 9350 3950
+Wire Wire Line
+	4350 3850 6350 3850
 $EndSCHEMATC

@@ -75,8 +75,6 @@ Text HLabel 3050 3750 0    50   Input ~ 0
 ENCODER_CH_A
 Text HLabel 3050 3850 0    50   Input ~ 0
 ENCODER_CH_B
-Wire Wire Line
-	3050 3850 3650 3850
 $Comp
 L Device:R_Pack02 RN?
 U 1 1 5EEF0BC5
@@ -117,48 +115,14 @@ Wire Wire Line
 	5000 3500 5000 3750
 Connection ~ 5000 3750
 Wire Wire Line
-	5000 3750 4100 3750
-Wire Wire Line
 	5100 3500 5100 3850
 Connection ~ 5100 3850
-$Comp
-L Connector:TestPoint TP?
-U 1 1 5EEF683F
-P 3650 3550
-AR Path="/5EE2AB43/5EEF683F" Ref="TP?"  Part="1" 
-AR Path="/5EE7B8CC/5EEF683F" Ref="TP16"  Part="1" 
-F 0 "TP16" H 3708 3668 50  0000 L CNN
-F 1 "TestPoint" H 3708 3577 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 3850 3550 50  0001 C CNN
-F 3 "~" H 3850 3550 50  0001 C CNN
-	1    3650 3550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3650 3550 3650 3850
-$Comp
-L Connector:TestPoint TP?
-U 1 1 5EEF6EB6
-P 4100 3550
-AR Path="/5EE2AB43/5EEF6EB6" Ref="TP?"  Part="1" 
-AR Path="/5EE7B8CC/5EEF6EB6" Ref="TP17"  Part="1" 
-F 0 "TP17" H 4158 3668 50  0000 L CNN
-F 1 "TestPoint" H 4158 3577 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Keystone_5000-5004_Miniature" H 4300 3550 50  0001 C CNN
-F 3 "~" H 4300 3550 50  0001 C CNN
-	1    4100 3550
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4100 3550 4100 3750
 Wire Wire Line
 	5000 3750 8650 3750
 Wire Wire Line
 	5100 3850 8650 3850
-Connection ~ 4100 3750
 Wire Wire Line
-	4100 3750 3050 3750
-Connection ~ 3650 3850
+	3050 3850 5100 3850
 Wire Wire Line
-	3650 3850 5100 3850
+	3050 3750 5000 3750
 $EndSCHEMATC

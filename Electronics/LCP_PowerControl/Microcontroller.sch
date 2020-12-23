@@ -172,17 +172,10 @@ Wire Wire Line
 Wire Wire Line
 	11850 1850 11850 2000
 Wire Wire Line
-	11700 2100 11700 1850
-Connection ~ 11700 1850
-Wire Wire Line
-	11700 1850 11850 1850
-Wire Wire Line
 	11600 2100 11600 1850
 Wire Wire Line
 	11300 1850 11500 1850
 Connection ~ 11600 1850
-Wire Wire Line
-	11600 1850 11700 1850
 Connection ~ 11500 1850
 Wire Wire Line
 	11500 1850 11600 1850
@@ -482,10 +475,10 @@ L Device:R R13
 U 1 1 5EE6DC32
 P 12150 3300
 F 0 "R13" H 12220 3346 50  0000 L CNN
-F 1 "470" H 12220 3255 50  0000 L CNN
+F 1 "47k" H 12220 3255 50  0000 L CNN
 F 2 "Resistor_SMD:R_0805_2012Metric" V 12080 3300 50  0001 C CNN
 F 3 "~" H 12150 3300 50  0001 C CNN
-F 4 "CRGCQ0805F470R" H 12150 3300 50  0001 C CNN "MPN"
+F 4 "CRGCQ0805F47K" H 12150 3300 50  0001 C CNN "MPN"
 	1    12150 3300
 	1    0    0    -1  
 $EndComp
@@ -671,9 +664,9 @@ Text GLabel 6200 5900 0    50   BiDi ~ 0
 P4.0
 Text GLabel 6200 6000 0    50   BiDi ~ 0
 P4.1
-Text GLabel 6200 6100 0    50   BiDi ~ 0
-P4.2
 Text GLabel 6200 6200 0    50   BiDi ~ 0
+P4.2
+Text GLabel 6200 6100 0    50   BiDi ~ 0
 P4.3
 Wire Wire Line
 	6650 5900 6200 5900
@@ -695,7 +688,7 @@ Wire Wire Line
 	6650 6400 6200 6400
 Wire Wire Line
 	6200 6300 6650 6300
-Text GLabel 14750 3900 0    50   BiDi ~ 0
+Text GLabel 6750 8950 0    50   BiDi ~ 0
 P4.2
 Wire Wire Line
 	14750 3900 15050 3900
@@ -711,42 +704,8 @@ Text GLabel 6200 5500 0    50   UnSpc ~ 0
 ADC2
 Wire Wire Line
 	6200 5500 6650 5500
-Wire Wire Line
-	13850 4350 13950 4350
-Connection ~ 13950 4350
-Wire Wire Line
-	13950 3800 13950 4350
-Wire Wire Line
-	13950 3800 15050 3800
-Text GLabel 13700 5050 0    50   Input ~ 0
-PWM_TA0.1
-Wire Wire Line
-	13700 5050 13850 5050
-Wire Wire Line
-	13850 5050 13850 4950
-$Comp
-L Connector_Generic:Conn_02x02_Odd_Even J4
-U 1 1 5EFC98B3
-P 13850 4750
-F 0 "J4" V 13946 4562 50  0000 R CNN
-F 1 "Conn_02x02_Odd_Even" V 13855 4562 50  0000 R CNN
-F 2 "Connector_PinHeader_2.00mm:PinHeader_2x02_P2.00mm_Vertical" H 13850 4750 50  0001 C CNN
-F 3 "~" H 13850 4750 50  0001 C CNN
-	1    13850 4750
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	13950 4350 13950 4450
-Wire Wire Line
-	13850 4350 13850 4450
-Text GLabel 14100 5050 2    50   Input ~ 0
+Text GLabel 14750 3800 0    50   Input ~ 0
 PWM_TB0.3
-Wire Wire Line
-	14100 5050 13950 5050
-Wire Wire Line
-	13950 5050 13950 4950
-Text Notes 13750 4850 2    50   ~ 0
-Jumper Select:\nTA0 [P1 + P2]\nTB0 [P3 + P4]\n1 ONLY!!
 Text GLabel 14750 4200 0    50   UnSpc ~ 0
 ADC2
 Wire Wire Line
@@ -908,10 +867,6 @@ Text GLabel 13850 6250 0    50   Input ~ 0
 P1.1
 Wire Wire Line
 	13850 6250 14000 6250
-Text GLabel 13850 6750 0    50   Input ~ 0
-P2.5
-Wire Wire Line
-	13850 6750 14000 6750
 Text GLabel 4350 5550 2    50   Input ~ 0
 P2.5
 Wire Wire Line
@@ -1005,7 +960,7 @@ Wire Wire Line
 	6500 3500 6650 3500
 Text GLabel 7250 9050 0    50   BiDi ~ 0
 P5.3
-Text GLabel 6500 8750 0    50   BiDi ~ 0
+Text GLabel 6750 8650 0    50   BiDi ~ 0
 P1.4
 Text GLabel 10150 3950 2    50   BiDi ~ 0
 P2.6
@@ -1019,23 +974,17 @@ Wire Wire Line
 	9900 4050 10150 4050
 Wire Wire Line
 	10150 3950 9900 3950
-Text GLabel 6500 9050 0    50   BiDi ~ 0
+Text GLabel 14750 3900 0    50   BiDi ~ 0
 P2.6
-Text GLabel 6500 9150 0    50   BiDi ~ 0
+Text GLabel 6750 9050 0    50   BiDi ~ 0
 P2.7
-Text GLabel 6500 8650 0    50   BiDi ~ 0
+Text GLabel 13850 6750 0    50   BiDi ~ 0
 P1.3
-Text GLabel 6450 4700 0    50   BiDi ~ 0
-P2.2
 Text GLabel 6450 4600 0    50   BiDi ~ 0
 P2.3
 Wire Wire Line
 	6650 4600 6450 4600
-Wire Wire Line
-	6650 4700 6450 4700
-Text GLabel 6500 8850 0    50   BiDi ~ 0
-P2.2
-Text GLabel 6500 8950 0    50   BiDi ~ 0
+Text GLabel 6750 8850 0    50   BiDi ~ 0
 P2.3
 Text GLabel 6200 5800 0    50   BiDi ~ 0
 P3.3
@@ -1043,12 +992,10 @@ Wire Wire Line
 	6650 5800 6200 5800
 Text GLabel 7250 8650 0    50   BiDi ~ 0
 P3.3
-NoConn ~ 6500 8650
-NoConn ~ 6500 8750
-NoConn ~ 6500 8850
-NoConn ~ 6500 8950
-NoConn ~ 6500 9050
-NoConn ~ 6500 9150
+NoConn ~ 6750 8650
+NoConn ~ 6750 8850
+NoConn ~ 6750 8950
+NoConn ~ 6750 9050
 NoConn ~ 7250 9050
 NoConn ~ 7250 8950
 NoConn ~ 7250 8850
@@ -1089,11 +1036,52 @@ Wire Wire Line
 	8950 7300 8750 7300
 Connection ~ 8750 7300
 Wire Wire Line
-	11700 3100 11700 2600
+	11700 3200 11700 2600
 Wire Wire Line
-	11700 3200 11700 3100
-Connection ~ 11700 3100
-Connection ~ 11400 3100
+	11600 1850 11850 1850
+$Comp
+L Device:R R21
+U 1 1 5FE87C7E
+P 11900 1650
+F 0 "R21" V 11700 1500 50  0000 L CNN
+F 1 "47k" V 11800 1500 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 11830 1650 50  0001 C CNN
+F 3 "~" H 11900 1650 50  0001 C CNN
+F 4 "CRGCQ0805F470R" H 11900 1650 50  0001 C CNN "MPN"
+	1    11900 1650
+	0    1    1    0   
+$EndComp
 Wire Wire Line
-	11400 3100 11700 3100
+	11750 1650 11700 1650
+Wire Wire Line
+	11700 1650 11700 2100
+$Comp
+L power:+3V3 #PWR015
+U 1 1 5FE93D4D
+P 12350 1600
+F 0 "#PWR015" H 12350 1450 50  0001 C CNN
+F 1 "+3V3" H 12365 1773 50  0000 C CNN
+F 2 "" H 12350 1600 50  0001 C CNN
+F 3 "" H 12350 1600 50  0001 C CNN
+	1    12350 1600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	12050 1650 12350 1650
+Wire Wire Line
+	12350 1650 12350 1600
+Wire Wire Line
+	3900 4700 6650 4700
+Wire Wire Line
+	6650 3150 4250 3150
+Connection ~ 4250 3150
+Wire Wire Line
+	13850 6750 14000 6750
+Wire Wire Line
+	14750 3800 15050 3800
+Text HLabel 3900 4700 0    50   Input ~ 0
+CONSOLE_PWR
+Text GLabel 6750 8750 0    50   Input ~ 0
+PWM_TA0.1
+NoConn ~ 6750 8750
 $EndSCHEMATC
