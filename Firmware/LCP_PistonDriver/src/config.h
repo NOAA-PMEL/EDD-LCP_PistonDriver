@@ -69,4 +69,58 @@
 #define TIME_TO_RECAL_REPEAT						4
 #define RECALIBRATION_TIMER_VECTOR_0				TIMER0_A0_VECTOR
 
+
+#ifdef TEST
+#define PIN0        ( 1u << 0 )
+#define PIN1        ( 1u << 1 )
+#define PIN2        ( 1u << 2 )
+#define PIN3        ( 1u << 3 )
+#define PIN4        ( 1u << 4 )
+#define PIN5        ( 1u << 5 )
+#define PIN6        ( 1u << 6 )
+#define PIN7        ( 1u << 7 )
+
+#define PORT_P1     ( 1u << 0 )
+#define PORT_P2     ( 1u << 1 )
+#define PORT_P3     ( 1u << 2 )
+#define PORT_P4     ( 1u << 3 )
+#define PORT_P5     ( 1u << 4 )
+#define PORT_P6     ( 1u << 5 )
+#define PORT_P7     ( 1u << 6 )
+#define PORT_P8     ( 1u << 7 )
+#define PORT_P9     ( 1 << 8 )
+
+#define DEFAULT_MODULE_FUNCITON     ( 0 )
+#define PRIMARY_MODULE_FUNCTION    ( 1 )
+#define SECONDARY_MODULE_FUNCTION    ( 2 )
+#define TERNARY_MODULE_FUNCTION    ( 3 )
+
+#else
+#define PIN0        ( GPIO_PIN0 )
+#define PIN1        ( GPIO_PIN1 )
+#define PIN2        ( GPIO_PIN2 )
+#define PIN3        ( GPIO_PIN3 )
+#define PIN4        ( GPIO_PIN4 )
+#define PIN5        ( GPIO_PIN5 )
+#define PIN6        ( GPIO_PIN6 )
+#define PIN7        ( GPIO_PIN7 )
+
+
+#define PORT_P1     ( GPIO_PORT_P1 )
+#define PORT_P2     ( GPIO_PORT_P2 )
+#define PORT_P3     ( GPIO_PORT_P3 )
+#define PORT_P4     ( GPIO_PORT_P4 )
+#define PORT_P5     ( GPIO_PORT_P5 )
+#define PORT_P6     ( GPIO_PORT_P6 )
+#define PORT_P7     ( GPIO_PORT_P7 )
+#define PORT_P8     ( GPIO_PORT_P8 )
+#define PORT_P9     ( GPIO_PORT_P9 )
+
+#define DEFAULT_MDOULE_FUNCTION     ( 0 )
+#define PRIMARY_MODULE_FUNCTION     ( GPIO_PRIMARY_MODULE_FUNCTION )
+#define SECONDARY_MODULE_FUNCTION   ( GPIO_SECONDARY_MODULE_FUNCTION )
+#define TERNARY_MODULE_FUNCTION     ( GPIO_TERNARY_MODULE_FUNCTION )
+
+#endif
+
 #endif

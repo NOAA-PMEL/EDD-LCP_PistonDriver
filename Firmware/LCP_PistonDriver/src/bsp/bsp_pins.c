@@ -24,7 +24,7 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_GREEN_LED = {
   .port = BSP_GPIO_GREEN_LED_PORT,
   .pin = BSP_GPIO_GREEN_LED_PIN,
   .mode = GPIO_SET_AS_OUTPUT,
-  .function = GPIO_NORMAL_MODULE_FUNCTION,
+  .function = DEFAULT_MODULE_FUNCTION,
   .inverted = true
 };
 #endif
@@ -34,7 +34,7 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_BLUE_LED = {
   .port = BSP_GPIO_BLUE_LED_PORT,
   .pin = BSP_GPIO_BLUE_LED_PIN,
   .mode = GPIO_SET_AS_OUTPUT,
-  .function = GPIO_NORMAL_MODULE_FUNCTION,
+  .function = DEFAULT_MODULE_FUNCTION,
   .inverted = true
 };
 #endif
@@ -53,13 +53,13 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_12V_ENABLE = {
 const driverlib_gpio_cfg_t BSP_UART_DEBUG_RX = {
   .port = BSP_UART_DEBUG_RX_PORT,
   .pin = BSP_UART_DEBUG_RX_PIN,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
 
 const driverlib_gpio_cfg_t BSP_UART_DEBUG_TX = {
   .port = BSP_UART_DEBUG_TX_PORT,
   .pin = BSP_UART_DEBUG_TX_PIN,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
 
 /***********************************************
@@ -68,13 +68,13 @@ const driverlib_gpio_cfg_t BSP_UART_DEBUG_TX = {
 const driverlib_gpio_cfg_t BSP_UART_CONSOLE_RX = {
   .port = BSP_UART_CONSOLE_RX_PORT,
   .pin = BSP_UART_CONSOLE_RX_PIN,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
 
 const driverlib_gpio_cfg_t BSP_UART_CONSOLE_TX = {
   .port = BSP_UART_CONSOLE_TX_PORT,
   .pin = BSP_UART_CONSOLE_TX_PIN,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
 
 /***********************************************
@@ -84,7 +84,7 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_BM_IRQ = {
   .port = BSP_GPIO_BM_IRQ_PORT,
   .pin = BSP_GPIO_BM_IRQ_PIN,
   .mode = GPIO_SET_AS_INPUT,
-  .function = GPIO_NORMAL_MODULE_FUNCTION,
+  .function = DEFAULT_MODULE_FUNCTION,
   .inverted = false,
   .pullups = 2,
   .interrupt = true,
@@ -94,13 +94,13 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_BM_IRQ = {
 const driverlib_gpio_cfg_t g_BSP_I2C_BM_SDA = {
   .port = BSP_I2C_BM_SDA_PORT,
   .pin = BSP_I2C_BM_SDA_PIN,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
 
 const driverlib_gpio_cfg_t g_BSP_I2C_BM_SCL = {
   .port = BSP_I2C_BM_SCL_PORT,
   .pin = BSP_I2C_BM_SCL_PIN,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
 
   
@@ -113,7 +113,7 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_CONTROL_IRQ = {
   .port = BSP_GPIO_CONTROL_IRQ_PORT,
   .pin = BSP_GPIO_CONTROL_IRQ_PIN,
   .mode = GPIO_SET_AS_INPUT,
-  .function = GPIO_NORMAL_MODULE_FUNCTION,
+  .function = DEFAULT_MODULE_FUNCTION,
   .inverted = false,
   .pullups = 2,
   .interrupt = true,
@@ -123,13 +123,13 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_CONTROL_IRQ = {
 const driverlib_gpio_cfg_t g_BSP_I2C_CONTROL_SDA = {
   .port = BSP_I2C_CONTROL_SDA_PORT,
   .pin = BSP_I2C_CONTROL_SDA_PIN,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
 
 const driverlib_gpio_cfg_t g_BSP_I2C_CONTROL_SCL = {
   .port = BSP_I2C_CONTROL_SCL_PORT,
   .pin = BSP_I2C_CONTROL_SCL_PIN,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
 
 
@@ -140,14 +140,14 @@ const driverlib_gpio_cfg_t g_BSP_I2C_CONTROL_SCL = {
 //const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IN1 = {
 //  .port = BSP_GPIO_MD_PWM_PORT,
 //  .pin = BSP_GPIO_MD_PWM_PIN,
-//  .function = GPIO_PRIMARY_MODULE_FUNCTION
+//  .function = PRIMARY_MODULE_FUNCTION
 //};
 //#elif MD_CONFIG_MODE == 1
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_ENABLE = {
   .port = BSP_GPIO_MD_ENABLE_PORT,
   .pin = BSP_GPIO_MD_ENABLE_PIN,
   .mode = GPIO_SET_AS_OUTPUT,
-  .function = GPIO_NORMAL_MODULE_FUNCTION
+  .function = DEFAULT_MODULE_FUNCTION
 };
 //#endif
 
@@ -178,7 +178,7 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PMODE = {
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IPROPI = {
   .port = BSP_GPIO_MD_IPROPI_PORT,
   .pin = BSP_GPIO_MD_IPROPI_PIN,
-  .function = GPIO_TERNARY_MODULE_FUNCTION,
+  .function = TERNARY_MODULE_FUNCTION,
 };
 /***********************************************
  * Encoder Pins
@@ -187,12 +187,12 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_A = {
   .port = BSP_GPIO_ENCODER_A_PORT,
   .pin = BSP_GPIO_ENCODER_A_PIN,
   .mode = GPIO_SET_AS_INPUT,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
 
 const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_B = {
   .port = BSP_GPIO_ENCODER_B_PORT,
   .pin = BSP_GPIO_ENCODER_B_PIN,
   .mode = GPIO_SET_AS_INPUT,
-  .function = GPIO_PRIMARY_MODULE_FUNCTION
+  .function = PRIMARY_MODULE_FUNCTION
 };
