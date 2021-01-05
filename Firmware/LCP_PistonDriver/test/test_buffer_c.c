@@ -211,13 +211,13 @@ void test_BufferC_gets_should_ReturnValidString(void){
 
 	memset(retstr,0,64);
 
-	TEST_ASSERT_EQUAL(BUFFER_C_OK,BufferC_gets(&TestBuf,&retstr[0],retlen));
+	TEST_ASSERT_EQUAL(BUFFER_C_OK,BufferC_gets(&TestBuf,&retstr[0],retlen,'\n'));
 	TEST_ASSERT_EQUAL_STRING("TEST1\r\n",retstr);
 
-	TEST_ASSERT_EQUAL(BUFFER_C_OK,BufferC_gets(&TestBuf,&retstr[0],retlen));
+	TEST_ASSERT_EQUAL(BUFFER_C_OK,BufferC_gets(&TestBuf,&retstr[0],retlen, '\n'));
 	TEST_ASSERT_EQUAL_STRING("TEST2\r\n",retstr);
 
-	TEST_ASSERT_EQUAL(BUFFER_C_OK,BufferC_gets(&TestBuf,&retstr[0],retlen));
+	TEST_ASSERT_EQUAL(BUFFER_C_OK,BufferC_gets(&TestBuf,&retstr[0],retlen, '\n'));
 	TEST_ASSERT_EQUAL_STRING("TEST3\r\n",retstr);
 
 }
@@ -231,13 +231,13 @@ void test_BufferC_gets_Should_ReturnInvalid_if_CharDoesntExist(void){
 	uint16_t retlen = sizeof(retstr)/sizeof(retstr[0]);
 
 
-	TEST_ASSERT_EQUAL(BUFFER_C_NO_STRING,BufferC_gets(&TestBuf,&retstr[0],retlen));
+	TEST_ASSERT_EQUAL(BUFFER_C_NO_STRING,BufferC_gets(&TestBuf,&retstr[0],retlen, '\n'));
 
 	TEST_ASSERT_EQUAL(BUFFER_C_OK,BufferC_puts(&TestBuf,&teststr[0],testlen));
 
 	memset(retstr,0,64);
 
-	TEST_ASSERT_EQUAL(BUFFER_C_NO_STRING,BufferC_gets(&TestBuf,&retstr[0],retlen));
+	TEST_ASSERT_EQUAL(BUFFER_C_NO_STRING,BufferC_gets(&TestBuf,&retstr[0],retlen, '\n'));
 	
 
 }

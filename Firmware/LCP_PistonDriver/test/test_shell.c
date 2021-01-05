@@ -1,15 +1,23 @@
 #include "unity.h"
-#include "shell.h"
 
-void setUp(void)
-{
-}
+// #define DEBUG   ( true )
+// #define DEBUG_LED   ( true )
 
-void tearDown(void)
-{
-}
 
-void test_shell_NeedToImplement(void)
-{
-    TEST_IGNORE_MESSAGE("Need to Implement shell");
-}
+// #include "shell.h"
+// #include "shell_commands.h"
+
+
+
+// void setUp(void)
+// {
+// }
+
+// void tearDown(void)
+// {
+// }
+
+// void test_shell_NeedToImplement(void)
+// {
+//     TEST_IGNORE_MESSAGE("Need to Implement shell");
+// }

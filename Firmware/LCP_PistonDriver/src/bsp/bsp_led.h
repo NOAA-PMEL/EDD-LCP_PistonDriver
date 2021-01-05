@@ -8,7 +8,7 @@
 #include "bsp_gpio.h"
 
 #if DEBUG && DEBUG_LED
-typedef enum {
+enum {
   LED_BLUE,
   LED_GREEN
 }eLED_t;
@@ -24,5 +24,10 @@ void BSP_LED_Set(eLED_t led);
 void BSP_LED_Clear(eLED_t led);
 
 #endif
+
+
+#ifdef TEST
+extern enum eLED_t eLED;
+#endif 
 
 #endif

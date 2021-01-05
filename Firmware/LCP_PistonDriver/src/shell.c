@@ -1,6 +1,5 @@
 #include "shell.h"
 
-
 #define SHELL_FOR_EACH_COMMAND(command) \
     for (const sShellCommand *command =g_shell_commands; \
     command < &g_shell_commands[g_num_shell_commands]; \

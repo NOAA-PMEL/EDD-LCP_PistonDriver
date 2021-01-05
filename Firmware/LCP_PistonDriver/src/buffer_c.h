@@ -154,5 +154,13 @@ eBufferCStatus_t BufferC_gets(sCircularBufferC_t *buf,
 
 void BufferC_remove_leading_whitespace( sCircularBufferC_t *buf);
 
+
+#ifdef TEST
+extern uint16_t BufferC_Scan(sCircularBufferC_t *buf,char val);
+extern void BufferC_Size(sCircularBufferC_t *buf);
+extern uint16_t BufferC_NextIndex(uint16_t idx);
+extern uint16_t BufferC_PrevIndex(uint16_t idx);
+#endif
+
 #endif
 
