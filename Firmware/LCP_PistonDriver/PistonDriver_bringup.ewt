@@ -2537,4 +2537,7 @@
     <file>
         <name>$PROJ_DIR$\main.c</name>
     </file>
+    <file>
+        <name>$PROJ_DIR$\version.h</name>
+    </file>
 </project>

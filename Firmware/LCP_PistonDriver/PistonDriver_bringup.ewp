@@ -743,7 +743,7 @@
             <name>BUILDACTION</name>
             <archiveVersion>1</archiveVersion>
             <data>
-                <prebuild></prebuild>
+                <prebuild>CMD /C "$PROJ_DIR$\..\CI_scripts\IAR_Prebuild.bat" $PROJ_DIR$\..</prebuild>
                 <postbuild></postbuild>
             </data>
         </settings>
@@ -2689,5 +2689,8 @@
     </file>
     <file>
         <name>$PROJ_DIR$\main.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\version.h</name>
     </file>
 </project>

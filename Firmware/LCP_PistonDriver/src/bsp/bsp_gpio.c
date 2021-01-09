@@ -3,7 +3,7 @@
 
 void BSP_GPIO_Init(const driverlib_gpio_cfg_t *p)
 {
-  if(p->function == GPIO_NORMAL_MODULE_FUNCTION) {
+  if(p->function == DEFAULT_MODULE_FUNCTION) {
     if(p->mode == 1) 
     {
       GPIO_setAsOutputPin(p->port, p->pin);

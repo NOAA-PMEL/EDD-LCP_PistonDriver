@@ -7,7 +7,7 @@
 #include <stdint.h>
 
 // #include "bsp.h"
-#include "bsp_led.h"
+//#include "bsp_led.h"
 #include "DRV8874.h"
 
 bool kv_store_write(const char *key, const void *val, uint32_t len);
