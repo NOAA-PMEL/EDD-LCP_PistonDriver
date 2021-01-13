@@ -48,7 +48,7 @@
 
 :unity:
   :defines:
-    # - UNITY_INCLUDE_DOUBLE
+    - UNITY_INCLUDE_DOUBLE
 :cmock:
   :mock_prefix: mock_
   :when_no_prototypes: :warn

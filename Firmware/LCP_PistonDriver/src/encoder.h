@@ -30,6 +30,16 @@
 #define ENCODER_MAX_COUNT_DEFAULT   SYS_ENCODER_MAX_COUNT_DEFAULT
 #define ENCODER_LENGTH_DEFAULT      SYS_ENCODER_LENGTH_DEFAULT
 
+
+/** @brief Piston Type
+ * @enum Piston Type
+ */
+typedef enum ePistonType {
+    SMALL_PISTON,
+    LARGE_PISTON,
+    NO_PISTON
+}ePistionType_t;
+
 /** 
  * @brief Encoder Settings Struct
  * @struct Encoder Settings
@@ -45,6 +55,7 @@ typedef struct EncoderSettings {
 
 
 extern sEncoderSettings_t encSettings;
+extern sEncoderSettings_t *pEncSettings;
 
 void ENC_Init(void);
 void ENC_FactoryReset(void);

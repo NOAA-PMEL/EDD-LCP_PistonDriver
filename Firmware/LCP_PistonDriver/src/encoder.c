@@ -8,6 +8,7 @@ STATIC PERSISTENT sEncoderSettings_t encSettings = {
     .length = ENCODER_LENGTH_DEFAULT,
  };
 
+STATIC PERSISTENT sEncoderSettings_t *pEncSettings = &encSettings;
 
 void ENC_Init(void) {
     esiConfig();

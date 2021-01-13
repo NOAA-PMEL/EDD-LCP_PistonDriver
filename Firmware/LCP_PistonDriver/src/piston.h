@@ -3,6 +3,7 @@
 
 
 #include <stdint.h>
+#include <assert.h>
 #include "config.h"
 #include "encoder.h"
 #include "DRV8874.h"
@@ -35,42 +36,63 @@
 #define PI                      ( 3.14159265359)
 
 typedef struct sPistonVolume {
-    double volume;
+    double _volume;
     double _length;      /**< Length of piston */
     double _diameter;    /**< Diameter of piston */
     double _max_length;  /**< Maximum length of piston */
+    double _max_volume;  /**< Maximum volume of piston */
 }sPistonVolume_t;
 
-typedef struct sLength {
-    sEncoderSettings_t *encoder;    /**< Current encoder settings */
-    volatile double length;         /**< Length to calculate conversion factor */
+typedef struct sActuator {
+    sEncoderSettings_t *settings;    /**< Current encoder settings */
+    volatile double current_length;         /**< Length to calculate conversion factor */
     double conversion_factor;       /**< Conversion factor to calculate "length" cnt/in */
-}sLength_t;
+    double setpoint;
+}sActuator_t;
 
-typedef struct sPiston {
-    sEncoderSettings_t *settings;   /**< Encoder Settings */
-    volatile double length;         /**< Current Length of piston */
-    double setpoint;                /**< Current setpoint for piston */ 
-}sPiston_t;
+// typedef struct sPiston {
+//     sEncoderSettings_t *settings;   /**< Encoder Settings */
+//     volatile double length;         /**< Current Length of piston */
+//     double setpoint;                /**< Current setpoint for piston */ 
+// }sPiston_t;
 
-typedef struct sSystemVolume {
+typedef struct sPistonSystem {
     double volume;                   /**< Volume of the system */
-    sLength_t *pistonLength;         /**< Piston Length */
+    sActuator_t *actuator;         /**< Piston Length */
     sPistonVolume_t *smallPiston;    /**< Small Piston Volume */
     sPistonVolume_t *largePiston;    /**< Large Piston Volume */
     const sPistonVolume_t *housing;        /**< Housing Volume */
-}sSystemVolume_t;
+}sPistonSystem_t;
 
 
 void PIS_init(void);
+double PIS_get_length(void);
+double PIS_get_volume(void);
 
 #ifdef TEST
+extern sPistonVolume_t smallPiston;
+extern sPistonVolume_t largePiston;
+extern const sPistonVolume_t housing;
 void _PIS_calc_encoder_range(double setpoint, 
                         double range, 
                         double conversion_factor,
                         int32_t *min_cnt,
                         int32_t *max_cnt
                         );
+
+double _PIS_estimate_length_from_volume(
+     double volume,
+     const sPistonVolume_t *small,
+     const sPistonVolume_t *large,
+     const sPistonVolume_t *housing
+     );
+
+double _PIS_calculate_volume_from_length(
+    double length,
+    const sPistonVolume_t *small,
+    const sPistonVolume_t *large,
+    const sPistonVolume_t *housing
+     );
 #endif
 
 #endif // _PISTON_H
