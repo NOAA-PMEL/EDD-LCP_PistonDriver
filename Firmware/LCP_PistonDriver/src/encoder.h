@@ -38,9 +38,13 @@ typedef struct EncoderSettings {
     int32_t min_count;     /**< Minimum Counter setting (Default=0) */
     int32_t max_count;     /**< Maximum Counter setting (Default=type of piston) */
     int32_t distance;       /**< Difference between max and min counts */
-    double length;           /**< Length to calculate conversion factor */
-    double conversion_factor;    /**< Conversion factor to calculate "length" */
+    volatile int32_t *current_count;  /**< Current encoder count */
+    // double length;           /**< Length to calculate conversion factor */
+    // double conversion_factor;    /**< Conversion factor to calculate "length" */
 }sEncoderSettings_t;
+
+
+extern sEncoderSettings_t encSettings;
 
 void ENC_Init(void);
 void ENC_FactoryReset(void);
@@ -50,7 +54,7 @@ void ENC_Set_MaxLength(double val) ;
 
 #ifdef TEST
 extern volatile int32_t g_encoder_counter;
-extern sEncoderSettings_t encSettings;
+
 #endif
 
 #ifdef TEST

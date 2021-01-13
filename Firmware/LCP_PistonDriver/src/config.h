@@ -9,7 +9,13 @@
 #define FIRMWARE        ("v0.1")
 
 
-
+/** Piston Settings */
+#define SYS_SMALL_PISTON_DIAMETER         ( 2.25f )
+#define SYS_SMALL_PISTON_MAX_LENGTH       ( 6.00f )
+#define SYS_LARGE_PISTON_DIAMETER         ( 4.50f ) 
+#define SYS_LARGE_PISTON_MAX_LENGTH       ( 6.0f )
+#define SYS_HOUSING_DIAMETER                ( 4.88f )
+#define SYS_HOUSING_LENGTH                  ( 35.0f )
 
 /** Encoder Settings */
 #define SYS_ENCODER_MIN_COUNT_DEFAULT   ( 0 ) 
