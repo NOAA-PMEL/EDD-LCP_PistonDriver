@@ -93,24 +93,15 @@ void PIS_Write(ePistonWrite_t write, double value)
     }
 }
 
-ePistonRunError_t PIS_Run_to_volume(double volume)
+ePistonRunError_t PIS_Run_to_length(double length)
 {
+    #ifndef TEST
+    assert(length <= SYSTEM_MAX_LENGTH);
+    assert(length >= SYSTEM_MIN_LENGTH);
+    #endif
+    
     ePistonRunError_t error = PISErrorGeneric;
 
-    #ifndef TEST
-    assert(volume <= SYSTEM_MAX_VOLUME);
-    assert(volume >= SYSTEM_MIN_VOLUME);
-    #endif
-
-    double length = _PIS_estimate_length_from_volume(
-                        volume, 
-                        &smallPiston, 
-                        &largePiston,
-                        &housing
-                    );
-
-    // printf("vol=%f, len=%f, cl=%f\n", volume, length, actuator.current_length);
-    
     actuator.setpoint_flag = false;
     if(length > actuator.current_length)
     {
@@ -146,6 +137,25 @@ ePistonRunError_t PIS_Run_to_volume(double volume)
         error = PISErrorNone;
     }
     return error;
+}
+ePistonRunError_t PIS_Run_to_volume(double volume)
+{
+    ePistonRunError_t error = PISErrorGeneric;
+
+    #ifndef TEST
+    assert(volume <= SYSTEM_MAX_VOLUME);
+    assert(volume >= SYSTEM_MIN_VOLUME);
+    #endif
+
+    double length = _PIS_estimate_length_from_volume(
+                        volume, 
+                        &smallPiston, 
+                        &largePiston,
+                        &housing
+                    );
+
+    // printf("vol=%f, len=%f, cl=%f\n", volume, length, actuator.current_length);
+    return PIS_Run_to_length(length);
 }
 
 void PIS_Write_length(double setpoint) {

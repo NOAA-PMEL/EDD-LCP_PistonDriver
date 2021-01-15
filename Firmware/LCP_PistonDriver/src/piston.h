@@ -40,6 +40,9 @@
 #define HOUSING_VOLUME            (HOUSING_DIAMETER * PI * HOUSING_LENGTH)
 #define SYSTEM_MAX_VOLUME         (HOUSING_VOLUME + SMALL_PISTON_MAX_VOLUME + LARGE_PISTON_MAX_VOLUME + 0.01)
 #define SYSTEM_MIN_VOLUME         (HOUSING_VOLUME - 0.01)
+#define SYSTEM_MIN_LENGTH         (0.0f)
+#define SYSTEM_MAX_LENGTH         (SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH)
+
 typedef enum ePistonRead {
     PISReadLength,
     PISReadVolume,
@@ -97,6 +100,7 @@ void PIS_Enable(void);
 void PIS_Disable(void);
 double PIS_Read(ePistonRead_t read);
 void PIS_Write(ePistonWrite_t write, double value);
+ePistonRunError_t PIS_Run_to_length(double length);
 ePistonRunError_t PIS_Run_to_volume(double volume);
 
 void PIS_Write_length(double);
