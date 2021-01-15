@@ -33,7 +33,9 @@ STATIC const sPistonVolume_t housing = {
 STATIC sActuator_t actuator = {
     // .settings = &encSettings,
     .current_length = 0.0f,
-    .setpoint = 0.0f
+    .setpoint = 0.0f,
+    .enc_min = 0.0f,
+    .enc_max = 0.0f
 };
 
 STATIC sPistonSystem_t profiler = {
@@ -44,15 +46,64 @@ STATIC sPistonSystem_t profiler = {
     .housing = &housing
 };
 
-void PIS_init(void) {
+void PIS_Init(void) {
 
     DRV8874_init();
     ENC_Init();
 
 }
 
+void PIS_Enable(void) {
+    DRV8874_enable();
+}
 
-double PIS_get_length(void) {
+void PIS_Disable(void) {
+    DRV8874_disable();   
+}
+
+double PIS_Read(ePistonRead_t read)
+{
+    if(read == PISReadLength)
+    {
+        return PIS_Read_length();
+    } else if( read == PISReadVolume) 
+    {
+        return PIS_Read_volume();
+    } else if( read == PISReadCurrent) 
+    {
+        return (double) PIS_Read_current();
+    }
+}
+
+void PIS_Write_setpoint(double setpoint) {
+    #ifndef TEST
+    assert(setpoint >= 0.0f);
+    assert(setpoint <= smallPiston._max_length + largePiston._max_length);
+    #endif 
+
+    actuator.setpoint = setpoint;
+    _PIS_calc_encoder_range(
+        setpoint, 
+        actuator.range,
+        actuator.conversion_factor,
+        &actuator.enc_min,
+        &actuator.enc_max
+        );
+}
+
+void PIS_Write_volume(double volume)
+{
+   double length = _PIS_estimate_length_from_volume(
+                                        volume,
+                                        &smallPiston, 
+                                        &largePiston,
+                                        &housing
+                                        );
+
+    PIS_Write_setpoint(length);
+}
+
+double PIS_Read_length(void) {
     double length = ENC_Get_Length();
     if( (length > 0.0f) && (length <= smallPiston._max_length))
     {
@@ -61,13 +112,23 @@ double PIS_get_length(void) {
     {
         smallPiston._length = smallPiston._max_length;
         largePiston._length = length - smallPiston._max_length;
+    } else if( length == 0) {
+        smallPiston._length = 0.0f;
+        largePiston._length = 0.0f;
     }
     return length;
 }
-double PIS_get_volume(void) {
 
-    return -1.0f;
+double PIS_Read_volume(void) { 
+    PIS_Read_length();
+    smallPiston._volume = smallPiston._length * smallPiston._diameter * PI;
+    largePiston._volume = largePiston._length * largePiston._diameter * PI;
+    return housing._volume + smallPiston._volume + largePiston._volume;
 
+}
+
+float PIS_Read_current(void) {
+    return DRV8847_read_current();
 }
 
 // void PIS_set_length(double position)
@@ -126,21 +187,26 @@ STATIC double _PIS_estimate_length_from_volume(
     assert( volume >= housing->_max_volume);
     assert( volume <= (housing->_max_volume + small->_max_volume + large->_max_volume));
     #endif
+    // printf("Volume=%f, ",volume);
 
     if(volume == housing->_max_volume)
     {
         length = 0.0f;
+        // printf("Housing Only: length=%f\n", length);
     }
     else if (volume <= (housing->_max_volume + small->_max_volume))
     {
         volume -= housing->_max_volume;
         length = volume / (small->_diameter * PI);
+        
+        // printf("Housing + Small: length=%f\n", length);
         return length;
     }
-    else if (volume <= (housing->_max_volume + small->_max_volume + large->_max_volume))
+    else if (volume <= (housing->_max_volume + small->_max_volume + large->_max_volume + actuator.range))
     {
         volume -= (housing->_max_volume + small->_max_volume);
         length = (volume / (large->_diameter*PI)) + small->_max_length;
+        // printf("Housing + Both: length=%f\n", length);
         return length;
     } else {
         length =  -1.0f;
@@ -192,4 +258,22 @@ STATIC double _PIS_calculate_volume_from_length(
     }
 
     return volume;
+}
+
+STATIC void _PIS_Run(sPistonRunDir_t dir)
+{
+    switch(dir)
+    {
+        case PISRunFwd:
+            DRV8874_forward();
+            break;
+        case PISRunRev:
+            DRV8874_reverse();
+            break;
+        case PISRunStop:
+            DRV8874_stop();
+            break;
+        default:
+            break;
+    }
 }

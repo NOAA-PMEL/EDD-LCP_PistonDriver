@@ -26,14 +26,29 @@
 #endif
 #endif
 
+#define PI                      ( 3.14159265359)
+
 #define SMALL_PISTON_DIAMETER     (SYS_SMALL_PISTON_DIAMETER)
 #define SMALL_PISTON_MAX_LENGTH   (SYS_SMALL_PISTON_MAX_LENGTH)
+#define SMALL_PISTON_MAX_VOLUME   (SMALL_PISTON_DIAMETER * PI * SMALL_PISTON_MAX_LENGTH);
 #define LARGE_PISTON_DIAMETER     (SYS_LARGE_PISTON_DIAMETER)
 #define LARGE_PISTON_MAX_LENGTH   (SYS_LARGE_PISTON_MAX_LENGTH)
+#define LARGE_PISTON_MAX_VOLUME   (LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH);
 #define HOUSING_DIAMETER          (SYS_HOUSING_DIAMETER)
 #define HOUSING_LENGTH            (SYS_HOUSING_LENGTH)
+#define HOUSING_VOLUME            (HOUSING_DIAMETER * PI * HOUSING_LENGTH)
 
-#define PI                      ( 3.14159265359)
+typedef enum ePistonRead {
+    PISReadLength,
+    PISReadVolume,
+    PISReadCurrent
+}ePistonRead_t;
+
+typedef enum sPistonRunDir {
+    PISRunFwd,
+    PISRunRev,
+    PISRunStop
+}sPistonRunDir_t;
 
 typedef struct sPistonVolume {
     double _volume;
@@ -48,6 +63,9 @@ typedef struct sActuator {
     volatile double current_length;         /**< Length to calculate conversion factor */
     double conversion_factor;       /**< Conversion factor to calculate "length" cnt/in */
     double setpoint;
+    double range;
+    int32_t enc_min;
+    int32_t enc_max;
 }sActuator_t;
 
 // typedef struct sPiston {
@@ -65,11 +83,19 @@ typedef struct sPistonSystem {
 }sPistonSystem_t;
 
 
-void PIS_init(void);
-double PIS_get_length(void);
-double PIS_get_volume(void);
+void PIS_Init(void);
+void PIS_Enable(void);
+void PIS_Disable(void);
+double PIS_Read(ePistonRead_t read);
+
+void PIS_Write_setpoint(double);
+void PIS_Write_volume(double volume);
+double PIS_Read_length(void);
+double PIS_Read_volume(void);
+float PIS_Read_current(void);
 
 #ifdef TEST
+extern sActuator_t actuator;
 extern sPistonVolume_t smallPiston;
 extern sPistonVolume_t largePiston;
 extern const sPistonVolume_t housing;
@@ -93,6 +119,8 @@ double _PIS_calculate_volume_from_length(
     const sPistonVolume_t *large,
     const sPistonVolume_t *housing
      );
+
+void _PIS_Run(sPistonRunDir_t dir);
 #endif
 
 #endif // _PISTON_H

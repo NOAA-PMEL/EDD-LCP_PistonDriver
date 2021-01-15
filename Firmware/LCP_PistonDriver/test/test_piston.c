@@ -19,7 +19,7 @@ void test_piston_init_should_initialize_piston(void) {
     DRV8874_init_Expect();
     ENC_Init_Expect();
 
-    PIS_init();
+    PIS_Init();
     
     // Then: Encoder & DRV8874 Init called
     TEST_PASS();
@@ -236,7 +236,7 @@ void test_PIS_calculate_volume_from_length_should_return_invalid_for_length_grea
 }
 
 
-void test_PIS_get_length_should_return_valid_length_full_length(void)
+void test_PIS_Read_length_should_return_valid_length_full_length(void)
 {
     // Given: Fully extended pistons
     double expected_length = smallPiston._max_length + largePiston._max_length;
@@ -244,16 +244,16 @@ void test_PIS_get_length_should_return_valid_length_full_length(void)
     smallPiston._length = smallPiston._max_length;
     largePiston._length = largePiston._max_length;
 
-    // When: PIS_get_length() called
+    // When: PIS_Read_length() called
     ENC_Get_Length_ExpectAndReturn(expected_length);
-    actual_length = PIS_get_length();
+    actual_length = PIS_Read_length();
 
     // Then: Valid full length returned
     TEST_ASSERT_EQUAL_DOUBLE(expected_length, actual_length);
     
 }
 
-void test_PIS_get_length_should_return_valid_length_for_zero_length_(void)
+void test_PIS_Read_length_should_return_valid_length_for_zero_length_(void)
 {
     // Given: Fully extended pistons
     double expected_length = 0.0f;
@@ -261,33 +261,33 @@ void test_PIS_get_length_should_return_valid_length_for_zero_length_(void)
     smallPiston._length = smallPiston._max_length;
     largePiston._length = largePiston._max_length;
 
-    // When: PIS_get_length() called
+    // When: PIS_Read_length() called
     ENC_Get_Length_ExpectAndReturn(expected_length);
-    actual_length = PIS_get_length();
+    actual_length = PIS_Read_length();
 
     // Then: Valid full length returned
     TEST_ASSERT_EQUAL_DOUBLE(expected_length, actual_length);
     
 }
 
-void test_PIS_get_length_should_return_valid_small_large_length_for_zero_length_(void)
+void test_PIS_Read_length_should_return_valid_small_large_length_for_zero_length_(void)
 {
     // Given: Fully extended pistons
     double expected_length = 0.0f;
-    double actual_length = 0.0f;
+    double actual_length = -1.0f;
     smallPiston._length = smallPiston._max_length;
     largePiston._length = largePiston._max_length;
 
-    // When: PIS_get_length() called
+    // When: PIS_Read_length() called
     ENC_Get_Length_ExpectAndReturn(expected_length);
-    actual_length = PIS_get_length();
+    actual_length = PIS_Read_length();
 
     // Then: Valid full length returned
-    TEST_ASSERT_EQUAL_DOUBLE(smallPiston._max_length, smallPiston._length);
-    TEST_ASSERT_EQUAL_DOUBLE(largePiston._max_length, largePiston._length);    
+    TEST_ASSERT_EQUAL_DOUBLE(0.0f, smallPiston._length);
+    TEST_ASSERT_EQUAL_DOUBLE(0.0f, largePiston._length);    
 }
 
-void test_PIS_get_length_should_return_valid_small_large_length_for_full_length_(void)
+void test_PIS_Read_length_should_return_valid_small_large_length_for_full_length_(void)
 {
     // Given: Fully extended pistons
     double expected_length = smallPiston._max_length + largePiston._max_length;
@@ -295,11 +295,248 @@ void test_PIS_get_length_should_return_valid_small_large_length_for_full_length_
     smallPiston._length = 0;
     largePiston._length = 0;
 
-    // When: PIS_get_length() called
+    // When: PIS_Read_length() called
     ENC_Get_Length_ExpectAndReturn(expected_length);
-    actual_length = PIS_get_length();
+    actual_length = PIS_Read_length();
 
     // Then: Valid full length returned
     TEST_ASSERT_EQUAL_DOUBLE(smallPiston._max_length, smallPiston._length);
     TEST_ASSERT_EQUAL_DOUBLE(largePiston._max_length, largePiston._length);
+}
+
+void test_PIS_Read_length_should_return_valid_small_large_length_for_partial_full_length_(void)
+{
+    // Given: Fully extended small piston, partial large
+    double expected_length = smallPiston._max_length + largePiston._max_length/3;
+    double actual_length = 0.0f;
+    smallPiston._length = 0;
+    largePiston._length = 0;
+
+    // When: PIS_Read_length() called
+    ENC_Get_Length_ExpectAndReturn(expected_length);
+    actual_length = PIS_Read_length();
+
+    // Then: Valid full length returned
+    TEST_ASSERT_EQUAL_DOUBLE(smallPiston._max_length, smallPiston._length);
+    TEST_ASSERT_EQUAL_DOUBLE(largePiston._max_length/3, largePiston._length);
+}
+
+void test_PIS_Read_length_should_return_valid_small_large_length_for_partial_small_length_(void)
+{
+    // Given: Partial extended small piston, no large
+    double expected_length = smallPiston._max_length/3;
+    double actual_length = 0.0f;
+    smallPiston._length = 0;
+    largePiston._length = 0;
+
+    // When: PIS_Read_length() called
+    ENC_Get_Length_ExpectAndReturn(expected_length);
+    actual_length = PIS_Read_length();
+
+    // Then: Valid full length returned
+    TEST_ASSERT_EQUAL_DOUBLE(smallPiston._max_length/3, smallPiston._length);
+    TEST_ASSERT_EQUAL_DOUBLE(0, largePiston._length);
+}
+
+
+void test_PIS_Read_volume_should_return_valid_volume_full_extension(void)
+{
+    // Given: Fully extended piston
+    double expected_volume = SMALL_PISTON_MAX_LENGTH * SMALL_PISTON_DIAMETER * PI;
+    expected_volume += LARGE_PISTON_MAX_LENGTH * LARGE_PISTON_DIAMETER * PI;
+    expected_volume += HOUSING_DIAMETER * PI * HOUSING_LENGTH;
+    double actual_volume = -1.0f;
+    double extension_length =SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH;
+   
+   // When: PIS_Read_volume() is called
+    ENC_Get_Length_ExpectAndReturn(extension_length);
+    actual_volume = PIS_Read_volume();
+
+    // Then: valid full length returned
+    TEST_ASSERT_DOUBLE_WITHIN(0.1, expected_volume, actual_volume);
+    
+}
+
+void test_PIS_Read_volume_should_return_valid_volume_zero_extension(void)
+{
+    // Given: Fully extended piston
+    double expected_volume = HOUSING_DIAMETER * PI * HOUSING_LENGTH;
+    double actual_volume = -1.0f;
+    double extension_length = 0.0f;
+    smallPiston._length = 0.0f;
+    largePiston._length = 0.0f;
+
+    // When: PIS_Read_volume() is called
+    ENC_Get_Length_ExpectAndReturn(extension_length);
+    actual_volume = PIS_Read_volume();
+
+    // Then: valid full length returned
+    TEST_ASSERT_DOUBLE_WITHIN(0.1, expected_volume, actual_volume);
+    
+}
+
+
+void test_PIS_Enable_should_enable_hbridge(void)
+{
+    // Given: 
+
+    // When: PIS_Enabel called
+    DRV8874_enable_Expect();
+    PIS_Enable();
+    // Then: DRV8874_enable() called
+    TEST_PASS();
+}
+
+void test_PIS_Disable_should_disable_hbridge(void)
+{
+    // Given:
+    // WHen: PIS_Disable() called
+    DRV8874_disable_Expect();
+    PIS_Disable();
+
+    // Then: DRV8874_disable() called
+    TEST_PASS();
+}
+
+void test_PIS_Run_should_call_run_fwd_if_fwd_commanded(void)
+{
+    // Given:
+    // When: PIS_Run(PisRunFwd) called
+    DRV8874_forward_Expect();
+    _PIS_Run(PISRunFwd);
+
+    // Then: HBridge Forward called
+    TEST_PASS();
+}
+
+void test_PIS_Run_should_call_run_rev_if_rev_commanded(void)
+{
+    // Given:
+    // When: PIS_Run(PisRunRev) called
+    DRV8874_reverse_Expect();
+    _PIS_Run(PISRunRev);
+
+    // Then: HBridge Reverse called
+    TEST_PASS();
+}
+
+void test_PIS_Run_should_call_run_stop_if_stop_commanded(void)
+{
+    // Given:
+    // When: PIS_Run(PisRunRev) called
+    DRV8874_stop_Expect();
+    _PIS_Run(PISRunStop);
+
+    // Then: HBridge Reverse called
+    TEST_PASS();
+}
+
+
+void test_PIS_Write_setpoint_should_write_valid_zero_setpoint(void)
+{
+    // Given: A valid setpoint of 0
+    double setpoint = 0.0f;
+    actuator.setpoint = 4.3;
+    actuator.range = 0.005f;
+    actuator.conversion_factor = 10000;
+
+    // When: PIS_Write_setpoint is called
+    PIS_Write_setpoint(setpoint);
+
+    // Then: the setpoint and encoder min/max are written
+    TEST_ASSERT_EQUAL_DOUBLE(setpoint, actuator.setpoint);
+    TEST_ASSERT_INT32_WITHIN(1,-50, actuator.enc_min);
+    TEST_ASSERT_INT32_WITHIN(1, 50, actuator.enc_max);
+}
+
+void test_PIS_Write_setpoint_should_write_valid_full_setpoint(void)
+{
+    // Given: A valid setpoint of full
+    double setpoint = SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH;
+    actuator.setpoint = 0.0f;
+    actuator.range = 0.005f;
+    actuator.conversion_factor = 10000;
+
+    int32_t setpoint_cnts = setpoint * actuator.conversion_factor;
+    int32_t min_cnts = setpoint_cnts - actuator.range*actuator.conversion_factor;
+    int32_t max_cnts = setpoint_cnts + actuator.range*actuator.conversion_factor;
+    
+    // When: PIS_Write_setpoint is called
+    PIS_Write_setpoint(setpoint);
+
+    // Then: the setpoint and encoder min/max are written 
+    TEST_ASSERT_EQUAL_DOUBLE(setpoint, actuator.setpoint);
+    TEST_ASSERT_INT32_WITHIN(1, min_cnts, actuator.enc_min);
+    TEST_ASSERT_INT32_WITHIN(1, max_cnts, actuator.enc_max);
+
+}
+
+void test_PIS_Write_volume_should_calculate_and_set_correct_length_zero(void)
+{
+    // Given: A valid volume of zero extension
+    double volume = HOUSING_DIAMETER * PI * HOUSING_LENGTH;
+    double expected_length = 0.0f;
+    
+    actuator.setpoint = 4.3;
+    actuator.range = 0.005f;
+    actuator.conversion_factor = 10000;
+    int32_t expected_min = -actuator.range * actuator.conversion_factor;
+    int32_t expected_max = actuator.range * actuator.conversion_factor;
+    
+    // When: PIS_Write_volume() is called
+    PIS_Write_volume(volume);
+
+    // Then: The setpoint and encoder min/max are written
+    TEST_ASSERT_EQUAL_DOUBLE(expected_length, actuator.setpoint);
+    TEST_ASSERT_INT32_WITHIN(1, expected_min, actuator.enc_min);
+    TEST_ASSERT_INT32_WITHIN(1, expected_max, actuator.enc_max);
+}
+
+void test_PIS_Write_volume_should_calculate_and_set_correct_length_full(void)
+{
+    // Given: A valid volume of zero extension
+    double volume = housing._max_volume + smallPiston._max_volume + largePiston._max_volume;
+    
+    actuator.setpoint = 4.3;
+    actuator.range = 0.005f;
+    actuator.conversion_factor = 10000;
+    double expected_length = SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH;
+    int32_t expected_length_cnt = expected_length*actuator.conversion_factor;
+    int32_t expected_min = expected_length_cnt - actuator.range * actuator.conversion_factor;
+    int32_t expected_max = expected_length_cnt + actuator.range * actuator.conversion_factor;
+    
+    // When: PIS_Write_volume() is called
+    PIS_Write_volume(volume);
+
+    // Then: The setpoint and encoder min/max are written
+    TEST_ASSERT_EQUAL_DOUBLE(expected_length, actuator.setpoint);
+    TEST_ASSERT_INT32_WITHIN(1, expected_min, actuator.enc_min);
+    TEST_ASSERT_INT32_WITHIN(1, expected_max, actuator.enc_max);
+}
+
+void test_PIS_Read_current_should_return_valid_current(void)
+{
+    // Given:
+    float expected_current = 2.7;
+    float actual_current = 0.0f;
+
+    // When: A call to the HBridge Current sensor is made
+    DRV8847_read_current_ExpectAndReturn(expected_current);
+    actual_current = PIS_Read_current();
+
+    // Then: 
+    TEST_ASSERT_EQUAL_DOUBLE(expected_current, actual_current);
+}
+
+void test_PIS_Read_should_call_length_and_return_value(void) 
+{
+    // Given: 
+    double expected_length = 0.0f;
+    double actual_length = 3.4f;
+
+    // When:
+    actual_length = PIS_Read(PISReadLength);
+
+    // Then:
+    TEST_ASSERT_EQUAL_DOUBLE(expected_length, actual_length);
 }
