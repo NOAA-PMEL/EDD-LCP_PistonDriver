@@ -108,47 +108,68 @@ typedef enum ePistonWrite {
     PISWriteVolume  /**< Write Volume (in^3) */
 }ePistonWrite_t;
 
+/**
+ * Piston Run Direction
+ */
 typedef enum ePistonRunDir {
-    PISRunFwd,
-    PISRunRev,
-    PISRunStop
+    PISRunFwd,  /**< Piston Forward */  
+    PISRunRev,  /**< Piston Reverse */
+    PISRunStop  /**< Piston Stop */
 }ePistonRunDir_t;
 
+/** 
+ * Piston Run Errors
+ */
 typedef enum ePistonRunError {
-    PISErrorNone,
-    PISErrorStalled,
-    PISErrorOvershoot,
-    PISErrorGeneric
+    PISErrorNone,       /**< No iston Error */
+    PISErrorStalled,    /**< Piston is stalled */
+    PISErrorOvershoot,  /**< Piston overshot setpoint */
+    PISErrorGeneric     /**< Generic piston error */
 }ePistonRunError_t;
 
+/**
+ * Piston Volume Variables
+ */
 typedef struct sPistonVolume {
-    double _volume;
-    double _length;      /**< Length of piston */
-    double _diameter;    /**< Diameter of piston */
-    double _max_length;  /**< Maximum length of piston */
-    double _max_volume;  /**< Maximum volume of piston */
+    double _volume;      /**< Piston volume (in^3) */
+    double _length;      /**< Length of piston (in) */
+    double _diameter;    /**< Diameter of piston (in) */
+    double _max_length;  /**< Maximum length of piston (in) */
+    double _max_volume;  /**< Maximum volume of piston (in) */
 }sPistonVolume_t;
 
+/**
+ * Actuator settings and variables
+ */
 typedef struct sActuator {
-    sEncoderSettings_t *settings;    /**< Current encoder settings */
-    volatile double current_length;         /**< Length to calculate conversion factor */
-    double conversion_factor;       /**< Conversion factor to calculate "length" cnt/in */
-    double setpoint;
-    double range;
-    int32_t enc_min;
-    int32_t enc_max;
-    ePistonRunDir_t move_dir;
-    bool setpoint_flag;
+    sEncoderSettings_t *settings;       /**< Current encoder settings */
+    volatile double current_length;     /**< Length to calculate conversion factor */
+    double setpoint;                    /**< Piston length setpoint (in) */
+    double _conversion_factor;           /**< Conversion factor to calculate "length" cnt/in */
+    double _range;                       /**< Offset range (in) */
+    int32_t enc_min;                    /**< Encoder count min (Zero count) */
+    int32_t enc_max;                    /**< Encoder count max (Full extend count) */
+    ePistonRunDir_t move_dir;           /**< Piston movement direction */
+    bool setpoint_flag;                 /**< Setpoint reached, True or False */
 }sActuator_t;
 
+/**
+ * Piston System Struct
+ */
 typedef struct sPistonSystem {
-    double volume;                   /**< Volume of the system */
-    sActuator_t *actuator;         /**< Piston Length */
-    sPistonVolume_t *smallPiston;    /**< Small Piston Volume */
-    sPistonVolume_t *largePiston;    /**< Large Piston Volume */
-    const sPistonVolume_t *housing;        /**< Housing Volume */
+    double volume;                      /**< Volume of the system */
+    sActuator_t *actuator;              /**< Piston Length */
+    sPistonVolume_t *smallPiston;       /**< Small Piston Volume */
+    sPistonVolume_t *largePiston;       /**< Large Piston Volume */
+    const sPistonVolume_t *housing;     /**< Housing Volume */
 }sPistonSystem_t;
 
+/**********************************************************************************
+ * Function Prototypes
+ *********************************************************************************/
+#ifdef __cplusplus
+extern "C"{
+#endif
 
 void PIS_Init(void);
 void PIS_Enable(void);
@@ -158,17 +179,20 @@ void PIS_Write(ePistonWrite_t write, double value);
 ePistonRunError_t PIS_Run_to_length(double length);
 ePistonRunError_t PIS_Run_to_volume(double volume);
 
-void PIS_Write_length(double);
-void PIS_Write_volume(double volume);
-double PIS_Read_length(void);
-double PIS_Read_volume(void);
-float PIS_Read_current(void);
 
+/**********************************************************************************
+ * Unit Test Variables & Static Prototpyes
+ *********************************************************************************/
 #ifdef TEST
 extern sActuator_t actuator;
 extern sPistonVolume_t smallPiston;
 extern sPistonVolume_t largePiston;
 extern const sPistonVolume_t housing;
+void PIS_Write_length(double);
+void PIS_Write_volume(double volume);
+double PIS_Read_length(void);
+double PIS_Read_volume(void);
+float PIS_Read_current(void);
 void _PIS_calc_encoder_range(double setpoint, 
                         double range, 
                         double conversion_factor,
@@ -191,6 +215,11 @@ double _PIS_calculate_volume_from_length(
      );
 
 void _PIS_Run(ePistonRunDir_t dir);
+#endif
+
+
+#ifdef __cplusplus
+} // extern "C"
 #endif
 
 #endif // _PISTON_H

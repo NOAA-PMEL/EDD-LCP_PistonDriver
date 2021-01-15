@@ -51,6 +51,7 @@ typedef struct EncoderSettings {
     volatile int32_t *current_count;  /**< Current encoder count */
     // double length;           /**< Length to calculate conversion factor */
     // double conversion_factor;    /**< Conversion factor to calculate "length" */
+    // (void*) (function)(void);
 }sEncoderSettings_t;
 
 

@@ -437,8 +437,8 @@ void test_PIS_Write_length_should_write_valid_zero_setpoint(void)
     // Given: A valid setpoint of 0
     double setpoint = 0.0f;
     actuator.setpoint = 4.3;
-    actuator.range = 0.005f;
-    actuator.conversion_factor = 10000;
+    actuator._range = 0.005f;
+    actuator._conversion_factor = 10000;
 
     // When: PIS_Write_length is called
     PIS_Write_length(setpoint);
@@ -454,12 +454,12 @@ void test_PIS_Write_length_should_write_valid_full_setpoint(void)
     // Given: A valid setpoint of full
     double setpoint = SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH;
     actuator.setpoint = 0.0f;
-    actuator.range = 0.005f;
-    actuator.conversion_factor = 10000;
+    actuator._range = 0.005f;
+    actuator._conversion_factor = 10000;
 
-    int32_t setpoint_cnts = setpoint * actuator.conversion_factor;
-    int32_t min_cnts = setpoint_cnts - actuator.range*actuator.conversion_factor;
-    int32_t max_cnts = setpoint_cnts + actuator.range*actuator.conversion_factor;
+    int32_t setpoint_cnts = setpoint * actuator._conversion_factor;
+    int32_t min_cnts = setpoint_cnts - actuator._range*actuator._conversion_factor;
+    int32_t max_cnts = setpoint_cnts + actuator._range*actuator._conversion_factor;
     
     // When: PIS_Write_length is called
     PIS_Write_length(setpoint);
@@ -478,10 +478,10 @@ void test_PIS_Write_volume_should_calculate_and_set_correct_length_zero(void)
     double expected_length = 0.0f;
     
     actuator.setpoint = 4.3;
-    actuator.range = 0.005f;
-    actuator.conversion_factor = 10000;
-    int32_t expected_min = -actuator.range * actuator.conversion_factor;
-    int32_t expected_max = actuator.range * actuator.conversion_factor;
+    actuator._range = 0.005f;
+    actuator._conversion_factor = 10000;
+    int32_t expected_min = -actuator._range * actuator._conversion_factor;
+    int32_t expected_max = actuator._range * actuator._conversion_factor;
     
     // When: PIS_Write_volume() is called
     PIS_Write_volume(volume);
@@ -498,12 +498,12 @@ void test_PIS_Write_volume_should_calculate_and_set_correct_length_full(void)
     double volume = housing._max_volume + smallPiston._max_volume + largePiston._max_volume;
     
     actuator.setpoint = 4.3;
-    actuator.range = 0.005f;
-    actuator.conversion_factor = 10000;
+    actuator._range = 0.005f;
+    actuator._conversion_factor = 10000;
     double expected_length = SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH;
-    int32_t expected_length_cnt = expected_length*actuator.conversion_factor;
-    int32_t expected_min = expected_length_cnt - actuator.range * actuator.conversion_factor;
-    int32_t expected_max = expected_length_cnt + actuator.range * actuator.conversion_factor;
+    int32_t expected_length_cnt = expected_length*actuator._conversion_factor;
+    int32_t expected_min = expected_length_cnt - actuator._range * actuator._conversion_factor;
+    int32_t expected_max = expected_length_cnt + actuator._range * actuator._conversion_factor;
     
     // When: PIS_Write_volume() is called
     PIS_Write_volume(volume);
@@ -571,12 +571,7 @@ void test_PIS_Run_to_volume_should_send_command_and_run(void)
 
     // When: The PIS_run_to_volume() is called
     DRV8874_forward_Expect();
-    
-
     DRV8847_read_current_ExpectAndReturn(2.0f);
-    // DRV8847_read_current_ExpectAndReturn(1.0f);
-    // DRV8847_read_current_ExpectAndReturn(0.0f);
-    // actuator.setpoint_flag = true;
     error = PIS_Run_to_volume(setpoint);
 
     // Then:
