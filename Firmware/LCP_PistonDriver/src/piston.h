@@ -1,7 +1,39 @@
+/**********************************************************************************
+ * @Title       :   Piston Control
+ * @Filename    :   piston.h
+ * @Author      :   Matt Casari
+ * @Origin Date :   1/12/2021
+ * @Version     :   1.0.0
+ * @Compiler    :   IAR, GCC
+ * @Target      :   MSP430FR5989
+ * @Notes       :   None
+ * @Bugs        :   No known bugs
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights 
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *********************************************************************************/
+
 #ifndef _PISTON_H
 #define _PISTON_H
 
-
+/**********************************************************************************
+ * Includes
+ *********************************************************************************/
 #include <stdint.h>
 #include <stdbool.h>
 #include <assert.h>
@@ -9,6 +41,35 @@
 #include "encoder.h"
 #include "DRV8874.h"
 
+
+/**********************************************************************************
+ * Includes
+ *********************************************************************************/
+
+
+/**********************************************************************************
+ * Configuration Constants
+ *********************************************************************************/
+#define PI                      ( 3.14159265359)
+
+#define SMALL_PISTON_DIAMETER     (SYS_SMALL_PISTON_DIAMETER)
+#define SMALL_PISTON_MAX_LENGTH   (SYS_SMALL_PISTON_MAX_LENGTH)
+#define SMALL_PISTON_MAX_VOLUME   (SMALL_PISTON_DIAMETER * PI * SMALL_PISTON_MAX_LENGTH)
+#define LARGE_PISTON_DIAMETER     (SYS_LARGE_PISTON_DIAMETER)
+#define LARGE_PISTON_MAX_LENGTH   (SYS_LARGE_PISTON_MAX_LENGTH)
+#define LARGE_PISTON_MAX_VOLUME   (LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH)
+#define HOUSING_DIAMETER          (SYS_HOUSING_DIAMETER)
+#define HOUSING_LENGTH            (SYS_HOUSING_LENGTH)
+#define HOUSING_VOLUME            (HOUSING_DIAMETER * PI * HOUSING_LENGTH)
+#define SYSTEM_MAX_VOLUME         (HOUSING_VOLUME + SMALL_PISTON_MAX_VOLUME + LARGE_PISTON_MAX_VOLUME + 0.01)
+#define SYSTEM_MIN_VOLUME         (HOUSING_VOLUME - 0.01)
+#define SYSTEM_MIN_LENGTH         (0.0f)
+#define SYSTEM_MAX_LENGTH         (SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH)
+
+
+/**********************************************************************************
+ * MACROS
+ *********************************************************************************/
 /** Remove STATIC and PERSISTENT values if running TEST */
 /** Add the actual values if running release */
 #ifdef TEST
@@ -27,31 +88,24 @@
 #endif
 #endif
 
-#define PI                      ( 3.14159265359)
-
-#define SMALL_PISTON_DIAMETER     (SYS_SMALL_PISTON_DIAMETER)
-#define SMALL_PISTON_MAX_LENGTH   (SYS_SMALL_PISTON_MAX_LENGTH)
-#define SMALL_PISTON_MAX_VOLUME   (SMALL_PISTON_DIAMETER * PI * SMALL_PISTON_MAX_LENGTH)
-#define LARGE_PISTON_DIAMETER     (SYS_LARGE_PISTON_DIAMETER)
-#define LARGE_PISTON_MAX_LENGTH   (SYS_LARGE_PISTON_MAX_LENGTH)
-#define LARGE_PISTON_MAX_VOLUME   (LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH)
-#define HOUSING_DIAMETER          (SYS_HOUSING_DIAMETER)
-#define HOUSING_LENGTH            (SYS_HOUSING_LENGTH)
-#define HOUSING_VOLUME            (HOUSING_DIAMETER * PI * HOUSING_LENGTH)
-#define SYSTEM_MAX_VOLUME         (HOUSING_VOLUME + SMALL_PISTON_MAX_VOLUME + LARGE_PISTON_MAX_VOLUME + 0.01)
-#define SYSTEM_MIN_VOLUME         (HOUSING_VOLUME - 0.01)
-#define SYSTEM_MIN_LENGTH         (0.0f)
-#define SYSTEM_MAX_LENGTH         (SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH)
-
+/**********************************************************************************
+ * Typdefs
+ *********************************************************************************/
+/**
+ * Piston Read Options
+ */
 typedef enum ePistonRead {
-    PISReadLength,
-    PISReadVolume,
-    PISReadCurrent
+    PISReadLength,  /**< Read Length (in) */
+    PISReadVolume,  /**< Read Volume (in^3) */
+    PISReadCurrent  /**< Read Current (A) */
 }ePistonRead_t;
 
+/**
+ * Piston Write Optinos
+ */
 typedef enum ePistonWrite {
-    PISWriteLength,
-    PISWriteVolume
+    PISWriteLength, /**< Write Length (in) */
+    PISWriteVolume  /**< Write Volume (in^3) */
 }ePistonWrite_t;
 
 typedef enum ePistonRunDir {
