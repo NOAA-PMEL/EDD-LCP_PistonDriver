@@ -25,11 +25,6 @@ STATIC const sPistonVolume_t housing = {
     ._max_volume = HOUSING_DIAMETER * PI * HOUSING_LENGTH
 };
 
-// STATIC sPiston_t piston = {
-//     .length = 0.0f,
-//     .setpoint = 0.0f,
-// };
-
 STATIC sActuator_t actuator = {
     // .settings = &encSettings,
     .current_length = 0.0f,
@@ -47,10 +42,8 @@ STATIC sPistonSystem_t profiler = {
 };
 
 void PIS_Init(void) {
-
     DRV8874_init();
     ENC_Init();
-
 }
 
 void PIS_Enable(void) {
@@ -99,7 +92,7 @@ ePistonRunError_t PIS_Run_to_length(double length)
     assert(length <= SYSTEM_MAX_LENGTH);
     assert(length >= SYSTEM_MIN_LENGTH);
     #endif
-    
+
     ePistonRunError_t error = PISErrorGeneric;
 
     actuator.setpoint_flag = false;
@@ -116,11 +109,17 @@ ePistonRunError_t PIS_Run_to_length(double length)
         #endif
         //* @todo Add sleep function */
         current = DRV8847_read_current();
+        if( (actuator.move_dir == PISRunFwd) && \
+            (length < actuator.current_length))
+        {
+            DRV8874_stop();
+            break;
+        }
 
     }while((actuator.setpoint_flag != true) && (current >= 0.1f));
 
     // printf("%i, %f", actuator.setpoint_flag, current);
-    if(current <= 0.1)
+    if((actuator.setpoint_flag == true) && (current <= 0.1))
     {
         // printf("In Error");
         error = PISErrorStalled;
@@ -133,7 +132,13 @@ ePistonRunError_t PIS_Run_to_length(double length)
         {
             /** Log Stalled Rev, near zero hard stop? */
         }
-    } else {
+    } 
+    else if((actuator.setpoint_flag == false))
+    {
+        /** Log overshoot */
+        error = PISErrorOvershoot;
+    } 
+    else {
         error = PISErrorNone;
     }
     return error;

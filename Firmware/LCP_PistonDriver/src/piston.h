@@ -63,6 +63,7 @@ typedef enum ePistonRunDir {
 typedef enum ePistonRunError {
     PISErrorNone,
     PISErrorStalled,
+    PISErrorOvershoot,
     PISErrorGeneric
 }ePistonRunError_t;
 
