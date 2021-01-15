@@ -72,10 +72,83 @@ double PIS_Read(ePistonRead_t read)
     } else if( read == PISReadCurrent) 
     {
         return (double) PIS_Read_current();
+    } else {
+        /** @todo Add Logging Error */
     }
 }
 
-void PIS_Write_setpoint(double setpoint) {
+void PIS_Write(ePistonWrite_t write, double value)
+{
+    switch(write)
+    {
+        case PISWriteLength:
+            
+            break;
+        case PISWriteVolume:
+
+            break;
+        default:
+        /** @todo Add Logging Error */
+            break;
+    }
+}
+
+ePistonRunError_t PIS_Run_to_volume(double volume)
+{
+    ePistonRunError_t error = PISErrorGeneric;
+
+    #ifndef TEST
+    assert(volume <= SYSTEM_MAX_VOLUME);
+    assert(volume >= SYSTEM_MIN_VOLUME);
+    #endif
+
+    double length = _PIS_estimate_length_from_volume(
+                        volume, 
+                        &smallPiston, 
+                        &largePiston,
+                        &housing
+                    );
+
+    // printf("vol=%f, len=%f, cl=%f\n", volume, length, actuator.current_length);
+    
+    actuator.setpoint_flag = false;
+    if(length > actuator.current_length)
+    {
+        DRV8874_forward();
+        actuator.move_dir = PISRunFwd;
+    }
+
+    float current = 0.0f;
+    do{
+        #ifdef TEST
+        actuator.setpoint_flag = true;
+        #endif
+        //* @todo Add sleep function */
+        current = DRV8847_read_current();
+
+    }while((actuator.setpoint_flag != true) && (current >= 0.1f));
+
+    // printf("%i, %f", actuator.setpoint_flag, current);
+    if(current <= 0.1)
+    {
+        // printf("In Error");
+        error = PISErrorStalled;
+        /** Log Error Stalled */
+        if(actuator.move_dir == PISRunFwd)
+        {
+            /** Log Stalled Fwd, near full extended hard stop? */
+        }
+        else if(actuator.move_dir == PISRunRev)
+        {
+            /** Log Stalled Rev, near zero hard stop? */
+        }
+    } else {
+        error = PISErrorNone;
+    }
+    return error;
+}
+
+void PIS_Write_length(double setpoint) {
     #ifndef TEST
     assert(setpoint >= 0.0f);
     assert(setpoint <= smallPiston._max_length + largePiston._max_length);
@@ -100,7 +173,7 @@ void PIS_Write_volume(double volume)
                                         &housing
                                         );
 
-    PIS_Write_setpoint(length);
+    PIS_Write_length(length);
 }
 
 double PIS_Read_length(void) {
@@ -124,7 +197,6 @@ double PIS_Read_volume(void) {
     smallPiston._volume = smallPiston._length * smallPiston._diameter * PI;
     largePiston._volume = largePiston._length * largePiston._diameter * PI;
     return housing._volume + smallPiston._volume + largePiston._volume;
-
 }
 
 float PIS_Read_current(void) {
@@ -187,9 +259,9 @@ STATIC double _PIS_estimate_length_from_volume(
     assert( volume >= housing->_max_volume);
     assert( volume <= (housing->_max_volume + small->_max_volume + large->_max_volume));
     #endif
-    // printf("Volume=%f, ",volume);
+    // printf("Volume=%f, max=%f ",volume, (housing->_max_volume + small->_max_volume + large->_max_volume + actuator.range));
 
-    if(volume == housing->_max_volume)
+    if((volume <= housing->_max_volume+0.001) && (volume >= housing->_max_volume-0.001))
     {
         length = 0.0f;
         // printf("Housing Only: length=%f\n", length);
@@ -200,18 +272,21 @@ STATIC double _PIS_estimate_length_from_volume(
         length = volume / (small->_diameter * PI);
         
         // printf("Housing + Small: length=%f\n", length);
-        return length;
+        // return length;
     }
-    else if (volume <= (housing->_max_volume + small->_max_volume + large->_max_volume + actuator.range))
+    else if (volume <= (housing->_max_volume + small->_max_volume + large->_max_volume + 0.1))
     {
         volume -= (housing->_max_volume + small->_max_volume);
         length = (volume / (large->_diameter*PI)) + small->_max_length;
         // printf("Housing + Both: length=%f\n", length);
-        return length;
+        // return length;
     } else {
+        // printf("Nothin");
         length =  -1.0f;
     }
     // else if
+
+    // printf("\nLength=%f", length);
     return length;
 }
 
@@ -260,7 +335,7 @@ STATIC double _PIS_calculate_volume_from_length(
     return volume;
 }
 
-STATIC void _PIS_Run(sPistonRunDir_t dir)
+STATIC void _PIS_Run(ePistonRunDir_t dir)
 {
     switch(dir)
     {

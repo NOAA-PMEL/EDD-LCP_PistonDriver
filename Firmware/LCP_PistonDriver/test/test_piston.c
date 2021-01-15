@@ -432,7 +432,7 @@ void test_PIS_Run_should_call_run_stop_if_stop_commanded(void)
 }
 
 
-void test_PIS_Write_setpoint_should_write_valid_zero_setpoint(void)
+void test_PIS_Write_length_should_write_valid_zero_setpoint(void)
 {
     // Given: A valid setpoint of 0
     double setpoint = 0.0f;
@@ -440,8 +440,8 @@ void test_PIS_Write_setpoint_should_write_valid_zero_setpoint(void)
     actuator.range = 0.005f;
     actuator.conversion_factor = 10000;
 
-    // When: PIS_Write_setpoint is called
-    PIS_Write_setpoint(setpoint);
+    // When: PIS_Write_length is called
+    PIS_Write_length(setpoint);
 
     // Then: the setpoint and encoder min/max are written
     TEST_ASSERT_EQUAL_DOUBLE(setpoint, actuator.setpoint);
@@ -449,7 +449,7 @@ void test_PIS_Write_setpoint_should_write_valid_zero_setpoint(void)
     TEST_ASSERT_INT32_WITHIN(1, 50, actuator.enc_max);
 }
 
-void test_PIS_Write_setpoint_should_write_valid_full_setpoint(void)
+void test_PIS_Write_length_should_write_valid_full_setpoint(void)
 {
     // Given: A valid setpoint of full
     double setpoint = SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH;
@@ -461,8 +461,8 @@ void test_PIS_Write_setpoint_should_write_valid_full_setpoint(void)
     int32_t min_cnts = setpoint_cnts - actuator.range*actuator.conversion_factor;
     int32_t max_cnts = setpoint_cnts + actuator.range*actuator.conversion_factor;
     
-    // When: PIS_Write_setpoint is called
-    PIS_Write_setpoint(setpoint);
+    // When: PIS_Write_length is called
+    PIS_Write_length(setpoint);
 
     // Then: the setpoint and encoder min/max are written 
     TEST_ASSERT_EQUAL_DOUBLE(setpoint, actuator.setpoint);
@@ -535,8 +535,52 @@ void test_PIS_Read_should_call_length_and_return_value(void)
     double actual_length = 3.4f;
 
     // When:
+    ENC_Get_Length_ExpectAndReturn(expected_length);
     actual_length = PIS_Read(PISReadLength);
 
-    // Then:
+    // Then: Valid zero length returned
     TEST_ASSERT_EQUAL_DOUBLE(expected_length, actual_length);
+    
+}
+
+void test_PIS_Read_should_call_volume_and_return_value(void) 
+{
+    // Given: 
+    double expected_volume = HOUSING_VOLUME;
+    double length = 0.0f;
+    double actual_volume = 3.4f;
+
+    // When:
+    ENC_Get_Length_ExpectAndReturn(length);
+    actual_volume = PIS_Read(PISReadVolume);
+
+    // Then: Valid zero length returned
+    TEST_ASSERT_DOUBLE_WITHIN(0.001, expected_volume, actual_volume);
+    
+}
+
+
+void test_PIS_Run_to_volume_should_send_command_and_run(void)
+{
+    // Given: A volume larger than the current volume
+    double setpoint = SYSTEM_MAX_VOLUME;
+    actuator.current_length = 0.2f;
+    smallPiston._diameter = SMALL_PISTON_DIAMETER;
+    largePiston._diameter = LARGE_PISTON_DIAMETER;
+    ePistonRunError_t error;
+
+    // When: The PIS_run_to_volume() is called
+    DRV8874_forward_Expect();
+    
+
+    DRV8847_read_current_ExpectAndReturn(2.0f);
+    // DRV8847_read_current_ExpectAndReturn(1.0f);
+    // DRV8847_read_current_ExpectAndReturn(0.0f);
+    // actuator.setpoint_flag = true;
+    error = PIS_Run_to_volume(setpoint);
+
+    // Then:
+    TEST_ASSERT_EQUAL(PISErrorNone, error);
+
+
 }

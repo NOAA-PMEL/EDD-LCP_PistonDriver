@@ -3,6 +3,7 @@
 
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <assert.h>
 #include "config.h"
 #include "encoder.h"
@@ -30,25 +31,37 @@
 
 #define SMALL_PISTON_DIAMETER     (SYS_SMALL_PISTON_DIAMETER)
 #define SMALL_PISTON_MAX_LENGTH   (SYS_SMALL_PISTON_MAX_LENGTH)
-#define SMALL_PISTON_MAX_VOLUME   (SMALL_PISTON_DIAMETER * PI * SMALL_PISTON_MAX_LENGTH);
+#define SMALL_PISTON_MAX_VOLUME   (SMALL_PISTON_DIAMETER * PI * SMALL_PISTON_MAX_LENGTH)
 #define LARGE_PISTON_DIAMETER     (SYS_LARGE_PISTON_DIAMETER)
 #define LARGE_PISTON_MAX_LENGTH   (SYS_LARGE_PISTON_MAX_LENGTH)
-#define LARGE_PISTON_MAX_VOLUME   (LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH);
+#define LARGE_PISTON_MAX_VOLUME   (LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH)
 #define HOUSING_DIAMETER          (SYS_HOUSING_DIAMETER)
 #define HOUSING_LENGTH            (SYS_HOUSING_LENGTH)
 #define HOUSING_VOLUME            (HOUSING_DIAMETER * PI * HOUSING_LENGTH)
-
+#define SYSTEM_MAX_VOLUME         (HOUSING_VOLUME + SMALL_PISTON_MAX_VOLUME + LARGE_PISTON_MAX_VOLUME + 0.01)
+#define SYSTEM_MIN_VOLUME         (HOUSING_VOLUME - 0.01)
 typedef enum ePistonRead {
     PISReadLength,
     PISReadVolume,
     PISReadCurrent
 }ePistonRead_t;
 
-typedef enum sPistonRunDir {
+typedef enum ePistonWrite {
+    PISWriteLength,
+    PISWriteVolume
+}ePistonWrite_t;
+
+typedef enum ePistonRunDir {
     PISRunFwd,
     PISRunRev,
     PISRunStop
-}sPistonRunDir_t;
+}ePistonRunDir_t;
+
+typedef enum ePistonRunError {
+    PISErrorNone,
+    PISErrorStalled,
+    PISErrorGeneric
+}ePistonRunError_t;
 
 typedef struct sPistonVolume {
     double _volume;
@@ -66,13 +79,9 @@ typedef struct sActuator {
     double range;
     int32_t enc_min;
     int32_t enc_max;
+    ePistonRunDir_t move_dir;
+    bool setpoint_flag;
 }sActuator_t;
-
-// typedef struct sPiston {
-//     sEncoderSettings_t *settings;   /**< Encoder Settings */
-//     volatile double length;         /**< Current Length of piston */
-//     double setpoint;                /**< Current setpoint for piston */ 
-// }sPiston_t;
 
 typedef struct sPistonSystem {
     double volume;                   /**< Volume of the system */
@@ -87,8 +96,10 @@ void PIS_Init(void);
 void PIS_Enable(void);
 void PIS_Disable(void);
 double PIS_Read(ePistonRead_t read);
+void PIS_Write(ePistonWrite_t write, double value);
+ePistonRunError_t PIS_Run_to_volume(double volume);
 
-void PIS_Write_setpoint(double);
+void PIS_Write_length(double);
 void PIS_Write_volume(double volume);
 double PIS_Read_length(void);
 double PIS_Read_volume(void);
@@ -120,7 +131,7 @@ double _PIS_calculate_volume_from_length(
     const sPistonVolume_t *housing
      );
 
-void _PIS_Run(sPistonRunDir_t dir);
+void _PIS_Run(ePistonRunDir_t dir);
 #endif
 
 #endif // _PISTON_H
