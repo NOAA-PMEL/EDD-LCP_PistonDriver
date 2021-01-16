@@ -41,12 +41,6 @@
 #include "encoder.h"
 #include "DRV8874.h"
 
-
-/**********************************************************************************
- * Includes
- *********************************************************************************/
-
-
 /**********************************************************************************
  * Configuration Constants
  *********************************************************************************/
@@ -179,11 +173,11 @@ void PIS_Write(ePistonWrite_t write, double value);
 ePistonRunError_t PIS_Run_to_length(double length);
 ePistonRunError_t PIS_Run_to_volume(double volume);
 
-
 /**********************************************************************************
  * Unit Test Variables & Static Prototpyes
  *********************************************************************************/
 #ifdef TEST
+#ifdef DOXYGEN_IGNORE_THIS
 extern sActuator_t actuator;
 extern sPistonVolume_t smallPiston;
 extern sPistonVolume_t largePiston;
@@ -215,6 +209,7 @@ double _PIS_calculate_volume_from_length(
      );
 
 void _PIS_Run(ePistonRunDir_t dir);
+#endif // DOXYGEN_IGNORE_THIS
 #endif
 
 
