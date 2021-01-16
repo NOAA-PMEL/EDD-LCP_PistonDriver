@@ -42,6 +42,7 @@
 * Includes
 *********************************************************************************/
 #include <stdint.h>
+#include <stdlib.h>
 
 /**********************************************************************************
 * Configuration Constants
@@ -71,35 +72,35 @@
 #define RAM0_FIRM_BUILD         (0x86)
 
 // RAM1
-#define RAM1_VOL_TOTAL_IN3      ()
-#define RAM1_VOL_SETPOINT_IN3   ()
-#define RAM1_VOL_SMALL_PISTON_IN3   ()
-#define RAM1_VOL_LARGE_PISTON_IN3   ()
-#define RAM1_HOUSING_IN3        ()
-#define RAM1_AREA_SMALL_PISTON_IN2  ()
-#define RAM1_AREA_LARGE_PISTON_IN2  ()
-#define RAM1_LEN_PISTON_IN          ()
-#define RAM1_LEN_SMALL_PISTON_IN    ()
-#define RAM1_LEN_LARGE_PISTON_IN    ()
-#define RAM1_PST_POSITION_MIN       ()
-#define RAM1_PST_POSITION_MAx       ()
-#define RAM1_PST_RATE               ()
-#define RAM1_TRV_DIR            ()
-#define RAM1_TRV_ENG            ()
-#define RAM1_TRV_ZERO           ()
-#define RAM1_TRV_MAX            ()
-#define RAM1_PID_COEFF_P        ()
-#define RAM1_PID_COEFF_I        ()
-#define RAM1_PID_COEFF_D        ()
-#define RAM1_PID_USED           ()
+#define RAM1_VOL_TOTAL_IN3      (0x00)
+#define RAM1_VOL_SETPOINT_IN3   (0x04)
+#define RAM1_VOL_SMALL_PISTON_IN3   (0x08)
+#define RAM1_VOL_LARGE_PISTON_IN3   (0x0C)
+#define RAM1_HOUSING_IN3        (0x10)
+#define RAM1_AREA_SMALL_PISTON_IN2  (0x14)
+#define RAM1_AREA_LARGE_PISTON_IN2  (0x18)
+#define RAM1_LEN_PISTON_IN          (0x20)
+#define RAM1_LEN_SMALL_PISTON_IN    (0x24)
+#define RAM1_LEN_LARGE_PISTON_IN    (0x2C)
+#define RAM1_PST_POSITION_MIN       (0x30)
+#define RAM1_PST_POSITION_MAX       (0x34)
+#define RAM1_PST_RATE           (0x80)
+#define RAM1_TRV_DIR            (0x84)
+#define RAM1_TRV_ENG            (0x85)
+#define RAM1_TRV_ZERO           (0x86)
+#define RAM1_TRV_MAX            (0x87)
+#define RAM1_PID_COEFF_P        (0xC0)
+#define RAM1_PID_COEFF_I        (0xC4)
+#define RAM1_PID_COEFF_D        (0xC8)
+#define RAM1_PID_USED           (0xCC)
 
 // RAM2
-#define RAM2_BAT_RETCAP         ()
-#define RAM2_BAT_REPSOC         ()
-#define RAM2_BAT_VCELL          ()
-#define RAM2_BAT_CURRENT        ()
-#define RAM2_BAT_TTE            ()
-#define RAM2_BAT_STATUS         ()
+#define RAM2_BAT_RETCAP         (0x00)
+#define RAM2_BAT_REPSOC         (0x08)
+#define RAM2_BAT_VCELL          (0x10)
+#define RAM2_BAT_CURRENT        (0x18)
+#define RAM2_BAT_TTE            (0x20)
+#define RAM2_BAT_STATUS         (0x28)
  
 /**********************************************************************************
 * MACROS
@@ -125,6 +126,12 @@
 /**********************************************************************************
 * Typdefs
 *********************************************************************************/
+typedef enum eRamTypes {
+    MEM_RAM_0,
+    MEM_RAM_1,
+    MEM_RAM_2
+}eRamTypes_t;
+
 typedef struct sRAM0 {
     float *VOL_total_in3;
     float *VOL_setpoint_in3;
@@ -197,11 +204,21 @@ typedef struct sMemory {
 extern "C"{
 #endif
 
+void MEM_Write_RAM_Struct(
+                        eRamTypes_t select,
+                        uint8_t location,
+                        uint8_t value[], 
+                        uint16_t len
+                        );
+
 /**********************************************************************************
 * Unit Test Variables & Static Prototpyes
 *********************************************************************************/
 #ifdef TEST
-#ifdef DOXYGEN_IGNORE_THIS
+#ifndef DOXYGEN_IGNORE_THIS
+
+extern sRAM2_t RAM2;
+extern sMemory_t PistonProtocolRam;
 
 #endif // DOXYGEN_IGNORE_THIS
 #endif
