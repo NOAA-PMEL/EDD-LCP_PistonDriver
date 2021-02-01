@@ -13,10 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text HLabel 7150 3350 2    50   Input ~ 0
-DEBUG_TX
-Text HLabel 7150 3250 2    50   Output ~ 0
-DEBUG_RX
 Text HLabel 7150 4700 2    50   Input ~ 0
 DEBUG_LED_1
 Text HLabel 7150 4800 2    50   Input ~ 0
@@ -41,7 +37,7 @@ F 0 "D7" V 4289 4332 50  0000 R CNN
 F 1 "LED_GREEN" V 4198 4332 50  0000 R CNN
 F 2 "LED_SMD:LED_0805_2012Metric" H 4250 4450 50  0001 C CNN
 F 3 "~" H 4250 4450 50  0001 C CNN
-F 4 "LTST-C171GKT" V 4250 4450 50  0001 C CNN "MPN"
+F 4 "APT2012SGC" V 4250 4450 50  0001 C CNN "MPN"
 	1    4250 4450
 	0    -1   -1   0   
 $EndComp
@@ -95,46 +91,8 @@ Wire Wire Line
 	4250 4150 4000 4150
 Wire Wire Line
 	4000 4150 4000 4000
-$Comp
-L Connector_Generic:Conn_01x06 J?
-U 1 1 5EF976F0
-P 5750 3450
-AR Path="/5EE2A864/5EF976F0" Ref="J?"  Part="1" 
-AR Path="/5EF8E8EB/5EF976F0" Ref="J19"  Part="1" 
-F 0 "J19" H 5668 2925 50  0000 C CNN
-F 1 "Conn_01x06" H 5668 3016 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical" H 5750 3450 50  0001 C CNN
-F 3 "~" H 5750 3450 50  0001 C CNN
-F 4 "61300611121" H 5750 3450 50  0001 C CNN "MPN"
-	1    5750 3450
-	-1   0    0    1   
-$EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 5EF9B9D2
-P 6200 3900
-AR Path="/5EE2A864/5EF9B9D2" Ref="#PWR?"  Part="1" 
-AR Path="/5EF8E8EB/5EF9B9D2" Ref="#PWR064"  Part="1" 
-F 0 "#PWR064" H 6200 3650 50  0001 C CNN
-F 1 "GND" H 6205 3727 50  0000 C CNN
-F 2 "" H 6200 3900 50  0001 C CNN
-F 3 "" H 6200 3900 50  0001 C CNN
-	1    6200 3900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5950 3650 6200 3650
-Wire Wire Line
-	6200 3650 6200 3900
-NoConn ~ 5950 3150
-NoConn ~ 5950 3450
-NoConn ~ 5950 3550
 Wire Wire Line
 	3650 4800 7150 4800
 Wire Wire Line
 	4250 4700 7150 4700
-Wire Wire Line
-	5950 3250 7150 3250
-Wire Wire Line
-	5950 3350 7150 3350
 $EndSCHEMATC
