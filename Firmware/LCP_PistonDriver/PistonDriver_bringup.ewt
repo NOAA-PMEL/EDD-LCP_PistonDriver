@@ -2516,6 +2516,12 @@
             <name>$PROJ_DIR$\src\DRV8874.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\memory.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\memory.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\shell.c</name>
         </file>
         <file>

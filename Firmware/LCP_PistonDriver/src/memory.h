@@ -43,6 +43,8 @@
 *********************************************************************************/
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 /**********************************************************************************
 * Configuration Constants
@@ -203,7 +205,7 @@ typedef struct sMemory {
 #ifdef __cplusplus
 extern "C"{
 #endif
-
+void MEM_Init(void);
 void MEM_Write_RAM_Struct(
                         eRamTypes_t select,
                         uint8_t location,

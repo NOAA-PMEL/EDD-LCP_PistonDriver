@@ -46,6 +46,8 @@ STATIC sRAM0_t RAM0 = {
     .FIRM_Min = (uint8_t*) &ram0_array[RAM0_FIRM_MIN],
     .FIRM_Build = (char*) &ram0_array[RAM0_FIRM_BUILD]
 };
+STATIC sRAM0_t *pRAM0_addr = &RAM0;
+
 
 STATIC sRAM1_t RAM1 = {
     .VOL_Total_in3 = (float*) &ram1_array[RAM1_VOL_TOTAL_IN3],
@@ -70,6 +72,7 @@ STATIC sRAM1_t RAM1 = {
     .PID_Coeff_D = (float*) &ram1_array[RAM1_PID_COEFF_D],
     .PID_Used = (uint8_t*) &ram1_array[RAM1_PID_USED],
 };
+STATIC sRAM1_t *pRAM1_addr = &RAM1;
 
 STATIC sRAM2_t RAM2 = {
     .BAT_RetCAP = (double*)&ram2_array[RAM2_BAT_RETCAP],
@@ -79,6 +82,7 @@ STATIC sRAM2_t RAM2 = {
     .BAT_TTE = (double*)&ram2_array[RAM2_BAT_TTE],
     .BAT_Status = (uint16_t*)&ram2_array[RAM2_BAT_STATUS],
 };
+STATIC sRAM2_t *pRAM2_addr = &RAM2;
 
 STATIC sMemory_t PistonProtocolRam = {
     .RAM0 = &RAM0,
@@ -93,6 +97,11 @@ STATIC sMemory_t PistonProtocolRam = {
 /**********************************************************************************
 * Function Definitions
 *********************************************************************************/
+void MEM_Init(void)
+{
+
+}
+
 void MEM_Write_RAM_Struct(
                         eRamTypes_t select,
                         uint8_t location,
@@ -103,8 +112,10 @@ void MEM_Write_RAM_Struct(
     switch(select)
     {
         case MEM_RAM_0:
+            memcpy(&ram0_array[location], value, len);
             break;
         case MEM_RAM_1:
+            memcpy(&ram1_array[location], value, len);
             break;
         case MEM_RAM_2:
             memcpy(&ram2_array[location], value, len);
@@ -115,18 +126,12 @@ void MEM_Write_RAM_Struct(
     
     for(uint16_t i=location; i<8; i++)
     {
-        printf("loc[%d]: 0x%x\n",i, ram2_array[i]);
+      printf("%lf\n", RAM2.BAT_RepSOC);
     }
-    printf("RAM2.BAT_RetCAP = %f\n", PistonProtocolRam.RAM2->BAT_RetCAP);
-    // uint32_t temp = 0;
-    // for(uint8_t i=0; i<8; i++)
-    // {
-    //     temp |= (uint32_t) (ram2_array[i] << i);
-    // }
-    // printf("0x%ld\n", temp);
+
 }
 /**********************************************************************************
-* Function: MOD_Init()
+* Function: MEM_Read_
 *
 *//**
 * \b Description:
@@ -149,7 +154,7 @@ void MEM_Write_RAM_Struct(
 * 
 * @see MOD_Init
 */
-void MOD_Init(void)
-{
-
-}
+//void MOD_Init(void)
+//{
+//
+//}

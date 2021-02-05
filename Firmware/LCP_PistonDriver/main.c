@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "shell.h"
 #include "DRV8874.h"
+#include "memory.h"
 int main( void )
 {
   // Initialize the system  
@@ -16,7 +17,11 @@ int main( void )
   
   DRV8874_enable();
   
-
+//  MEM_Init();
+//  uint8_t value[256];
+//  memset(value, 0xA0, 256);
+//  MEM_Write_RAM_Struct(MEM_RAM_2, 0x00, value, 256);
+  
   uint16_t i = 0;
   float temp = 0.0f;
   char voltage[24];
