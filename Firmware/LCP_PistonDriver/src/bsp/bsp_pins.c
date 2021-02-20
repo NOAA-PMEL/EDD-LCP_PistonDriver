@@ -136,26 +136,36 @@ const driverlib_gpio_cfg_t g_BSP_I2C_CONTROL_SCL = {
 /***********************************************
  * H-Bridge (Motor Driver) Pins
  **********************************************/
-//#if MD_CONFIG_MODE == 0
-//const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IN1 = {
-//  .port = BSP_GPIO_MD_PWM_PORT,
-//  .pin = BSP_GPIO_MD_PWM_PIN,
-//  .function = PRIMARY_MODULE_FUNCTION
-//};
-//#elif MD_CONFIG_MODE == 1
+#ifdef DRV8874_NO_PWM
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_ENABLE = {
   .port = BSP_GPIO_MD_ENABLE_PORT,
   .pin = BSP_GPIO_MD_ENABLE_PIN,
   .mode = GPIO_SET_AS_OUTPUT,
   .function = DEFAULT_MODULE_FUNCTION
 };
-//#endif
+#else
+const driverlib_gpio_cfg_t g_BSP_GPIO_MD_ENABLE = {
+  .port = BSP_GPIO_MD_ENABLE_PORT,
+  .pin = BSP_GPIO_MD_ENABLE_PIN,
+  .mode = GPIO_SET_AS_OUTPUT,
+  .function = PRIMARY_MODULE_FUNCTION
+};
+#endif
 
+#ifdef DRV8874_NO_PWM
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PH = {
   .port = BSP_GPIO_MD_PH_PORT,
   .pin = BSP_GPIO_MD_PH_PIN,
   .mode = GPIO_SET_AS_OUTPUT
 };
+#else
+const driverlib_gpio_cfg_t g_BSP_GPIO_MD_PH = {
+  .port = BSP_GPIO_MD_PH_PORT,
+  .pin = BSP_GPIO_MD_PH_PIN,
+  .mode = GPIO_SET_AS_OUTPUT,
+  .function = PRIMARY_MODULE_FUNCTION
+};
+#endif
 
 const driverlib_gpio_cfg_t g_BSP_GPIO_MD_SLEEP = {
   .port = BSP_GPIO_MD_SLEEP_PORT,

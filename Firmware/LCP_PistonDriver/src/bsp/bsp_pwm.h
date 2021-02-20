@@ -6,7 +6,7 @@
 #endif
 
 void BSP_PWM_Init(void);
-void BPS_PWM_SetPWM(uint16_t pwm);
+void BPS_PWM_SetPWM(uint8_t chan, uint16_t pwm);
 
 
 #endif

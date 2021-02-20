@@ -15,8 +15,6 @@ int main( void )
   
   DRV8874_init();
   
-  DRV8874_enable();
-  
 //  MEM_Init();
 //  uint8_t value[256];
 //  memset(value, 0xA0, 256);

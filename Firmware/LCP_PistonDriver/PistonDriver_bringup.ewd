@@ -152,7 +152,7 @@
             <name>430FET</name>
             <archiveVersion>1</archiveVersion>
             <data>
-                <version>32</version>
+                <version>33</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -317,6 +317,10 @@
                     <name>CCLockDevice</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>RetainTLV</name>
+                    <state>1</state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -376,10 +380,6 @@
             <plugin>
                 <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-III\uCOS-III-KA-CSpy.ewplugin</file>
                 <loadFlag>0</loadFlag>
-            </plugin>
-            <plugin>
-                <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
-                <loadFlag>1</loadFlag>
             </plugin>
             <plugin>
                 <file>$EW_DIR$\common\plugins\Orti\Orti.ENU.ewplugin</file>
@@ -546,7 +546,7 @@
             <name>430FET</name>
             <archiveVersion>1</archiveVersion>
             <data>
-                <version>32</version>
+                <version>33</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -711,6 +711,10 @@
                     <name>CCLockDevice</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>RetainTLV</name>
+                    <state>1</state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -770,10 +774,6 @@
             <plugin>
                 <file>$TOOLKIT_DIR$\plugins\rtos\uCOS-III\uCOS-III-KA-CSpy.ewplugin</file>
                 <loadFlag>0</loadFlag>
-            </plugin>
-            <plugin>
-                <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
-                <loadFlag>1</loadFlag>
             </plugin>
             <plugin>
                 <file>$EW_DIR$\common\plugins\Orti\Orti.ENU.ewplugin</file>

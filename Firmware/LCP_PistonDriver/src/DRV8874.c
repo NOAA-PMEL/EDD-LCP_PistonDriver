@@ -5,41 +5,84 @@ float _read_adc12_volts(void) ;
 void DRV8874_init(void) {
 
  BSP_GPIO_Init(&g_BSP_GPIO_MD_SLEEP);
- BSP_GPIO_Init(&g_BSP_GPIO_MD_ENABLE);
- BSP_GPIO_Init(&g_BSP_GPIO_MD_PH);
+ 
  BSP_GPIO_Init(&g_BSP_GPIO_MD_FAULT);
  BSP_GPIO_Init(&g_BSP_GPIO_MD_PMODE);
  BSP_GPIO_Init(&g_BSP_GPIO_MD_IPROPI);
+ BSP_GPIO_Init(&g_BSP_GPIO_MD_ENABLE);
+ BSP_GPIO_Init(&g_BSP_GPIO_MD_PH);
  
+#ifdef DRV8874_NO_PWM
  BSP_GPIO_Clear(&g_BSP_GPIO_MD_PMODE);
  
+#else 
+ BSP_GPIO_Set(&g_BSP_GPIO_MD_PMODE);
+#endif
+ 
+ 
+ DRV8874_enable();
+ // PWM Settings 
+ // EN = TB0.3
+ // PH = TB0.5
 }
 
 
 
 void DRV8874_enable( void ) {
-
   BSP_12V_On();
-//  BSP_GPIO_Set(&g_BSP_GPIO_MD_SLEEP);
 }
 
+
+void DRV8874_disable( void ) {
+  BSP_12V_Off();
+}
 
 void DRV8874_forward( void ){
   BSP_GPIO_Set(&g_BSP_GPIO_MD_SLEEP);
+#ifdef DRV8874_NO_PWM
   BSP_GPIO_Set(&g_BSP_GPIO_MD_ENABLE);
-  BSP_GPIO_Set(&g_BSP_GPIO_MD_PH);
+  BSP_GPIO_Clear(&g_BSP_GPIO_MD_PH);
+#else
+  // EN/IN1 is Low
+  BPS_PWM_SetPWM(0,0);
+  for(uint16_t i=0; i<1024; i++)
+  {
+    // PH/IN2 is PWMed
+    BPS_PWM_SetPWM(1, i);
+    __delay_cycles(10000);
+  }
+#endif
+
 }
 
 void DRV8874_reverse( void ) {
+
   BSP_GPIO_Set(&g_BSP_GPIO_MD_SLEEP);
+#ifdef DRV8874_NO_PWM
   BSP_GPIO_Set(&g_BSP_GPIO_MD_ENABLE);
-  BSP_GPIO_Clear(&g_BSP_GPIO_MD_PH);
+  BSP_GPIO_Set(&g_BSP_GPIO_MD_PH);
+#else
+  // PH/IN2 is Low
+  BPS_PWM_SetPWM(1,0);
+  for(uint16_t i=0; i<1204; i++)
+  {
+    // EN/IN1 is PWMed
+    BPS_PWM_SetPWM(0, i);
+    __delay_cycles(10000);
+  }
+#endif
+
 }
 
 void DRV8874_stop( void ) {
-  BSP_GPIO_Clear(&g_BSP_GPIO_MD_SLEEP);
+#ifdef DRV8874_NO_PWM
   BSP_GPIO_Clear(&g_BSP_GPIO_MD_PH);
   BSP_GPIO_Clear(&g_BSP_GPIO_MD_ENABLE);
+#else
+  BPS_PWM_SetPWM(0,0);
+  BPS_PWM_SetPWM(1,0);
+#endif  
+  BSP_GPIO_Clear(&g_BSP_GPIO_MD_SLEEP);
 }
 
 float DRV8847_read_current( void )
