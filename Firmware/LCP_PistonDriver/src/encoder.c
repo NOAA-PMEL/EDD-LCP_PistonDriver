@@ -10,29 +10,6 @@ STATIC PERSISTENT sEncoderSettings_t encSettings = {
 
 STATIC PERSISTENT sEncoderSettings_t *pEncSettings = &encSettings;
 
-void ENC_Init(void) {
-    esiConfig();
-}
-
-double ENC_Get_Length(void)
-{
-    assert(encSettings.distance > 0);
-    return _calculate_length();
-}
-
-void ENC_Set_MaxLength(double val) {
-     _calculate_encoder_distance();
-    assert(encSettings.distance > 0);
-    encSettings.length = val;
-    encSettings.conversion_factor = encSettings.length / encSettings.distance;
-}
-
-void ENC_FactoryReset(void) {
-    encSettings.min_count = ENCODER_MIN_COUNT_DEFAULT;
-    encSettings.max_count = ENCODER_MAX_COUNT_DEFAULT;
-    ENC_Set_MaxLength(ENCODER_LENGTH_DEFAULT);
-}
-
 STATIC bool _set_min_count(int32_t val) {
     if( val < 0 ) 
     {
@@ -73,3 +50,33 @@ STATIC double _calculate_length(void)
     temp_f *= encSettings.conversion_factor;
     return temp_f;
 }
+
+
+
+void ENC_Init(void) {
+    BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
+    BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
+    
+    esiConfig();
+    ESI_disable();
+}
+
+double ENC_Get_Length(void)
+{
+    assert(encSettings.distance > 0);
+    return _calculate_length();
+}
+
+void ENC_Set_MaxLength(double val) {
+     _calculate_encoder_distance();
+    assert(encSettings.distance > 0);
+    encSettings.length = val;
+    encSettings.conversion_factor = encSettings.length / encSettings.distance;
+}
+
+void ENC_FactoryReset(void) {
+    encSettings.min_count = ENCODER_MIN_COUNT_DEFAULT;
+    encSettings.max_count = ENCODER_MAX_COUNT_DEFAULT;
+    ENC_Set_MaxLength(ENCODER_LENGTH_DEFAULT);
+}
+

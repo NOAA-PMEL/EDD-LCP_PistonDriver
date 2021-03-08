@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "shell.h"
 #include "DRV8874.h"
+#include "encoder.h"
 #include "memory.h"
 int main( void )
 {
@@ -12,7 +13,7 @@ int main( void )
   __bis_SR_register(GIE);
   
   BSP_LED_Set(LED_GREEN); 
-  
+  ENC_Init();
   DRV8874_init();
   
 //  MEM_Init();

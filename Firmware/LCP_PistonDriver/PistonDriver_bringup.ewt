@@ -2518,6 +2518,12 @@
             <name>$PROJ_DIR$\src\DRV8874.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\encoder.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\encoder.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\memory.c</name>
         </file>
         <file>
@@ -2539,9 +2545,6 @@
     <group>
         <name>ThirdParty</name>
     </group>
-    <file>
-        <name>$PROJ_DIR$\interrupts.c</name>
-    </file>
     <file>
         <name>$PROJ_DIR$\main.c</name>
     </file>
