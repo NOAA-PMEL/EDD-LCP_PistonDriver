@@ -710,9 +710,9 @@ Text HLabel 15150 8050 2    50   Input ~ 0
 ENCODER_CH_A
 Text HLabel 15150 8150 2    50   Input ~ 0
 ENCODER_CH_B
-Text GLabel 12050 8050 0    50   Input ~ 0
+Text GLabel 12050 7950 0    50   Input ~ 0
 ESICI0
-Text GLabel 13150 8050 2    50   Input ~ 0
+Text GLabel 13350 7950 2    50   Input ~ 0
 ESICI1
 Text GLabel 4350 5550 2    50   Input ~ 0
 P2.5
@@ -807,7 +807,7 @@ Wire Wire Line
 	6500 3500 6650 3500
 Text GLabel 7250 9150 0    50   BiDi ~ 0
 P5.3
-Text GLabel 12050 8350 0    50   BiDi ~ 0
+Text GLabel 12100 8450 0    50   BiDi ~ 0
 P1.4
 Text GLabel 10150 3950 2    50   BiDi ~ 0
 P2.6
@@ -825,7 +825,7 @@ Text GLabel 14850 5100 0    50   BiDi ~ 0
 P2.6
 Text GLabel 6750 8950 0    50   BiDi ~ 0
 P2.7
-Text GLabel 12050 8250 0    50   BiDi ~ 0
+Text GLabel 12100 8350 0    50   BiDi ~ 0
 P1.3
 Text GLabel 6450 4600 0    50   BiDi ~ 0
 P2.3
@@ -946,27 +946,14 @@ Text GLabel 6500 4150 0    50   BiDi ~ 0
 P3.5
 Wire Wire Line
 	6650 4150 6500 4150
-$Comp
-L Connector_Generic:Conn_02x03_Odd_Even J?
-U 1 1 60479EE2
-P 12550 8150
-F 0 "J?" H 12600 8467 50  0000 C CNN
-F 1 "Conn_02x03_Odd_Even" H 12600 8376 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" H 12550 8150 50  0001 C CNN
-F 3 "~" H 12550 8150 50  0001 C CNN
-	1    12550 8150
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	12050 8050 12350 8050
-Wire Wire Line
-	13150 8050 12850 8050
+	12050 7950 12500 7950
 $Comp
-L Device:R_Pack02 RN?
+L Device:R_Pack02 RN3
 U 1 1 604C7193
 P 13950 8150
-F 0 "RN?" H 14038 8196 50  0000 L CNN
-F 1 "50Ohm" H 14038 8105 50  0000 L CNN
+F 0 "RN3" H 14038 8196 50  0000 L CNN
+F 1 "50" H 14038 8105 50  0000 L CNN
 F 2 "Resistor_SMD:R_Array_Concave_2x0603" V 14125 8150 50  0001 C CNN
 F 3 "~" H 13950 8150 50  0001 C CNN
 F 4 "EXB-V4V510JV" H 13950 8150 50  0001 C CNN "MPN"
@@ -974,15 +961,13 @@ F 4 "EXB-V4V510JV" H 13950 8150 50  0001 C CNN "MPN"
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	12350 8250 12050 8250
+	12500 8350 12100 8350
 Wire Wire Line
-	12050 8350 12900 8350
+	12100 8450 13200 8450
 Wire Wire Line
-	12900 8350 12900 8250
+	13200 8450 13200 8350
 Wire Wire Line
-	12900 8250 12850 8250
-Wire Wire Line
-	13750 8150 12850 8150
+	13200 8350 12950 8350
 Wire Wire Line
 	13750 8050 13750 7500
 Wire Wire Line
@@ -992,13 +977,14 @@ Wire Wire Line
 Wire Wire Line
 	11600 8150 12350 8150
 $Comp
-L Transistor_FET:DMG2301L Q?
+L Transistor_FET:DMG2301L Q1
 U 1 1 604912AC
 P 13500 6850
-F 0 "Q?" H 13705 6804 50  0000 L CNN
+F 0 "Q1" H 13705 6804 50  0000 L CNN
 F 1 "DMG2305UX-7" H 13705 6895 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 13700 6775 50  0001 L CIN
 F 3 "https://www.diodes.com/assets/Datasheets/DMG2305UX.pdf" H 13500 6850 50  0001 L CNN
+F 4 "DMG2305UX-7" H 13500 6850 50  0001 C CNN "Field4"
 	1    13500 6850
 	1    0    0    1   
 $EndComp
@@ -1009,13 +995,13 @@ Wire Wire Line
 Wire Wire Line
 	13300 6850 13200 6850
 $Comp
-L Device:R_Pack02 RN?
+L Device:R_Pack02 RN5
 U 1 1 604F4633
 P 14750 7400
-AR Path="/5EE2A5A7/604F4633" Ref="RN?"  Part="1" 
+AR Path="/5EE2A5A7/604F4633" Ref="RN5"  Part="1" 
 AR Path="/5EE7B8CC/604F4633" Ref="RN?"  Part="1" 
-F 0 "RN?" H 14838 7446 50  0000 L CNN
-F 1 "R_Pack02" H 14838 7355 50  0000 L CNN
+F 0 "RN5" H 14838 7446 50  0000 L CNN
+F 1 "4.7k" H 14838 7355 50  0000 L CNN
 F 2 "Resistor_SMD:R_Array_Concave_2x0603" V 14925 7400 50  0001 C CNN
 F 3 "~" H 14750 7400 50  0001 C CNN
 F 4 "EXB-V4V472JV" H 14750 7400 50  0001 C CNN "MPN"
@@ -1030,12 +1016,12 @@ Connection ~ 14650 7100
 Wire Wire Line
 	14650 7100 14650 7200
 $Comp
-L power:+3V3 #PWR?
+L power:+3V3 #PWR030
 U 1 1 604F4639
 P 13600 6150
-AR Path="/5EE2A5A7/604F4639" Ref="#PWR?"  Part="1" 
+AR Path="/5EE2A5A7/604F4639" Ref="#PWR030"  Part="1" 
 AR Path="/5EE7B8CC/604F4639" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 13600 6000 50  0001 C CNN
+F 0 "#PWR030" H 13600 6000 50  0001 C CNN
 F 1 "+3V3" H 13615 6323 50  0000 C CNN
 F 2 "" H 13600 6150 50  0001 C CNN
 F 3 "" H 13600 6150 50  0001 C CNN
@@ -1051,8 +1037,8 @@ L Device:R R?
 U 1 1 605237E3
 P 13200 6550
 AR Path="/5EE2AB43/605237E3" Ref="R?"  Part="1" 
-AR Path="/5EE2A5A7/605237E3" Ref="R?"  Part="1" 
-F 0 "R?" H 13270 6596 50  0000 L CNN
+AR Path="/5EE2A5A7/605237E3" Ref="R22"  Part="1" 
+F 0 "R22" H 13270 6596 50  0000 L CNN
 F 1 "10k" H 13270 6505 50  0000 L CNN
 F 2 "Resistor_SMD:R_0805_2012Metric" V 13130 6550 50  0001 C CNN
 F 3 "~" H 13200 6550 50  0001 C CNN
@@ -1084,4 +1070,54 @@ Wire Wire Line
 Connection ~ 14750 8150
 Wire Wire Line
 	14750 8150 15150 8150
+$Comp
+L Jumper:SolderJumper_3_Open JP3
+U 1 1 6049AC33
+P 12500 8150
+F 0 "JP3" V 12500 8218 50  0000 L CNN
+F 1 "SolderJumper_3_Open" V 12545 8218 50  0001 L CNN
+F 2 "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels" H 12500 8150 50  0001 C CNN
+F 3 "~" H 12500 8150 50  0001 C CNN
+	1    12500 8150
+	0    1    1    0   
+$EndComp
+$Comp
+L Jumper:SolderJumper_3_Open JP4
+U 1 1 6049C3B9
+P 12950 8150
+F 0 "JP4" V 12950 8217 50  0000 L CNN
+F 1 "SolderJumper_3_Open" V 12905 8217 50  0001 L CNN
+F 2 "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm_NumberLabels" H 12950 8150 50  0001 C CNN
+F 3 "~" H 12950 8150 50  0001 C CNN
+	1    12950 8150
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	12950 7950 13350 7950
+Wire Wire Line
+	13100 8150 13750 8150
+Text GLabel 7850 8750 2    50   Input ~ 0
+ESICH0
+Text GLabel 7850 8850 2    50   Input ~ 0
+ESICH1
+Text GLabel 7850 8950 2    50   Input ~ 0
+ESICH2
+Text GLabel 7850 9050 2    50   Input ~ 0
+ESICH3
+Text GLabel 7850 9150 2    50   Input ~ 0
+ESICI2
+Text GLabel 7850 9250 2    50   Input ~ 0
+ESICI3
+Text GLabel 7850 9450 2    50   Input ~ 0
+ESICI
+Text GLabel 7850 9350 2    50   Input ~ 0
+ESICOM
+NoConn ~ 7850 8750
+NoConn ~ 7850 8850
+NoConn ~ 7850 8950
+NoConn ~ 7850 9050
+NoConn ~ 7850 9150
+NoConn ~ 7850 9250
+NoConn ~ 7850 9350
+NoConn ~ 7850 9450
 $EndSCHEMATC
