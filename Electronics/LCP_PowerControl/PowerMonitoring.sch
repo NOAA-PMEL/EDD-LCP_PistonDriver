@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L LCP_PowerControl-rescue:MAX17205-PMEL_BatteryManagement-LCP_PowerControl-rescue U1
+L LCP_PowerControl-rescue:MAX17205-PMEL_BatteryManagement-LCP_PowerControl-rescue-LCP_PowerControl-rescue U1
 U 1 1 5EE2E9B5
 P 5950 3700
 AR Path="/5EE2E9B5" Ref="U1"  Part="1" 
