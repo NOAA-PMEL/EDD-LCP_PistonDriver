@@ -680,7 +680,7 @@ Wire Wire Line
 	6650 6400 6200 6400
 Wire Wire Line
 	6200 6300 6650 6300
-Text GLabel 6750 8950 0    50   BiDi ~ 0
+Text GLabel 7250 8950 0    50   BiDi ~ 0
 P4.2
 Wire Wire Line
 	12250 5000 12550 5000
@@ -706,36 +706,14 @@ Text GLabel 12250 5400 0    50   BiDi ~ 0
 P5.1
 Wire Wire Line
 	12250 5400 12550 5400
-Text GLabel 12250 6450 0    50   Input ~ 0
-ESICH0
-Text GLabel 12250 6550 0    50   Input ~ 0
-ESICH1
-Text GLabel 12250 6650 0    50   Input ~ 0
-ESICH2
-Text GLabel 12250 6750 0    50   Input ~ 0
-ESICH3
-Text GLabel 12950 6550 2    50   Input ~ 0
-ESICI1
-Text GLabel 12950 6650 2    50   Input ~ 0
-ESICI2
-Text GLabel 12950 6750 2    50   Input ~ 0
-ESICI3
-Text GLabel 12250 6850 0    50   Input ~ 0
-ESICI
-Text GLabel 12950 6850 2    50   Input ~ 0
-ESICOM
-Text HLabel 12550 5750 2    50   Input ~ 0
+Text HLabel 15150 8050 2    50   Input ~ 0
 ENCODER_CH_A
-Text HLabel 12550 5850 2    50   Input ~ 0
+Text HLabel 15150 8150 2    50   Input ~ 0
 ENCODER_CH_B
-Text GLabel 12250 5750 0    50   Input ~ 0
+Text GLabel 12800 8050 0    50   Input ~ 0
 ESICI0
-Text GLabel 12250 5850 0    50   Input ~ 0
+Text GLabel 13900 8050 2    50   Input ~ 0
 ESICI1
-Wire Wire Line
-	12250 5850 12550 5850
-Wire Wire Line
-	12550 5750 12250 5750
 Text GLabel 4350 5550 2    50   Input ~ 0
 P2.5
 Wire Wire Line
@@ -817,7 +795,7 @@ Text GLabel 7250 8750 0    50   BiDi ~ 0
 P4.0
 Text GLabel 7250 8850 0    50   BiDi ~ 0
 P4.1
-Text GLabel 7250 8950 0    50   BiDi ~ 0
+Text GLabel 7250 9050 0    50   BiDi ~ 0
 P5.2
 Text GLabel 6500 2950 0    50   BiDi ~ 0
 P1.4
@@ -827,9 +805,9 @@ Text GLabel 6500 3500 0    50   BiDi ~ 0
 P5.3
 Wire Wire Line
 	6500 3500 6650 3500
-Text GLabel 7250 9050 0    50   BiDi ~ 0
+Text GLabel 7250 9150 0    50   BiDi ~ 0
 P5.3
-Text GLabel 6750 8650 0    50   BiDi ~ 0
+Text GLabel 12800 8350 0    50   BiDi ~ 0
 P1.4
 Text GLabel 10150 3950 2    50   BiDi ~ 0
 P2.6
@@ -845,9 +823,9 @@ Wire Wire Line
 	10150 3950 9900 3950
 Text GLabel 12250 5000 0    50   BiDi ~ 0
 P2.6
-Text GLabel 6750 9050 0    50   BiDi ~ 0
+Text GLabel 6750 8950 0    50   BiDi ~ 0
 P2.7
-Text GLabel 6750 9150 0    50   BiDi ~ 0
+Text GLabel 12800 8250 0    50   BiDi ~ 0
 P1.3
 Text GLabel 6450 4600 0    50   BiDi ~ 0
 P2.3
@@ -859,17 +837,16 @@ Text GLabel 6200 5800 0    50   BiDi ~ 0
 P3.3
 Wire Wire Line
 	6650 5800 6200 5800
-Text GLabel 7250 8650 0    50   BiDi ~ 0
+Text GLabel 6750 9050 0    50   BiDi ~ 0
 P3.3
-NoConn ~ 6750 8650
 NoConn ~ 6750 8850
-NoConn ~ 6750 8950
-NoConn ~ 6750 9050
-NoConn ~ 7250 9050
 NoConn ~ 7250 8950
+NoConn ~ 6750 8950
+NoConn ~ 7250 9150
+NoConn ~ 7250 9050
 NoConn ~ 7250 8850
 NoConn ~ 7250 8750
-NoConn ~ 7250 8650
+NoConn ~ 6750 9050
 Text Notes 6400 8450 0    100  ~ 0
 Unused Nets
 $Comp
@@ -951,30 +928,17 @@ F 4 "CRGCQ0805F470R" H 11900 1650 50  0001 C CNN "MPN"
 	1    11900 1650
 	0    1    1    0   
 $EndComp
-Text GLabel 7250 8650 0    50   BiDi ~ 0
+Text GLabel 6750 9050 0    50   BiDi ~ 0
 P3.3
-Text GLabel 7250 9150 0    50   Input ~ 0
+Text GLabel 6750 8650 0    50   Input ~ 0
 P1.1
-NoConn ~ 6750 9150
-NoConn ~ 7250 9150
-Text GLabel 12950 6450 2    50   Input ~ 0
-ESICI0
-Wire Wire Line
-	12250 6450 12950 6450
-Wire Wire Line
-	12950 6550 12250 6550
-Text GLabel 6750 9250 0    50   BiDi ~ 0
+NoConn ~ 6750 8650
+Text GLabel 6750 9150 0    50   BiDi ~ 0
 P3.4
-Text GLabel 7250 9250 0    50   BiDi ~ 0
+Text GLabel 6750 9250 0    50   BiDi ~ 0
 P3.5
+NoConn ~ 6750 9150
 NoConn ~ 6750 9250
-NoConn ~ 7250 9250
-NoConn ~ 12250 6650
-NoConn ~ 12250 6750
-NoConn ~ 12250 6850
-NoConn ~ 12950 6850
-NoConn ~ 12950 6750
-NoConn ~ 12950 6650
 Text GLabel 6500 4050 0    50   BiDi ~ 0
 P3.4
 Wire Wire Line
@@ -983,4 +947,53 @@ Text GLabel 6500 4150 0    50   BiDi ~ 0
 P3.5
 Wire Wire Line
 	6650 4150 6500 4150
+$Comp
+L Connector_Generic:Conn_02x03_Odd_Even J?
+U 1 1 60479EE2
+P 13300 8150
+F 0 "J?" H 13350 8467 50  0000 C CNN
+F 1 "Conn_02x03_Odd_Even" H 13350 8376 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" H 13300 8150 50  0001 C CNN
+F 3 "~" H 13300 8150 50  0001 C CNN
+	1    13300 8150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	12800 8050 13100 8050
+Wire Wire Line
+	13900 8050 13600 8050
+$Comp
+L Device:R_Pack02 RN?
+U 1 1 604C7193
+P 14700 8150
+F 0 "RN?" H 14788 8196 50  0000 L CNN
+F 1 "50Ohm" H 14788 8105 50  0000 L CNN
+F 2 "Resistor_SMD:R_Array_Concave_2x0603" V 14875 8150 50  0001 C CNN
+F 3 "~" H 14700 8150 50  0001 C CNN
+F 4 "EXB-V4V510JV" H 14700 8150 50  0001 C CNN "MPN"
+	1    14700 8150
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	13100 8250 12800 8250
+Wire Wire Line
+	12800 8350 13650 8350
+Wire Wire Line
+	13650 8350 13650 8250
+Wire Wire Line
+	13650 8250 13600 8250
+Wire Wire Line
+	14500 8150 13600 8150
+Wire Wire Line
+	14500 8050 14500 7500
+Wire Wire Line
+	14500 7500 12350 7500
+Wire Wire Line
+	12350 7500 12350 8150
+Wire Wire Line
+	12350 8150 13100 8150
+Wire Wire Line
+	15150 8150 14900 8150
+Wire Wire Line
+	15150 8050 14900 8050
 $EndSCHEMATC
