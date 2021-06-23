@@ -1,7 +1,6 @@
-from _pytest.fixtures import fixture
-from _pytest.monkeypatch import monkeypatch
-import pytest
 import serial
+import pytest
+from pytest import MonkeyPatch
 from LCPPistonConsole import PistonConsole
 
 def mockack(self):
@@ -9,7 +8,7 @@ def mockack(self):
 def mocknack(self):
         return b'\x15'
 
-@fixture
+@pytest.fixture
 def MockConsole(monkeypatch):
     def mockopen(value):
         print(value)
@@ -338,3 +337,23 @@ def test_factory_reset_should_write_valid_command(MockConsole, monkeypatch):
     # When: the function is called
     # Then: the function processes correctly
     pc.factory_reset()
+
+
+def test_serial_number_getter_should_return_str(MockConsole, monkeypatch):
+    # Given: mocked writes
+    pc=MockConsole
+
+    def mockwrite(self, value):
+        assert "ser\r" == value
+
+    def mockrealine(self):
+        return "LCP12345A98"
+    monkeypatch.setattr(serial.Serial, "write", mockwrite)
+    monkeypatch.setattr(serial.Serial, "readline", mockrealine)
+
+    # When: the getter is called
+    retval = pc.serial_number
+    
+    # Then
+    assert "LCP12345A98" == retval
+

@@ -130,3 +130,17 @@ It is possible to read & write to the I2C command RAM space over the console.  U
 
 
 
+#### Test Modes
+The following are the available test modes
+
+| Mode | Test Description | 
+|---|---|
+| 0 | Test(s) OFF |
+| 1 | Run to fully extended |
+| 2 | Run to fully retracted |
+| 3 | Run to half extension |
+| 4 | Zero > Full, 1/2" increments |
+| 5 | Full > Zero, 1/2" increments |
+| 6 | Zero > Full > Zero, 1/2" increments |
+| 7 | Zero > Full > Zero, loop until keystroke |
+| 8 | Zero > Full > Zero, 1/2" increments, loop until keystroke |

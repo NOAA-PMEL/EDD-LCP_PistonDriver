@@ -40,6 +40,7 @@ class PistonConsole:
             self._ser.port=port
             self._ser.baudrate=115200
             self._ser.open()
+            self._ser.timeout = 1
         except SerialException as e:
             print("Failure to open serial port:")
             print(e)
@@ -379,17 +380,17 @@ class PistonConsole:
 
     @property
     def id(self):
-        self._ser.write("id\r")
+        self._ser.write(b"id\r")
         return self._ser.readline()
 
     @property
     def ver(self):
-        self._ser.write("ver\r")
+        self._ser.write(b"ver\r")
         return self._ser.readline()
 
     @property
     def report(self):
-        self._ser.write("report\r")
+        self._ser.write(b"report\r")
         return self._ser.readline()
 
     @property
