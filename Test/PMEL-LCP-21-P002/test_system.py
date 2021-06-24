@@ -1,3 +1,4 @@
+from enum import auto
 from SystemCalls import *
 import pytest
 import warnings
@@ -15,12 +16,12 @@ MOVEMENT_TIMEOUT_MAX = 200
 def port(pytestconfig):
     return pytestconfig.getoption("port")
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def system(port):
     return lcpc.PistonConsole(port)
     
 
-def test_system_id_get(system):
+def test_system_id_get():
     # Given
     expected_id = "LCP-PPC"
 
@@ -31,7 +32,7 @@ def test_system_id_get(system):
     assert expected_id == sysid
 
 
-def test_firmware_get_should_return_valid_firmware_version(system):
+def test_firmware_get_should_return_valid_firmware_version():
     # Given: A valid firmware regular expression (example: vX.Y.Z-AAAAAA)
     regex_str = r"v\d*\.\d*\.\d*-\w*$"
     
@@ -44,7 +45,7 @@ def test_firmware_get_should_return_valid_firmware_version(system):
     assert 0 == m.start() 
 
 
-def test_firmware_version_should_be_most_recent(system):
+def test_firmware_version_should_be_most_recent():
     # Given: A valid firmware version to test against
     expected_str = "v1.2.3-8da3fb"
 
@@ -54,7 +55,7 @@ def test_firmware_version_should_be_most_recent(system):
     # Then: The strings should match
     assert expected_str == version
 
-def test_report_should_return_valid_report(system):
+def test_report_should_return_valid_report():
     # @TODO: Complete this function!
     # Given: An expected report format
     
@@ -66,7 +67,7 @@ def test_report_should_return_valid_report(system):
 
 
 @pytest.mark.getter
-def test_volume_setpoint_is_within_expected_range(system):
+def test_volume_setpoint_is_within_expected_range():
     # Given: A valid range of setpoints (total volumes)
     # When: The get vset function is called multiple times
     # Then: The setpoint is valid
@@ -74,7 +75,7 @@ def test_volume_setpoint_is_within_expected_range(system):
         assert TOTAL_VOLUME_MIN <= system.volume_setpoint <= TOTAL_VOLUME_MAX
 
 @pytest.mark.getter
-def test_volume_total_read_should_return_valid_total_volume(system):
+def test_volume_total_read_should_return_valid_total_volume():
     # Given: A valid range of volumes
     # When: The volume_total getter is called multiple times
     # Then: Actual volume is within expected volume
@@ -82,7 +83,7 @@ def test_volume_total_read_should_return_valid_total_volume(system):
         assert TOTAL_VOLUME_MIN <= system.volume_total <= TOTAL_VOLUME_MAX
 
 @pytest.mark.getter
-def test_volume_small_should_return_valid_small_volume(system):
+def test_volume_small_should_return_valid_small_volume():
     # Given: A valid range of volumes
     # When: The volume_small getter is called multiple times
     # Then: Actual volume is within expected volume
@@ -90,7 +91,7 @@ def test_volume_small_should_return_valid_small_volume(system):
         assert SMALL_VOLUME_MIN <= system.volume_small <= SMALL_VOLUME_MAX
 
 @pytest.mark.getter
-def test_volume_large_should_return_valid_large_volumes(system):
+def test_volume_large_should_return_valid_large_volumes():
     # Given: A valid range of volumes
     # When: The volume_large getter is called multiple times
     # Then: Actual volume is within expected volume
@@ -98,7 +99,7 @@ def test_volume_large_should_return_valid_large_volumes(system):
         assert LARGE_VOLUME_MIN <= system.volume_small <= LARGE_VOLUME_MAX
 
 @pytest.mark.getter
-def test_volume_housing_should_return_valid_volume(system):
+def test_volume_housing_should_return_valid_volume():
     # Given: The housing volume
     # When: The volume_housing getter is called multiple times
     # Then: Actual volume is within expected volume
@@ -106,7 +107,7 @@ def test_volume_housing_should_return_valid_volume(system):
         assert HOUSING_VOLUME*0.999 <= system.volume_housing <= HOUSING_VOLUME * 1.001
 
 @pytest.mark.getter
-def test_total_volume_should_equal_sum_of_all_volumes(system):
+def test_total_volume_should_equal_sum_of_all_volumes():
     # Given: The total volume
     # When: volume_small + volume_large + volume_housing are summed
     # Then: The result should equal the total volume (within 0.001)
@@ -114,7 +115,7 @@ def test_total_volume_should_equal_sum_of_all_volumes(system):
     assert 0.001 >= abs(system.volume_total - total_volume)
 
 @pytest.mark.getter
-def test_area_small_should_return_valid_area(system):
+def test_area_small_should_return_valid_area():
     # Given: The small piston area
     # When: The area_small getter is called multiple times
     # Then: Actual area is within expected area
@@ -122,7 +123,7 @@ def test_area_small_should_return_valid_area(system):
         assert SMALL_PISTON_AREA *0.999 <= system.area_small <= SMALL_PISTON_AREA * 1.001
 
 @pytest.mark.getter
-def test_area_large_should_return_valid_area(system):
+def test_area_large_should_return_valid_area():
     # Given: The large piston area
     # When: The area_large getter is called multiple times
     # Then: Actual area is within expected area
@@ -130,7 +131,7 @@ def test_area_large_should_return_valid_area(system):
         assert LARGE_PISTON_AREA *0.999 <= system.area_large <= LARGE_PISTON_AREA * 1.001
 
 @pytest.mark.getter
-def test_total_length_should_return_valid_total_length(system):
+def test_total_length_should_return_valid_total_length():
     # Given: A valid range of lengths
     # When: The length_total getter is called multiple times
     # Then: Actual length is within expected length
@@ -138,7 +139,7 @@ def test_total_length_should_return_valid_total_length(system):
         assert TOTAL_LENGTH_MIN <= system.length_total <= TOTAL_LENGTH_MAX
 
 @pytest.mark.getter
-def test_small_length_should_return_valid_small_length(system):
+def test_small_length_should_return_valid_small_length():
     # Given: A valid range of lengths
     # When: The length_small getter is called multiple times
     # Then: Actual length is within expected length
@@ -146,7 +147,7 @@ def test_small_length_should_return_valid_small_length(system):
         assert SMALL_LENGTH_MIN <= system.length_total <= SMALL_LENGTH_MAX
 
 @pytest.mark.getter
-def test_large_length_should_return_valid_large_length(system):
+def test_large_length_should_return_valid_large_length():
     # Given: A valid range of lengths
     # When: The length_large getter is called multiple times
     # Then: Actual length is within expected length
@@ -154,7 +155,7 @@ def test_large_length_should_return_valid_large_length(system):
         assert LARGE_LENGTH_MIN <= system.length_total <= LARGE_LENGTH_MAX
 
 @pytest.mark.getter
-def test_combination_of_lengths_should_be_equal_to_total(system):
+def test_combination_of_lengths_should_be_equal_to_total():
     # Given: A total length
     # When: The length_large + length_small are added
     # Then: The sum is equal to length_total
@@ -162,28 +163,28 @@ def test_combination_of_lengths_should_be_equal_to_total(system):
     assert 0.001 >= abs(system.length_total - total_length)
 
 @pytest.mark.getter
-def test_piston_minimum_should_return_value(system):
+def test_piston_minimum_should_return_value():
     # Given: The min/max of the full piston
     # When: pmin is called
     # Then: A valid response should be returned
     assert TOTAL_LENGTH_MIN <= system.piston_minimum <= TOTAL_LENGTH_MAX
 
 @pytest.mark.getter
-def test_piston_maximum_should_return_value(system):
+def test_piston_maximum_should_return_value():
     # Given: The min/max of the full piston
     # When: pmax is called
     # Then: A valid response should be returned
     assert TOTAL_LENGTH_MIN <= system.piston_maximum <= TOTAL_LENGTH_MAX
 
 @pytest.mark.getter
-def test_travel_engaged_is_not_set(system):
+def test_travel_engaged_is_not_set():
     # Given: An expectation that the system isn't moving
     # When: teng is called
     # Then: The response should be false
     assert False == system.travel_engaged
 
 @pytest.mark.getter
-def test_piston_rate_should_return_zero_when_not_moving(system):
+def test_piston_rate_should_return_zero_when_not_moving():
     # Given: A non-moving system
     # When: prate is called
     # Then: Expect a rate of 0.0
@@ -191,7 +192,7 @@ def test_piston_rate_should_return_zero_when_not_moving(system):
     assert 0.0 == system.piston_rate
 
 @pytest.mark.getter
-def test_travel_direction_should_return_valid_response(system):
+def test_travel_direction_should_return_valid_response():
     # Given: An expectation of -1 or 1
     # When: tdir is called
     direction = system.piston_direction
@@ -201,49 +202,49 @@ def test_travel_direction_should_return_valid_response(system):
     assert direction[1] in ["Extend", "Retract"]
 
 @pytest.mark.getter
-def test_travel_zero_should_return_valid_response(system):
+def test_travel_zero_should_return_valid_response():
     # Given: 
     # When: tzero is called
     # Then: A boolean should be returned
     assert bool == type(system.travel_zero)
 
 @pytest.mark.getter
-def test_travel_full_should_return_valid_response(system):
+def test_travel_full_should_return_valid_response():
     # Given: 
     # When: tfull is called
     # Then: A boolean should be returned
     assert bool == type(system.travel_full)
 
 @pytest.mark.getter
-def test_pid_p_value_should_return_valid(system):
+def test_pid_p_value_should_return_valid():
     # Given:
     # When: pidp is called
     # Then: Expect a float
     assert float == type(system.pid_p)
 
 @pytest.mark.getter
-def test_pid_i_value_should_return_valid(system):
+def test_pid_i_value_should_return_valid():
     # Given:
     # When: pidi is called
     # Then: Expect a float
     assert float == type(system.pid_i)
 
 @pytest.mark.getter
-def test_pid_d_value_should_return_valid(system):
+def test_pid_d_value_should_return_valid():
     # Given:
     # When: pidd is called
     # Then: Expect a float
     assert float == type(system.pid_d)
 
 @pytest.mark.getter
-def test_user_should_return_valid_username(system):
+def test_user_should_return_valid_username():
     # Given:
     # When: user is called
     # Then: Expect a string
     assert str == type(system.user)
 
 @pytest.mark.getter
-def test_logging_level_should_return_valid_level(system):
+def test_logging_level_should_return_valid_level():
     # Given:
     # When: logging_level is called
     level = system.logging_level
@@ -253,7 +254,7 @@ def test_logging_level_should_return_valid_level(system):
 
 @pytest.mark.admin
 @pytest.mark.setter
-def test_factory_reset_should_reset_to_expected_values(system):
+def test_factory_reset_should_reset_to_expected_values():
     # Given
     
     # When: factory reset is called
@@ -265,7 +266,7 @@ def test_factory_reset_should_reset_to_expected_values(system):
 
 @pytest.mark.setter
 @pytest.mark.parametrize("min", [0.0, 1.0, 2.0])
-def test_piston_minimum_should_set_correctly_for_valid_values(system, min):
+def test_piston_minimum_should_set_correctly_for_valid_values( min):
     # Given: Minimum values that are valid
     # When: The pmin set is used with values
     system.piston_minimum(min)
@@ -275,7 +276,7 @@ def test_piston_minimum_should_set_correctly_for_valid_values(system, min):
 
 @pytest.mark.setter
 @pytest.mark.parametrize("max", [11.0, 10.0, 9.0])
-def test_piston_maximum_should_set_correctly_for_valid_values(system, max):
+def test_piston_maximum_should_set_correctly_for_valid_values( max):
     # Given: maximum values that are valid
     # When: The pmax set is used with values
     system.piston_maximum = max
@@ -285,7 +286,7 @@ def test_piston_maximum_should_set_correctly_for_valid_values(system, max):
     
 @pytest.mark.setter
 @pytest.mark.parametrize("min", [7.0, 8.0, 9.0])
-def test_piston_minimum_should_not_set_for_invalid_values(system, min):
+def test_piston_minimum_should_not_set_for_invalid_values( min):
     # Given: Values above pmax
     previous_min = system.piston_minimum
 
@@ -298,7 +299,7 @@ def test_piston_minimum_should_not_set_for_invalid_values(system, min):
 
 @pytest.mark.setter
 @pytest.mark.parametrize("max", [5.99, 4.0, -1.0])
-def test_piston_minimum_should_not_set_for_invalid_values(system, max):
+def test_piston_minimum_should_not_set_for_invalid_values( max):
     # Given: Values below pmin
     previous_max = system.piston_maximum
 
@@ -312,7 +313,7 @@ def test_piston_minimum_should_not_set_for_invalid_values(system, max):
 
 @pytest.mark.setter
 @pytest.mark.parametrize("pidp", [0.0, -4.398, 127.8231])
-def test_pid_p_should_set_correctly(system, pidp):
+def test_pid_p_should_set_correctly( pidp):
     # Given: pid_p values
     # When: pid_p is called with new value
     system.pid_p = pidp
@@ -323,7 +324,7 @@ def test_pid_p_should_set_correctly(system, pidp):
 
 @pytest.mark.setter
 @pytest.mark.parametrize("pidi", [820.0, 0.3232, -7.7777])
-def test_pid_p_should_set_correctly(system, pidi):
+def test_pid_p_should_set_correctly( pidi):
     # Given: pid_i values
     # When: pid_i is called with new value
     system.pid_i = pidi
@@ -334,7 +335,7 @@ def test_pid_p_should_set_correctly(system, pidi):
 
 @pytest.mark.setter
 @pytest.mark.parametrize("pidd", [0.0, -0.00328, 4231.13])
-def test_pid_p_should_set_correctly(system, pidd):
+def test_pid_p_should_set_correctly( pidd):
     # Given: pid_d values
     # When: pid_d is called with new value
     system.pid_d = pidd
@@ -344,7 +345,7 @@ def test_pid_p_should_set_correctly(system, pidd):
     
 @pytest.mark.setter
 @pytest.mark.parametrize("level", [3, 2, 1, 0])
-def test_logging_level_sets_correctly(system, level):
+def test_logging_level_sets_correctly( level):
     # Given: logging levels
     # When: logging_level is called with new value
     system.logging_level= level
@@ -355,7 +356,7 @@ def test_logging_level_sets_correctly(system, level):
 @pytest.mark.setter
 @pytest.mark.restart
 @pytest.mark.timeout(RESTART_TIMEOUT_MAX)
-def test_system_restart_should_restart_system(system):
+def test_system_restart_should_restart_system():
     # Given:
     # When: A restart is commanded
     system.restart()
@@ -373,7 +374,7 @@ def test_system_restart_should_restart_system(system):
 @pytest.mark.movement
 @pytest.mark.timeout(MOVEMENT_TIMEOUT_MAX)
 @pytest.mark.parametrize("volume", [TOTAL_VOLUME_MIN, TOTAL_VOLUME_MAX, (TOTAL_VOLUME_MAX - TOTAL_VOLUME_MIN)/2])
-def test_volume_set_should_move_system_to_setpoint(system, volume):
+def test_volume_set_should_move_system_to_setpoint( volume):
     # Given: Volumes to set
     # When: Function is called and movement completes
     system.volume_setpoint(volume)
@@ -392,7 +393,7 @@ def set_admin_mode(system):
 
 @pytest.mark.admin
 @pytest.mark.getter
-def test_user_direction_get_returns_valid_response(system):
+def test_user_direction_get_returns_valid_response():
     # Given: System in admin mode
     set_admin_mode(system)
 
@@ -407,7 +408,7 @@ def test_user_direction_get_returns_valid_response(system):
 
 @pytest.mark.admin
 @pytest.mark.getter
-def test_user_engage_is_not_set_before_being_set(system):
+def test_user_engage_is_not_set_before_being_set():
     # Given: System in admin mode
     set_admin_mode(system)
 
@@ -419,7 +420,7 @@ def test_user_engage_is_not_set_before_being_set(system):
 
 @pytest.mark.admin
 @pytest.mark.getter
-def test_user_rate_should_be_a_valid_value(system):
+def test_user_rate_should_be_a_valid_value():
     # Given: admin mode, Valid range of rate value
     set_admin_mode(system)
 
@@ -432,7 +433,7 @@ def test_user_rate_should_be_a_valid_value(system):
 
 @pytest.mark.admin
 @pytest.mark.getter
-def test_user_total_length_should_be_valid_number(system):
+def test_user_total_length_should_be_valid_number():
     # Given: admin mode, Range of valid lengths
     set_admin_mode(system)
     # When: ulset is read
@@ -444,7 +445,7 @@ def test_user_total_length_should_be_valid_number(system):
 
 @pytest.mark.admin
 @pytest.mark.getter
-def test_serial_should_return_valid_serial(system):
+def test_serial_should_return_valid_serial():
     # Given: admin mode
     set_admin_mode(system)
 
@@ -456,7 +457,7 @@ def test_serial_should_return_valid_serial(system):
 
 @pytest.mark.admin
 @pytest.mark.setter
-def test_serial_number_set_should_set_field(system):
+def test_serial_number_set_should_set_field():
     # Given: admin mode, a serial number
     set_admin_mode(system)
     sn = "LCP12345"
@@ -468,7 +469,7 @@ def test_serial_number_set_should_set_field(system):
 
 @pytest.mark.admin
 @pytest.mark.setter
-def test_serial_number_set_should_keep_old_for_invalid(system):
+def test_serial_number_set_should_keep_old_for_invalid():
     # Given: admin mode, serial number that is too long
     set_admin_mode(system)
     sn = "LCP10234523qp09asdal;kjdfa09124"
@@ -483,7 +484,7 @@ def test_serial_number_set_should_keep_old_for_invalid(system):
 @pytest.mark.admin
 @pytest.mark.setter
 @pytest.mark.parametrize("length", [TOTAL_LENGTH_MIN, TOTAL_LENGTH_MAX/2, TOTAL_LENGTH_MAX])
-def test_user_length_setpoint_should_accept_valid(system, length):
+def test_user_length_setpoint_should_accept_valid( length):
     # Given: admin mode, valid lengths
     set_admin_mode(system)
 
@@ -497,7 +498,7 @@ def test_user_length_setpoint_should_accept_valid(system, length):
 @pytest.mark.admin
 @pytest.mark.setter
 @pytest.mark.parametrize("length", [-TOTAL_LENGTH_MIN, TOTAL_LENGTH_MAX+0.001])
-def test_user_length_setpoint_should_not_accept_invalid(system, length):
+def test_user_length_setpoint_should_not_accept_invalid( length):
     # Given: admin mode, invalid lengths, previous setpoint
     set_admin_mode(system)
     prev_len = system.user_length_max_setpoint
@@ -511,7 +512,7 @@ def test_user_length_setpoint_should_not_accept_invalid(system, length):
 @pytest.mark.admin
 @pytest.mark.setter
 @pytest.mark.parametrize("rate", [USER_PISTON_RATE_MIN, (USER_PISTON_RATE_MAX + USER_PISTON_RATE_MIN)/2, USER_PISTON_RATE_MAX])
-def test_user_rate_should_accept_valid_setpoint(system, rate):
+def test_user_rate_should_accept_valid_setpoint( rate):
     # Given: admin mode, valid lengths
     set_admin_mode(system)
 
@@ -525,7 +526,7 @@ def test_user_rate_should_accept_valid_setpoint(system, rate):
 @pytest.mark.admin
 @pytest.mark.setter
 @pytest.mark.parametrize("rate", [-0.001, 0.0, USER_PISTON_RATE_MAX+0.001])
-def test_user_rate_setpoint_should_not_accept_invalid(system, rate):
+def test_user_rate_setpoint_should_not_accept_invalid( rate):
     # Given: admin mode, invalid rates, previous setpoint
     set_admin_mode(system)
     prev_rate = system.user_rate
@@ -540,7 +541,7 @@ def test_user_rate_setpoint_should_not_accept_invalid(system, rate):
 @pytest.mark.admin
 @pytest.mark.setter
 @pytest.mark.parametrize("dir", [-1, 1])
-def test_user_direction_should_accept_valid(system, dir):
+def test_user_direction_should_accept_valid( dir):
     # Given: admin mode, valid dirs
     set_admin_mode(system)
 
@@ -553,7 +554,7 @@ def test_user_direction_should_accept_valid(system, dir):
 @pytest.mark.admin
 @pytest.mark.setter
 @pytest.mark.parametrize("dir", [-999,-2, -1.1, 0.1, 0.0, 1.001, 999])
-def test_user_direction_should_not_accept_invalid(system, dir):
+def test_user_direction_should_not_accept_invalid( dir):
     # Given: admin mode, invalid dirs, previous dir
     set_admin_mode(system)
     prev_dir = system.user_direction
@@ -568,7 +569,7 @@ def test_user_direction_should_not_accept_invalid(system, dir):
 @pytest.mark.setter
 @pytest.mark.movement
 @pytest.mark.timeout(MOVEMENT_TIMEOUT_MAX)
-def test_user_eng_should_also_set_teng(system):
+def test_user_eng_should_also_set_teng():
     # Given: admin mode, valid direction for travel
     set_admin_mode(system)
 
@@ -595,7 +596,7 @@ def test_user_eng_should_also_set_teng(system):
 @pytest.mark.ram
 @pytest.mark.getter
 @pytest.mark.parametrize("addr", [0x0000, 0x0100, 0x0200])
-def test_ram_read_should_read_requested_rull_ram_locations(system, addr):
+def test_ram_read_should_read_requested_rull_ram_locations( addr):
     # Given: address and length
     length = 256
 
@@ -612,7 +613,7 @@ def test_ram_read_should_read_requested_rull_ram_locations(system, addr):
     (0x020A, 10),
     (0x011C, 15)
 ])
-def test_ram_read_should_read_smaller_lengths_too(system, addr, length):
+def test_ram_read_should_read_smaller_lengths_too( addr, length):
     # Given: address and length
     # When: ram_read is called
     ram = system.ram_read(addr, length)
@@ -626,5 +627,5 @@ def test_ram_read_should_read_smaller_lengths_too(system, addr, length):
 # @pytest.mark.ram
 # @pytest.mark.setter
 # @pytest.mark.parametrize("values",
-# def test_ram_write_should_write_to_ram_correctly(system, values):
+# def test_ram_write_should_write_to_ram_correctly( values):
     # pass
