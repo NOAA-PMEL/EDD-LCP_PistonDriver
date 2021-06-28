@@ -5,43 +5,43 @@ import pprint
 from collections import namedtuple
 
 memory = {
-    'VOL_SETPOINT_IN3': [0x00, 4, 'float'],
-    'VAR_WRITE': [0x07, 1, 'uint8_t'],
-    'VOL_TOTAL_IN3': [0x08, 4, 'float'],
-    'HOUSING_IN3': [0x0C, 4, 'float'],
-    'VOL_SMALL_PISTON_IN3': [0x18,4,'float'],
-    'VOL_LARGE_PISTON_IN3': [0x1C,4,'float'],
-    'LEN_PISTON_IN': [0x20, 4, 'float'],
-    'LEN_SMALL_PISTON_IN': [0x28, 4, 'float'],
-    'LEN_LARGE_PISTON_IN': [0x2C, 4, 'float'],
-    'AREA_SMALL_PISTON': [0x38, 4, 'float'],
-    'AREA_LARGE_PISTON': [0x3C, 4, 'float'],
-    'PST_POSTION_MIN': [0x40, 4, 'float'],
-    'PST_POSITION_MAX': [0x44, 4, 'float'],
-    'PST_RATE': [0x48, 4, 'float'],
-    'PST_POSITION_IN' : [0x4C, 4, 'float'],
-    'PST_ENC_COUNTS': [0x50, 4, 'float'],
-    'TRV_DIR': [0x60, 1, 'int8_t'],
-    'TRV_ENG': [0x61, 1, 'bool'],
-    'USER_OVERRIDE': [0x63, 1, 'bool'],
-    'TRV_ZERO': [0x68, 1, 'bool'],
-    'TRV_MAX': [0x69, 1, 'bool'],
-    'PID_COEFF_P': [0x80, 4, 'float'],
-    'PID_COEFF_I': [0x84, 4, 'float'],
-    'BAT_RETCAP': [0x88, 8, 'double'],
-    'PID_COEFF_D': [0x90, 4, 'float'],
-    'PID_USED': [0x94, 4, 'float'],
-    'BATT_REPSOC': [0x98, 8, 'double'],
-    'BATT_VCELL': [0xA8, 8, 'double'],
-    'BATT_CURRENT': [0xB8, 8, 'double'],
-    'BATT_TTE': [0xC8, 8, 'double'],
-    'BATT_STATUS': [0xD8, 8, 'double'],
-    'YEAR_BUILT': [0xEF, 2, 'uint16_t'],
-    'SER_NUM': [0xF0, 8, 'str8'],
-    'SYS_ID': [0xE8, 8, 'str8'],
-    'FIRM_MAJ': [0xFA,2, 'uint16_t'],
-    'FIRM_MIN': [0xFC, 2, 'uint16_t'],
-    'FIRM_BUILD': [0xFE, 2, 'uint16_t'],
+    'VOL_SETPOINT_IN3': [0x00, 'float'],
+    'VAR_WRITE': [0x07, 'uint8_t'],
+    'VOL_TOTAL_IN3': [0x08, 'float'],
+    'HOUSING_IN3': [0x0C, 'float'],
+    'VOL_SMALL_PISTON_IN3': [0x18, 'float'],
+    'VOL_LARGE_PISTON_IN3': [0x1C,'float'],
+    'LEN_PISTON_IN': [0x20, 'float'],
+    'LEN_SMALL_PISTON_IN': [0x28, 'float'],
+    'LEN_LARGE_PISTON_IN': [0x2C, 'float'],
+    'AREA_SMALL_PISTON': [0x38, 'float'],
+    'AREA_LARGE_PISTON': [0x3C, 'float'],
+    'PST_POSTION_MIN': [0x40, 'float'],
+    'PST_POSITION_MAX': [0x44, 'float'],
+    'PST_RATE': [0x48, 'float'],
+    'PST_POSITION_IN' : [0x4C, 'float'],
+    'PST_ENC_COUNTS': [0x50, 'float'],
+    'TRV_DIR': [0x60, 'int8_t'],
+    'TRV_ENG': [0x61, 'bool'],
+    'USER_OVERRIDE': [0x63, 'bool'],
+    'TRV_ZERO': [0x68, 'bool'],
+    'TRV_MAX': [0x69, 'bool'],
+    'PID_COEFF_P': [0x80, 'float'],
+    'PID_COEFF_I': [0x84, 'float'],
+    'BAT_RETCAP': [0x88, 'double'],
+    'PID_COEFF_D': [0x90, 'float'],
+    'PID_USED': [0x94, 'float'],
+    'BATT_REPSOC': [0x98, 'double'],
+    'BATT_VCELL': [0xA8, 'double'],
+    'BATT_CURRENT': [0xB8, 'double'],
+    'BATT_TTE': [0xC8, 'double'],
+    'BATT_STATUS': [0xD8, 'double'],
+    'YEAR_BUILT': [0xEF, 'uint16_t'],
+    'SER_NUM': [0xF0, 'str8'],
+    'SYS_ID': [0xE8,'str8'],
+    'FIRM_MAJ': [0xFA, 'uint16_t'],
+    'FIRM_MIN': [0xFC,'uint16_t'],
+    'FIRM_BUILD': [0xFE,'uint16_t'],
 }
 
 memory = dict(sorted(memory.items(), key=lambda item: item[1], reverse=True))
@@ -54,47 +54,35 @@ def convert_memory_values(location, data):
         for key in memory:
             if (location) == memory[key][0]:
                 
-                if memory[key][2] == 'bool':
+                if memory[key][1] == 'bool':
+                    offset = 1
                     value = struct.unpack('>?', data[0])[0]
-                    mem[key] = value
-                    location += 1
-                    data[1:]
-                    break
-                elif memory[key][2] == 'uint8_t':
+                elif memory[key][1] == 'uint8_t':
+                    offset = 1
                     value = struct.unpack('>B', data[0])[0]
-                    mem[key] = value
-                    location += 1
-                    data = data[1:]
-                    break
-                elif memory[key][2] == 'int8_t':
+                elif memory[key][1] == 'int8_t':
+                    offset = 1
                     value = struct.unpack('>b', data[0])[0]
-                    mem[key] = value
-          
-                    location += 1
-                    data =data[1:]
-                    break
-                elif memory[key][2] == 'uint16_t':
-                    t_data = data[:2]
-                    value = struct.unpack('>H', t_data)
-                    mem[key] = value[0]
-                    location += 2
-                    data = data[2:]
-                    break
-                elif memory[key][2] == 'float':
-                    value = struct.unpack('>f', data[:4])
-                    mem[key] = value[0]
-                    location += 4
-                    data = data[4:]
-                    break
-                elif "str" in memory[key][2]:
-                    length = int(memory[key][2].replace('str',''))
-                    t_data = data[:length].decode('utf8')
-                    mem[key] = t_data
-                    location += length
-                    data = data[length:]
+                elif memory[key][1] == 'uint16_t':
+                    offset = 2
+                    value = struct.unpack('>H', data[:offset])[0]
+                elif memory[key][1] == 'float':
+                    offset = 4
+                    value = struct.unpack('>f', data[:offset])[0]
+                elif memory[key][1] == 'double':
+                    offset = 8
+                    value = struct.unpack('>d', data[:offset])[0]
+                elif "str" in memory[key][1]:
+                    offset = int(memory[key][1].replace('str',''))
+                    value = data[:offset].decode('utf8')
                 else:
-                    location += 1
-                    data = data[1:]
+                    offset = 1
+                    value = None
+                    
+                location += offset
+                data = data[offset:]
+                if value:
+                    mem[key] = value
                     break
         else:
             location += 1
@@ -109,12 +97,19 @@ if __name__ == "__main__":
     # location = 0xFA
     # mem = convert_memory_values(location, data)
     # print(mem)
-    data = [b'\xA5']
-    location = 0x07
-    mem = convert_memory_values(location, data)
-    pprint.pprint(mem)
+    # data = [b'\xA5']
+    # location = 0x07
+    # mem = convert_memory_values(location, data)
+    # pprint.pprint(mem)
 
-    data = b'\x42\x05\x33\x33'
-    location = 0x08
+    # data = b'\x42\x05\x33\x33'
+    # location = 0x08
+    # mem = convert_memory_values(location, data)
+    # pprint.pprint(mem)
+
+
+    data = b"\x00\x01\x00\x08\x00\x17"
+    location = 0xFA
+
+    # When: convert_memory_values is called
     mem = convert_memory_values(location, data)
-    pprint.pprint(mem)

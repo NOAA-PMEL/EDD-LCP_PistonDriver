@@ -83,3 +83,17 @@ def test_memory_map_convert_values_should_return_valid_vol_total_float():
     # Then: trv_eng should be True
     
     assert 33.3 == approx(mem['VOL_TOTAL_IN3'], abs=0.1)
+
+
+
+def test_memory_map_convert_values_should_return_valid_bat_retcap_double():
+    # Given: vol_total_in3 = 33.3
+    data = b'\x3f\xbe\xb8\x51\xeb\x85\x1e\xb8'
+    location = 0x88
+
+    # When: convert_memory_values is called
+    mem = convert_memory_values(location, data)
+
+    # Then: trv_eng should be True
+    
+    assert 0.12 == approx(mem['BAT_RETCAP'], abs=0.001)

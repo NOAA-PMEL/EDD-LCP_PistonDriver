@@ -27,7 +27,7 @@ class LCPCommand:
         self._i2c = i2cdriver.I2CDriver(port=port, speed=100, pullups=0)
         self._dev = device
 
-    def read_block(self, addr:int, length:int):
+    def read(self, addr:[int], length:int):
         assert addr <= 0x02FF
         assert length <= (0x02FF - addr)
 
@@ -42,7 +42,7 @@ class LCPCommand:
 
         return data
 
-    def write_block(self, addr:int, data:[int], length:int):
+    def write(self, addr:[int], data:[int], length:int):
         assert addr < MAX_ADDR_LOC
         assert len(data) <= (MAX_ADDR_LOC - addr)
 
@@ -52,3 +52,5 @@ class LCPCommand:
         self._i2c.start(self._dev, 0)
         self._i2c.write(data)
         self._i2c.stop()
+
+    def 
