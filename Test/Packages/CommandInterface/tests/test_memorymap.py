@@ -40,7 +40,7 @@ def test_memory_map_convert_value_should_return_valid_sys_id():
 
 def test_memory_map_convert_value_should_return_valid_trv_dir_int():
     # Given: trv_dir = -1
-    data = [b'\xFF']
+    data = b'\xFF'
     location = 0x60
 
     # When: convert_memory_values is called
@@ -51,7 +51,7 @@ def test_memory_map_convert_value_should_return_valid_trv_dir_int():
 
 def test_memory_map_convert_value_should_return_valid_trv_eng_bool():
     # Given: trv_eng = True
-    data = [b'\x01']
+    data = b'\x01'
     location = 0x61
 
     # When: convert_memory_values is called
@@ -63,7 +63,7 @@ def test_memory_map_convert_value_should_return_valid_trv_eng_bool():
 
 def test_memory_map_convert_values_should_return_valid_var_write_uint8():
     # Given: var_write = 0xA5
-    data = [b'\xA5']
+    data = b'\xA5'
     location = 0x07
 
     # When: convert_memory_values is called
@@ -96,4 +96,32 @@ def test_memory_map_convert_values_should_return_valid_bat_retcap_double():
 
     # Then: trv_eng should be True
     
+    assert 0.12 == approx(mem['BAT_RETCAP'], abs=0.001)
+
+
+def test_memory_map_convert_values_should_convert_entire_memory_block():
+    # Given: full memory block
+    data =  b'\x42\x05\x33\x33\x00\x00\x00\x77\x42\x05\x33\x33\x43\x00\xca\x3d'
+    data += b'\x00\x00\x00\x00\x00\x00\x00\x00\x41\xe6\x51\xec\x42\xc8\x00\x00'
+    data += b'\x41\x0e\x38\xda\x00\x00\x00\x00\x40\xb0\x00\x00\x40\x20\x00\x00'
+    data += b'\x00\x00\x00\x00\x00\x00\x00\x00\x3f\xb3\x33\x33\x41\x53\x33\x33'
+    data += b'\x3e\x19\x99\x9a\x41\x3b\x33\x33\x00\x00\x00\x00\x41\x00\x00\x00'
+    data += b'\x00\x01\xeb\x24\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    data += b'\xFF\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    data += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    data += b'\x3d\xfc\xb9\x24\x04\x01\x49\xbc\x3f\xbe\xb8\x51\xeb\x85\x1e\xb8'
+    data += b'\x43\x00\xc9\xad\x00\x00\x00\x00\x3f\xf0\x00\x00\x00\x00\x00\x00'
+    data += b'\x00\x00\x00\x00\x00\x00\x00\x00\x40\x2a\x93\xfa\x78\xac\x8f\x15'
+    data += b'\x00\x00\x00\x00\x00\x00\x00\x00\x3f\xbc\x71\xc7\x1c\x65\x8f\x9d'
+    data += b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+    data += b'\x00\x00\x00\x00\x00\x00\x00\x00\x41\x2e\xd3\x6a\x00\x00\x00\x00'
+    data += b'\x00\x00\x00\x00\x00\x00\x00\x00\x4c\x43\x50\x2d\x50\x49\x53\x00'
+    data += b'\x4c\x43\x50\x30\x30\x30\x31\x30\x07\xe5\x00\x01\x00\x08\x00\x17'
+    
+    location = 0x00
+
+    # When: convert_memory_values is called
+    mem = convert_memory_values(location, data)
+
+    # Then: trv_eng should be True
     assert 0.12 == approx(mem['BAT_RETCAP'], abs=0.001)
