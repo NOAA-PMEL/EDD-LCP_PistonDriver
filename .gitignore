@@ -106,6 +106,8 @@ Firmware/LCP_PistonDriver/vendor/
 Firmware/LCP_PistonDriver/config.h
 Firmware/LCP_PistonDriver/path.txt
 
+Backup*.*
+
 # Pressure Test Files
 Test/PressureVesselTest/
 
