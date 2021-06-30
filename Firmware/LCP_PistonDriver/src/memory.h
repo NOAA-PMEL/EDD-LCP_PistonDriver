@@ -45,64 +45,57 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
+
+
 
 /**********************************************************************************
 * Configuration Constants
 *********************************************************************************/
 #define MAP_VER     (0x01)
 
-// RAM0
-#define RAM0_VOL_TOTAL_IN3      (0x00)
-#define RAM0_VOL_SETPOINT_IN3   (0x04)
-#define RAM0_PST_POSITION_IN    (0x10)
-#define RAM0_PST_ENC_COUNTS     (0x14)
-#define RAM0_PST_RATE           (0x18)
-#define RAM0_TRV_DIR            (0x1C)
-#define RAM0_TRV_ENG            (0x1D)
-#define RAM0_TRV_ZERO           (0x1E)
-#define RAM0_TRV_MAX            (0x1F)
-#define RAM0_BAT_RETCAP         (0x20)
-#define RAM0_BAT_REPSOC         (0x28)
-#define RAM0_BAT_VCELL          (0x30)
-#define RAM0_BAT_CURRENT        (0x38)
-#define RAM0_BAT_TTE            (0x40)
-#define RAM0_BAT_STATUS         (0x48)
-#define RAM0_SYS_ID             (0x80)
-#define RAM0_SER_NUM            (0x82)
-#define RAM0_FIRM_MAJ           (0x84)
-#define RAM0_FIRM_MIN           (0x85)
-#define RAM0_FIRM_BUILD         (0x86)
 
-// RAM1
-#define RAM1_VOL_TOTAL_IN3      (0x00)
-#define RAM1_VOL_SETPOINT_IN3   (0x04)
-#define RAM1_VOL_SMALL_PISTON_IN3   (0x08)
-#define RAM1_VOL_LARGE_PISTON_IN3   (0x0C)
-#define RAM1_HOUSING_IN3        (0x10)
-#define RAM1_AREA_SMALL_PISTON_IN2  (0x14)
-#define RAM1_AREA_LARGE_PISTON_IN2  (0x18)
-#define RAM1_LEN_PISTON_IN          (0x20)
-#define RAM1_LEN_SMALL_PISTON_IN    (0x24)
-#define RAM1_LEN_LARGE_PISTON_IN    (0x2C)
-#define RAM1_PST_POSITION_MIN       (0x30)
-#define RAM1_PST_POSITION_MAX       (0x34)
-#define RAM1_PST_RATE           (0x80)
-#define RAM1_TRV_DIR            (0x84)
-#define RAM1_TRV_ENG            (0x85)
-#define RAM1_TRV_ZERO           (0x86)
-#define RAM1_TRV_MAX            (0x87)
-#define RAM1_PID_COEFF_P        (0xC0)
-#define RAM1_PID_COEFF_I        (0xC4)
-#define RAM1_PID_COEFF_D        (0xC8)
-#define RAM1_PID_USED           (0xCC)
+#define RAM_VOL_SETPOINT_IN3 0x00
+#define RAM_VAR_WRITE 0x07  
+#define RAM_VOL_TOTAL_IN3 0x08  
+#define RAM_VOL_HOUSING_IN3 0x0C  
+#define RAM_VOL_SMALL_PISTON_IN3 0x18  
+#define RAM_VOL_LARGE_PISTON_IN3 0x1C 
+#define RAM_LEN_SETPOINT_IN 0x20  
+#define RAM_LEN_TOTAL_IN 0x28  
+#define RAM_LEN_SMALL_PISTON_IN 0x38  
+#define RAM_LEN_LARGE_PISTON_IN 0x3C  
+#define RAM_AREA_SMALL_PISTON 0x48  
+#define RAM_AREA_LARGE_PISTON 0x4C  
+#define RAM_PST_POSTION_MIN 0x40  
+#define RAM_PST_POSITION_MAX 0x44  
+#define RAM_PST_RATE 0x48  
+#define RAM_PST_POSITION_IN
+#define RAM_PST_ENC_COUNTS 0x50  
+#define RAM_TRV_DIR 0x60  
+#define RAM_TRV_ENG 0x61  
+#define RAM_USER_OVERRIDE 0x63  
+#define RAM_TRV_ZERO 0x68  
+#define RAM_TRV_FULL 0x69  
+#define RAM_TRV_MIN 0x6A  
+#define RAM_TRV_MAX 0x6B  
+#define RAM_PID_COEFF_P 0x80  
+#define RAM_PID_COEFF_I 0x84  
+#define RAM_BAT_RETCAP 0x88  
+#define RAM_PID_COEFF_D 0x90  
+#define RAM_PID_USED 0x94  
+#define RAM_BAT_REPSOC 0x98  
+#define RAM_BAT_VCELL 0xA8  
+#define RAM_BAT_CURRENT 0xB8  
+#define RAM_BAT_TTE 0xC8  
+#define RAM_BAT_STATUS 0xD8  
+#define RAM_YEAR_BUILT 0xEF  
+#define RAM_SER_NUM 0xF0  
+#define RAM_SYS_ID 0xE8 
+#define RAM_FIRM_MAJ 0xFA  
+#define RAM_FIRM_MIN 0xFC 
+#define RAM_FIRM_BUILD 0xFE 
 
-// RAM2
-#define RAM2_BAT_RETCAP         (0x00)
-#define RAM2_BAT_REPSOC         (0x08)
-#define RAM2_BAT_VCELL          (0x10)
-#define RAM2_BAT_CURRENT        (0x18)
-#define RAM2_BAT_TTE            (0x20)
-#define RAM2_BAT_STATUS         (0x28)
  
 /**********************************************************************************
 * MACROS
@@ -125,76 +118,56 @@
 #endif
 #endif
 
+
+#define VAR_WRITE_KEY   (0xA5)
+
 /**********************************************************************************
 * Typdefs
 *********************************************************************************/
-typedef enum eRamTypes {
-    MEM_RAM_0,
-    MEM_RAM_1,
-    MEM_RAM_2
-}eRamTypes_t;
+typedef struct sRAM {
+    
+    volatile float *VOL_setpoint;
+    volatile uint8_t *VAR_write;
+    volatile float *VOL_total;
+    volatile float *VOL_housing;
+    volatile float *VOL_small_piston;
+    volatile float *VOL_large_piston;
+    volatile float *LEN_setpoint;
+    volatile float *LEN_total;
+    volatile float *LEN_small_piston;
+    volatile float *LEN_large_piston;
+    volatile float *ARE_small_piston;
+    volatile float *ARE_large_piston;
+    volatile float *PST_position_min;
+    volatile float *PST_position_max;
+    volatile float *PST_rate;
+    volatile float *PST_position;
+    volatile uint32_t *PST_enc_counts;
+    volatile int8_t *TRV_dir;
+    volatile uint8_t *TRV_eng;
+    volatile uint8_t *USR_override;
+    volatile uint8_t *TRV_zero;
+    volatile uint8_t *TRV_full;
+    volatile uint8_t *TRV_min;
+    volatile uint8_t *TRV_max;
+    volatile float *PID_coeff_p;
+    volatile float *PID_coeff_i;
+    volatile float *PID_coeff_d;
+    volatile uint8_t *PID_used;
+    volatile double *BAT_retcap;
+    volatile double *BAT_repsoc;
+    volatile double *BAT_vcell;
+    volatile double *BAT_current;
+    volatile double *BAT_tte;
+    volatile double *BAT_status;
+    volatile uint16_t *SYS_year_built;
+    volatile uint8_t *SYS_firm_maj;
+    volatile uint8_t *SYS_firm_min;
+    volatile char *SYS_ser_num;
+    volatile char *SYS_id;
+    volatile char *SYS_firm_build;
+}sRAM_t;
 
-typedef struct sRAM0 {
-    float *VOL_total_in3;
-    float *VOL_setpoint_in3;
-    float *PST_Position_in;
-    float *PST_Enc_Counts;
-    float *PST_Rate;
-    uint8_t *TRV_Dir;
-    uint8_t *TRV_Eng;
-    uint8_t *TRV_Zero;
-    uint8_t *TRV_Max;
-    double *BAT_RetCAP;
-    double *BAT_RepSOC;
-    double *BAT_VCell;
-    double *BAT_Current;
-    double *BAT_TTE;
-    uint16_t *BAT_Status;
-    uint16_t *SYS_ID;
-    uint16_t *SER_NUM;
-    uint8_t *FIRM_Maj;
-    uint8_t *FIRM_Min;
-    char *FIRM_Build[6];
-}sRAM0_t;
-
-typedef struct sRAM1 {
-    float *VOL_Total_in3;
-    float *VOL_Setpoint_in3;
-    float *VOL_Small_Piston_in3;
-    float *VOL_Large_Piston_in3;
-    float *VOL_Housing_in3;
-    float *AREA_Small_Piston_in2;
-    float *AREA_Large_Piston_in2;
-    float *LEN_Piston_in;
-    float *LEN_Small_Piston_in;
-    float *LEN_Large_Piston_in;
-    float *PST_Position_Min;
-    float *PST_Position_Max;
-    float *PST_Rate;
-    uint8_t *TRV_Dir;
-    uint8_t *TRV_Eng;
-    uint8_t *TRV_Zero;
-    uint8_t *TRV_Max;
-    float *PID_Coeff_P;
-    float *PID_Coeff_I;
-    float *PID_Coeff_D;
-    uint8_t *PID_Used;
-}sRAM1_t;
-
-typedef struct sRAM2 {
-    double *BAT_RetCAP;
-    double *BAT_RepSOC;
-    double *BAT_VCell;
-    double *BAT_Current;
-    double *BAT_TTE;
-    uint16_t *BAT_Status;
-}sRAM2_t;
-
-typedef struct sMemory {
-    sRAM0_t *RAM0;
-    sRAM1_t *RAM1;
-    sRAM2_t *RAM2;
-}sMemory_t;
 /**********************************************************************************
 * Variables
 *********************************************************************************/
@@ -206,12 +179,75 @@ typedef struct sMemory {
 extern "C"{
 #endif
 void MEM_Init(void);
-void MEM_Write_RAM_Struct(
-                        eRamTypes_t select,
-                        uint8_t location,
-                        uint8_t value[], 
-                        uint16_t len
-                        );
+void MEM_clear_temp(void);
+void MEM_Write(void);
+
+uint8_t* MEM_Get_Write_Addr(uint16_t offset);
+uint8_t* MEM_Get_Read_Addr(uint16_t offset);
+
+void MEM_Set_VOL_Setpoint(float value);
+void MEM_Set_LEN_Setpoint(float value);
+void MEM_Set_PST_Position_Min(float value);
+void MEM_Set_PST_Position_Max(float value);
+void MEM_Set_PID_Coeff_P(float value);
+void MEM_Set_PID_Coeff_I(float value);
+void MEM_Set_PID_Coeff_D(float value);
+void MEM_Set_PID_Used(bool used);
+void MEM_Set_Var_Write(uint8_t value);
+void MEM_Set_User_Override(bool value);
+void MEM_Set_Travel_Direction(int8_t dir);
+void MEM_Set_Travel_Engage(bool state);
+void MEM_Set_Serial_Number(char *value);
+
+
+uint8_t MEM_Get_VAR_Write(void);
+bool MEM_Get_USR_Override(void);
+
+float MEM_Get_VOL_Setpoint(void);
+float MEM_Get_VOL_Total(void);
+float MEM_Get_VOL_Housing(void);
+float MEM_Get_VOL_Small_Piston(void);
+float MEM_Get_VOL_Large_Piston(void);
+
+float MEM_Get_LEN_Setpoint(void);
+float MEM_Get_LEN_Total(void);
+float MEM_Get_LEN_Small_Piston(void);
+float MEM_Get_LEN_Large_Piston(void);
+
+float MEM_Get_AREA_Small_Piston(void);
+float MEM_Get_AREA_Large_Piston(void);
+
+float MEM_Get_PST_Position_Min(void);
+float MEM_Get_PST_Position_Max(void);
+uint32_t MEM_Get_PST_Encoder_Counts(void);
+float MEM_Get_PST_Rate(void);
+float MEM_Get_PST_Position(void);
+
+int8_t MEM_Get_TRV_Direction(void);
+bool MEM_Get_TRV_Engaged(void);
+bool MEM_Get_TRV_Zero(void);
+bool MEM_Get_TRV_Full(void);
+bool MEM_Get_TRV_Min(void);
+bool MEM_Get_TRV_Max(void);
+
+double MEM_Get_BAT_Retcap(void);
+double MEM_Get_BAT_Repsoc(void);
+double MEM_Get_BAT_Vcell(void);
+double MEM_Get_BAT_Current(void);
+double MEM_Get_BAT_Status(void);
+void MEM_Get_SYS_Id(char* value);
+uint16_t MEM_Get_SYS_Year_Built(void);
+uint8_t MEM_Get_SYS_Firmware_Major(void);
+uint8_t MEM_Get_SYS_Firmware_Minor(void);
+uint32_t MEM_Get_SYS_Firmware_Build(void);
+
+float MEM_Get_PID_Coeff_P(void);
+float MEM_Get_PID_Coeff_I(void);
+float MEM_Get_PID_Coeff_D(void);
+float MEM_Get_PID_Used(void);
+
+void MEM_Get_SYS_Serial_Number(char* value);
+
 
 /**********************************************************************************
 * Unit Test Variables & Static Prototpyes

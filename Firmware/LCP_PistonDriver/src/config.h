@@ -7,6 +7,7 @@
 #define MD_CONFIG_MODE_PWM
 
 #define FIRMWARE        ("v0.1")
+#define SYS_ID          ("LCPPST01")
 
 
 /** Piston Settings */

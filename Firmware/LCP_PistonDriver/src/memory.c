@@ -6,9 +6,19 @@
 * Includes
 *********************************************************************************/
 #include "memory.h"
+#include <assert.h>>
+
 /**********************************************************************************
 * Preprocessor Constants
 *********************************************************************************/
+#define HOUSING_VOLUME      ( 10f )    
+#define MINIMUM_TOTAL_VOLUME      (HOUSING_VOLUME)
+#define MAXIMUM_SMALL_VOLUME        ( 20f )
+#define MAXIMUM_LARGE_VOLUME        ( 50f )
+#define MAXIMUM_TOTAL_VOLUME        ( HOUSING_VOLUME + MAXIMUM_SMALL_VOLUME + MAXIMUM_LARGE_VOLUME)
+
+#define MINIMUM_TOTAL_LENGTH        ( 0.0f )
+#define MAXIMUM_TOTAL_LENGTH        (11.77f)
 
 /**********************************************************************************
 * Preprocessor Macros
@@ -17,144 +27,454 @@
 /**********************************************************************************
 * Module Variable Definitions
 *********************************************************************************/
-STATIC uint8_t ram0_array[256];
-STATIC uint8_t ram1_array[256];
-STATIC uint8_t ram2_array[256];
+STATIC volatile uint8_t storage_ram[256];
+STATIC volatile uint8_t temp_ram[512];  /** 512 to allow for 256 buffer overrun without failure */
 
 /**********************************************************************************
 * Module Typedefs
 *********************************************************************************/
-STATIC sRAM0_t RAM0 = {
-    .VOL_total_in3 = (float*) &ram0_array[RAM0_VOL_TOTAL_IN3],
-    .VOL_setpoint_in3 = (float*) &ram0_array[RAM0_VOL_SETPOINT_IN3],
-    .PST_Position_in = (float*) &ram0_array[RAM0_PST_POSITION_IN],
-    .PST_Enc_Counts = (float*) &ram0_array[RAM0_PST_ENC_COUNTS],
-    .PST_Rate = (float*) &ram0_array[RAM0_PST_RATE],
-    .TRV_Dir = (uint8_t*) &ram0_array[RAM0_TRV_DIR],
-    .TRV_Eng = (uint8_t*) &ram0_array[RAM0_TRV_ENG],
-    .TRV_Zero = (uint8_t*) &ram0_array[RAM0_TRV_ZERO],
-    .TRV_Max = (uint8_t*) &ram0_array[RAM0_TRV_MAX],
-    .BAT_RetCAP = (double*) &ram0_array[RAM0_BAT_RETCAP],
-    .BAT_RepSOC = (double*) &ram0_array[RAM0_BAT_REPSOC],
-    .BAT_VCell = (double*) &ram0_array[RAM0_BAT_VCELL],
-    .BAT_Current = (double*) &ram0_array[RAM0_BAT_CURRENT],
-    .BAT_TTE = (double*) &ram0_array[RAM0_BAT_TTE],
-    .BAT_Status = (uint16_t*) &ram0_array[RAM0_BAT_STATUS],
-    .SYS_ID = (uint16_t*) &ram0_array[RAM0_SYS_ID],
-    .SER_NUM = (uint16_t*) &ram0_array[RAM0_SER_NUM],
-    .FIRM_Maj = (uint8_t*) &ram0_array[RAM0_FIRM_MAJ],
-    .FIRM_Min = (uint8_t*) &ram0_array[RAM0_FIRM_MIN],
-    .FIRM_Build = (char*) &ram0_array[RAM0_FIRM_BUILD]
+STATIC sRAM_t RAM = {
+    .VOL_setpoint = (float*) &storage_ram[RAM_VOL_SETPOINT_IN3],
+    .VOL_total = (float*) &storage_ram[RAM_VOL_TOTAL_IN3],
+    .VAR_write = (uint8_t*) &storage_ram[RAM_VAR_WRITE],
+    .VOL_housing = (float*) &storage_ram[RAM_VOL_HOUSING_IN3],
+    .VOL_small_piston = (float*) &storage_ram[RAM_VOL_SMALL_PISTON_IN3],
+    .VOL_large_piston = (float*) &storage_ram[RAM_VOL_LARGE_PISTON_IN3],
+    .LEN_setpoint = (float*) &storage_ram[RAM_LEN_SETPOINT_IN],
+    .LEN_total = (float*) &storage_ram[RAM_LEN_TOTAL_IN],
+    .LEN_small_piston = (float*) &storage_ram[RAM_LEN_SMALL_PISTON_IN],
+    .LEN_large_piston = (float*) &storage_ram[RAM_LEN_LARGE_PISTON_IN],
+    .ARE_small_piston = (float*) &storage_ram[RAM_AREA_SMALL_PISTON],
+    .ARE_large_piston = (float*) &storage_ram[RAM_AREA_LARGE_PISTON],
+    .PST_position_min = (float*) &storage_ram[RAM_PST_POSTION_MIN],
+    .PST_position_max = (float*) &storage_ram[RAM_PST_POSITION_MAX],
+    .PST_rate = (float*) &storage_ram[RAM_PST_RATE],
+    .PST_position = (float*) &storage_ram[RAM_PST_POSITION_IN],
+    .PST_enc_counts = (uint32_t*) &storage_ram[RAM_PST_ENC_COUNTS],
+    .TRV_dir = (int8_t *) &storage_ram[RAM_TRV_DIR],
+    .TRV_eng = (uint8_t*) &storage_ram[RAM_TRV_ENG],
+    .USR_override = (uint8_t*) &storage_ram[RAM_USER_OVERRIDE],
+    .TRV_zero = (uint8_t*) &storage_ram[RAM_TRV_ZERO],
+    .TRV_full = (uint8_t*) &storage_ram[RAM_TRV_FULL],
+    .TRV_min = (uint8_t*) &storage_ram[RAM_TRV_MIN],
+    .TRV_max = (uint8_t*) &storage_ram[RAM_TRV_MAX],
+    .PID_coeff_p = (float*) &storage_ram[RAM_PID_COEFF_P],
+    .PID_coeff_i = (float*) &storage_ram[RAM_PID_COEFF_I],
+    .PID_coeff_d = (float*) &storage_ram[RAM_PID_COEFF_D],
+    .PID_used = (uint8_t*) &storage_ram[RAM_PID_USED],
+    .BAT_retcap = (double*) &storage_ram[RAM_BAT_RETCAP],
+    .BAT_repsoc = (double*) &storage_ram[RAM_BAT_REPSOC],
+    .BAT_vcell = (double*) &storage_ram[RAM_BAT_VCELL],
+    .BAT_current = (double*) &storage_ram[RAM_BAT_CURRENT],
+    .BAT_tte = (double*) &storage_ram[RAM_BAT_TTE],
+    .BAT_status = (double*) &storage_ram[RAM_BAT_STATUS],
+    .SYS_year_built = (uint16_t*) &storage_ram[RAM_YEAR_BUILT],
+    .SYS_firm_maj = (uint8_t*) &storage_ram[RAM_FIRM_MAJ],
+    .SYS_firm_min = (uint8_t*) &storage_ram[RAM_FIRM_MIN],
+    .SYS_ser_num = (char*) &storage_ram[RAM_SER_NUM],
+    .SYS_id = (char*) &storage_ram[RAM_SYS_ID],
+    .SYS_firm_build = (char*) &storage_ram[RAM_FIRM_BUILD],
 };
-STATIC sRAM0_t *pRAM0_addr = &RAM0;
+
+STATIC sRAM_t CMDRAM = {
+    .VOL_setpoint = (float*) &temp_ram[RAM_VOL_SETPOINT_IN3],
+    .VOL_total = (float*) &temp_ram[RAM_VOL_TOTAL_IN3],
+    .VAR_write = (uint8_t*) &temp_ram[RAM_VAR_WRITE],
+    .VOL_housing = (float*) &temp_ram[RAM_VOL_HOUSING_IN3],
+    .VOL_small_piston = (float*) &temp_ram[RAM_VOL_SMALL_PISTON_IN3],
+    .VOL_large_piston = (float*) &temp_ram[RAM_VOL_LARGE_PISTON_IN3],
+    .LEN_setpoint = (float*) &temp_ram[RAM_LEN_SETPOINT_IN],
+    .LEN_total = (float*) &temp_ram[RAM_LEN_TOTAL_IN],
+    .LEN_small_piston = (float*) &temp_ram[RAM_LEN_SMALL_PISTON_IN],
+    .LEN_large_piston = (float*) &temp_ram[RAM_LEN_LARGE_PISTON_IN],
+    .ARE_small_piston = (float*) &temp_ram[RAM_AREA_SMALL_PISTON],
+    .ARE_large_piston = (float*) &temp_ram[RAM_AREA_LARGE_PISTON],
+    .PST_position_min = (float*) &temp_ram[RAM_PST_POSTION_MIN],
+    .PST_position_max = (float*) &temp_ram[RAM_PST_POSITION_MAX],
+    .PST_rate = (float*) &temp_ram[RAM_PST_RATE],
+    .PST_position = (float*) &temp_ram[RAM_PST_POSITION_IN],
+    .PST_enc_counts = (uint32_t*) &temp_ram[RAM_PST_ENC_COUNTS],
+    .TRV_dir = (int8_t *) &temp_ram[RAM_TRV_DIR],
+    .TRV_eng = (uint8_t*) &temp_ram[RAM_TRV_ENG],
+    .USR_override = (uint8_t*) &temp_ram[RAM_USER_OVERRIDE],
+    .TRV_zero = (uint8_t*) &temp_ram[RAM_TRV_ZERO],
+    .TRV_full = (uint8_t*) &temp_ram[RAM_TRV_FULL],
+    .TRV_min = (uint8_t*) &temp_ram[RAM_TRV_MIN],
+    .TRV_max = (uint8_t*) &temp_ram[RAM_TRV_MAX],
+    .PID_coeff_p = (float*) &temp_ram[RAM_PID_COEFF_P],
+    .PID_coeff_i = (float*) &temp_ram[RAM_PID_COEFF_I],
+    .PID_coeff_d = (float*) &temp_ram[RAM_PID_COEFF_D],
+    .PID_used = (uint8_t*) &temp_ram[RAM_PID_USED],
+    .BAT_retcap = (double*) &temp_ram[RAM_BAT_RETCAP],
+    .BAT_repsoc = (double*) &temp_ram[RAM_BAT_REPSOC],
+    .BAT_vcell = (double*) &temp_ram[RAM_BAT_VCELL],
+    .BAT_current = (double*) &temp_ram[RAM_BAT_CURRENT],
+    .BAT_tte = (double*) &temp_ram[RAM_BAT_TTE],
+    .BAT_status = (double*) &temp_ram[RAM_BAT_STATUS],
+    .SYS_year_built = (uint16_t*) &temp_ram[RAM_YEAR_BUILT],
+    .SYS_firm_maj = (uint8_t*) &temp_ram[RAM_FIRM_MAJ],
+    .SYS_firm_min = (uint8_t*) &temp_ram[RAM_FIRM_MIN],
+    .SYS_ser_num = (char*) &temp_ram[RAM_SER_NUM],
+    .SYS_id = (char*) &temp_ram[RAM_SYS_ID],
+    .SYS_firm_build = (char*) &temp_ram[RAM_FIRM_BUILD],
+};
 
 
-STATIC sRAM1_t RAM1 = {
-    .VOL_Total_in3 = (float*) &ram1_array[RAM1_VOL_TOTAL_IN3],
-    .VOL_Setpoint_in3 = (float*) &ram1_array[RAM1_VOL_SETPOINT_IN3],
-    .VOL_Small_Piston_in3 = (float*) &ram1_array[RAM1_VOL_SMALL_PISTON_IN3],
-    .VOL_Large_Piston_in3 = (float*) &ram1_array[RAM1_VOL_LARGE_PISTON_IN3],
-    .VOL_Housing_in3 = (float*) &ram1_array[RAM1_HOUSING_IN3],
-    .AREA_Small_Piston_in2 = (float*) &ram1_array[RAM1_AREA_SMALL_PISTON_IN2],
-    .AREA_Large_Piston_in2 = (float*) &ram1_array[RAM1_AREA_LARGE_PISTON_IN2],
-    .LEN_Piston_in = (float*) &ram1_array[RAM1_LEN_PISTON_IN],
-    .LEN_Small_Piston_in = (float*) &ram1_array[RAM1_LEN_SMALL_PISTON_IN],
-    .LEN_Large_Piston_in = (float*) &ram1_array[RAM1_LEN_LARGE_PISTON_IN],
-    .PST_Position_Min = (float*) &ram1_array[RAM1_PST_POSITION_MIN],
-    .PST_Position_Max = (float*) &ram1_array[RAM1_PST_POSITION_MAX],
-    .PST_Rate = (float*) &ram1_array[RAM1_PST_RATE],
-    .TRV_Dir= (uint8_t*) &ram1_array[RAM1_TRV_DIR],
-    .TRV_Eng= (uint8_t*) &ram1_array[RAM1_TRV_ENG],
-    .TRV_Zero = (uint8_t*) &ram1_array[RAM1_TRV_ZERO],
-    .TRV_Max = (uint8_t*) &ram1_array[RAM1_TRV_MAX],
-    .PID_Coeff_P = (float*) &ram1_array[RAM1_PID_COEFF_P],
-    .PID_Coeff_I = (float*) &ram1_array[RAM1_PID_COEFF_I],
-    .PID_Coeff_D = (float*) &ram1_array[RAM1_PID_COEFF_D],
-    .PID_Used = (uint8_t*) &ram1_array[RAM1_PID_USED],
-};
-STATIC sRAM1_t *pRAM1_addr = &RAM1;
-
-STATIC sRAM2_t RAM2 = {
-    .BAT_RetCAP = (double*)&ram2_array[RAM2_BAT_RETCAP],
-    .BAT_RepSOC = (double*)&ram2_array[RAM2_BAT_REPSOC],
-    .BAT_VCell = (double*)&ram2_array[RAM2_BAT_VCELL],
-    .BAT_Current = (double*)&ram2_array[RAM2_BAT_CURRENT],
-    .BAT_TTE = (double*)&ram2_array[RAM2_BAT_TTE],
-    .BAT_Status = (uint16_t*)&ram2_array[RAM2_BAT_STATUS],
-};
-STATIC sRAM2_t *pRAM2_addr = &RAM2;
-
-STATIC sMemory_t PistonProtocolRam = {
-    .RAM0 = &RAM0,
-    .RAM1 = &RAM1,
-    .RAM2 = &RAM2
-};
+const uint8_t* preadram = &storage_ram[0];
+const uint8_t* pwriteram = &temp_ram[0];
 
 /**********************************************************************************
-* Function Prototypes
+*  Static Function Definitions
 *********************************************************************************/
+STATIC void MEM_compare_ram(void)
+{
+    
+}
+
 
 /**********************************************************************************
 * Function Definitions
 *********************************************************************************/
 void MEM_Init(void)
 {
-
+    memset(temp_ram, 0u, 256);
 }
 
-void MEM_Write_RAM_Struct(
-                        eRamTypes_t select,
-                        uint8_t location,
-                        uint8_t value[], 
-                        uint16_t len
-                        )
+void MEM_clear_temp(void)
 {
-    switch(select)
+    memet(temp_ram, 0, 256);
+}
+
+void MEM_Write(void)
+{
+    uint8_t map[8];
+    memset(map, 0u, 8);
+
+    /** Compare the next two comparisons for time.  Use the first if close, since
+     * it only checks the read only variables */
+    /** #1 - Start Timing*/
+    int16_t cmpval = 0;
+    uint8_t idx = 0u;
+    uint8_t len = 0u;
+    for(uint8_t i=0x00; i<=0xF0; i+=0x10)
     {
-        case MEM_RAM_0:
-            memcpy(&ram0_array[location], value, len);
-            break;
-        case MEM_RAM_1:
-            memcpy(&ram1_array[location], value, len);
-            break;
-        case MEM_RAM_2:
-            memcpy(&ram2_array[location], value, len);
-            break;
-        default:
-            break;
+        for(uint8_t j=0x00; i<0x08; i++)
+        {
+            
+            cmpval += memcmp(&temp_ram[i], &storage_ram[i], j);
+        }
+    }
+    /** #1 - Stop Timing */
+    /** #2 - Start Timing*/
+    cmpval = memcmp(temp_ram, temp_ram, 256); 
+    
+    /** #2 - Stop Timing */
+    if(cmpval != 0)
+    {   
+        /** Check that system is in write mode */
+        if( (RAM.VAR_write != VAR_WRITE_KEY) )
+        {
+
+            if(CMDRAM.VAR_write == VAR_WRITE_KEY)
+            {
+                RAM.VAR_write = VAR_WRITE_KEY;
+            } else 
+            {
+                return;
+            }
+        }
+
+        /** Compare the Piston Min Values */
+        if(RAM.PST_position_min != CMDRAM.PST_position_min)
+        {
+            MEM_Set_PST_Position_Min(CMDRAM.PST_position_min);
+        } 
+
+        /** Compare the Piston Max Values */
+        if(RAM.PST_position_max  != CMDRAM.PST_position_max)
+        {
+            MEM_Set_PST_Position_Max(CMDRAM.PST_position_max);
+        }
+
+        /** Compare the PID Coeff P */
+        if(RAM.PID_coeff_p != CMDRAM.PID_coeff_p)
+        {
+            MEM_Set_PID_Coeff_P(CMDRAM.PID_coeff_p);
+        }
+
+        /** Compare the PID Coeff i */
+        if(RAM.PID_coeff_i != CMDRAM.PID_coeff_i)
+        {
+            MEM_Set_PID_Coeff_I(CMDRAM.PID_coeff_i);    
+        }
+
+        /** Compare the PID Coeff D */
+        if(RAM.PID_coeff_d != CMDRAM.PID_coeff_d)
+        {
+            MEM_Set_PID_Coeff_D(CMDRAM.PID_coeff_d);
+        }
+
+        /** Compare the PID USED Value */
+        if(RAM.PID_used != CMDRAM.PID_used)
+        {
+
+            MEM_Set_PID_Used(CMDRAM.PID_used);
+        }
+
+        /** Compare the SERIAL Number */
+        if(RAM.SYS_ser_num != CMDRAM.SYS_ser_num)
+        {
+            MEM_Set_Serial_Number(CMDRAM.SYS_ser_num);
+        }
+
+       
+
+        /** Compare the Volume Setpoints.  If that hasn't changed, comparet the Length Setpoint */
+        if(RAM.VOL_setpoint != CMDRAM.VOL_setpoint)
+        {
+            /** Set the LENGTH to move to */
+            MEM_Set_VOL_Setpoint(CMDRAM.VOL_setpoint);
+        } else if (RAM.LEN_setpoint != CMDRAM.LEN_setpoint)
+        {
+            MEM_Set_LEN_Setpoint(CMDRAM.LEN_setpoint);
+        }
+
+        /** Are we in USER OVERRIDE mode? */
+        if(RAM.USR_override != true)
+        {
+            MEM_Set_User_Override(CMDRAM.USR_override);
+            return;
+        }
+
+        /** User Override Commands below */
+        /** Compare the travel direction */
+        if(RAM.TRV_dir != CMDRAM.TRV_dir)
+        {
+            MEM_Set_Travel_Direction(CMDRAM.TRV_dir);
+        }
+
+        /** Compare the travel engaged command */
+        if(RAM.TRV_eng != CMDRAM.TRV_eng)
+        {
+            MEM_Set_Travel_Engage(CMDRAM.TRV_eng);
+        }
+    }
+
+    /** Clear the temp ram for next call */
+    memset(temp_ram, 0u, 256);
+}
+
+uint8_t* MEM_Get_Write_Addr(uint16_t offset)
+{
+    assert(offset<256);
+    return preadram + offset;
+}
+
+uint8_t* MEM_Get_Read_Addr(uint16_t offset)
+{
+    assert(offset < 256);
+    return pwriteram + offset;
+}
+
+
+void MEM_Set_VOL_Setpoint(float value)
+{
+    if((MINIMUM_TOTAL_VOLUME <= value) && (MAXIMUM_LARGE_VOLUME >= value))
+    {
+        /** @todo Call the volume setpoint routine */
+
+        /** Update the RAM */
+        RAM.VOL_setpoint = value;
+    } else {
+        /** Raise value error */
+    }
+}
+
+void MEM_Set_LEN_Setpoint(float value)
+{
+    if((RAM.PST_position_min <= value) && (RAM.PST_position_max >= value))
+    {
+        /** @todo Call the length setpoint routine */
+
+        /** Update the RAM */
+        RAM.LEN_setpoint = value;
+    } else {
+        /** Raise value error */
+    }
+}
+
+void MEM_Set_PST_Position_Min(float value)
+{
+    if((MINIMUM_TOTAL_LENGTH <= value) && (MAXIMUM_TOTAL_LENGTH >= value))
+    {
+        /** @todo Call the length setpoint routine */
+
+        /** Update the RAM */
+        RAM.LEN_setpoint = value;
+    } else {
+        /** Raise value error */
+    }
+}
+
+void MEM_Set_PST_Position_Max(float value)
+{
+    if((MINIMUM_TOTAL_LENGTH <= value) && (MAXIMUM_TOTAL_LENGTH >= value))
+    {
+        /** @todo Call the maximum position function */
+
+        /** Update the RAM */
+        RAM.LEN_setpoint = value;
+    } else {
+        /** Raise value error */
+    }
+}
+
+
+void MEM_Set_PID_Coeff_P(float value)
+{
+    /** @todo Call the PID P Function */
+
+    /** Update the RAM */
+    RAM.PID_coeff_p = value;
+}
+
+void MEM_Set_PID_Coeff_I(float value)
+{
+    /** @todo Call the PID I Function */
+
+    /** Update the RAM */
+    RAM.PID_coeff_i = value;
+}
+
+void MEM_Set_PID_Coeff_D(float value)
+{
+    /** @todo Call the PID D Function */
+
+    /** Update the RAM */
+    RAM.PID_coeff_d = value;
+}
+
+void MEM_Set_PID_Used(bool used)
+{
+    /** @todo Call the PID Used function */
+
+    /** Update the RAM */
+    RAM.PID_used = (uint8_t) used;
+}
+
+void MEM_Set_Var_Write(uint8_t value)
+{
+    /** Validate the Value */
+    if(value == VAR_WRITE_KEY)
+    {
+        RAM.VAR_write = value;
+    } else {
+        RAM.VAR_write = 0u;
+    }
+}
+
+void MEM_Set_User_Override(bool value)
+{
+    RAM.USR_override = value;
+}
+
+void MEM_Set_Travel_Direction(int8_t dir)
+{
+    /** Check User Override Mode */
+    if(RAM.USR_override != true)
+    {
+        return;
+    }
+
+    /** Set commanded direction */
+    if( value == -1 )
+    {
+        /** @todo Call the piston retract routine */
+    } else if( value == 1)
+    {
+        /** @todo Call the piston extend routine */
+
+    } else {
+        return;
+    }
+    /** Update the RAM */
+    RAM.TRV_dir = value;
+}
+
+void MEM_Set_Travel_Engage(bool state)
+{    
+    /** Check User Override Mode */
+    if(RAM.USR_override != true)
+    {
+        return;
+    }
+
+    /** Set commanded state */
+    if(state)
+    {
+        /** @todo Call the piston engage function */
+    } else {
+        /** @todo Call the piston stop function */
     }
     
-    for(uint16_t i=location; i<8; i++)
-    {
-      printf("%lf\n", RAM2.BAT_RepSOC);
-    }
-
 }
-/**********************************************************************************
-* Function: MEM_Read_
-*
-*//**
-* \b Description:
-* 
-* This function does XXX, YYY & ZZZ
-* 
-* PRE-CONDITION: None
-* 
-* POST-CONDITION: None
-* 
-* @param None
-* 
-* @return void
-* 
-* \b Example:
-* @code
-* MOD_Init();
-* printf("Module is initialized!\n");
-* @endcode
-* 
-* @see MOD_Init
-*/
-//void MOD_Init(void)
-//{
-//
-//}
+
+void MEM_Set_Serial_Number(char *value)
+{
+    /** Call the system serial number function */
+
+    uint8_t len = strlen(value);
+    if(len > 8) {
+        len = 8;
+    }
+    strncpy(RAM.SYS_ser_num, value, len);
+}
+
+
+uint8_t MEM_Get_VAR_Write(void) { return RAM.VAR_write; }
+bool MEM_Get_USR_Override(void) { return (bool) RAM.USR_override; }
+
+float MEM_Get_VOL_Setpoint(void) { return RAM.VOL_setpoint; }
+float MEM_Get_VOL_Total(void) { return  RAM.VOL_total; }
+float MEM_Get_VOL_Housing(void) { return  RAM.VOL_housing;} 
+float MEM_Get_VOL_Small_Piston(void) { return  RAM.VOL_small_piston;} 
+float MEM_Get_VOL_Large_Piston(void) { return  RAM.VOL_large_piston;} 
+
+float MEM_Get_LEN_Setpoint(void) { return  RAM.LEN_setpoint;} 
+float MEM_Get_LEN_Total(void) { return  RAM.LEN_total;} 
+float MEM_Get_LEN_Small_Piston(void) { return  RAM.LEN_small_piston;} 
+float MEM_Get_LEN_Large_Piston(void) { return  RAM.LEN_large_piston;} 
+
+float MEM_Get_AREA_Small_Piston(void) { return  RAM.ARE_small_piston;} 
+float MEM_Get_AREA_Large_Piston(void) { return  RAM.ARE_large_piston;} 
+
+float MEM_Get_PST_Position_Min(void) { return  RAM.PST_position_min;} 
+float MEM_Get_PST_Position_Max(void) { return  RAM.PST_position_max;} 
+uint32_t MEM_Get_PST_Encoder_Counts(void) { return  RAM.PST_enc_counts;} 
+float MEM_Get_PST_Rate(void) { return  RAM.PST_rate;} 
+float MEM_Get_PST_Position(void) { return  RAM.PST_position;} 
+
+int8_t MEM_Get_TRV_Direction(void) { return  RAM.TRV_dir;} 
+bool MEM_Get_TRV_Engaged(void) { return  RAM.TRV_eng;} 
+bool MEM_Get_TRV_Zero(void) { return  RAM.TRV_zero;} 
+bool MEM_Get_TRV_Full(void) { return  RAM.TRV_full;} 
+bool MEM_Get_TRV_Min(void) { return  RAM.TRV_min;} 
+bool MEM_Get_TRV_Max(void) { return  RAM.TRV_max;} 
+
+double MEM_Get_BAT_Retcap(void) { return  RAM.BAT_retcap;} 
+double MEM_Get_BAT_Repsoc(void) { return  RAM.BAT_repsoc;} 
+double MEM_Get_BAT_Vcell(void) { return  RAM.BAT_vcell;} 
+double MEM_Get_BAT_Current(void) { return  RAM.BAT_current;} 
+double MEM_Get_BAT_Status(void) { return  RAM.BAT_status;} 
+void MEM_Get_SYS_Id(char* value){ strncpy(value, RAM.SYS_id, 8);}
+uint16_t MEM_Get_SYS_Year_Built(void) { return  RAM.SYS_year_built;} 
+uint8_t MEM_Get_SYS_Firmware_Major(void) { return  RAM.SYS_firm_maj;} 
+uint8_t MEM_Get_SYS_Firmware_Minor(void) { return  RAM.SYS_firm_min;} 
+uint32_t MEM_Get_SYS_Firmware_Build(void) { return  RAM.SYS_firm_build;} 
+
+float MEM_Get_PID_Coeff_P(void) { return  RAM.PID_coeff_p;} 
+float MEM_Get_PID_Coeff_I(void) { return  RAM.PID_coeff_i;} 
+float MEM_Get_PID_Coeff_D(void) { return  RAM.PID_coeff_d;} 
+float MEM_Get_PID_Used(void) { return  RAM.PID_used;} 
+
+void MEM_Get_SYS_Serial_Number(char* value) { strncpy(value, RAM.SYS_ser_num, 8);};
