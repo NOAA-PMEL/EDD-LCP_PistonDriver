@@ -109,3 +109,6 @@ Firmware/LCP_PistonDriver/path.txt
 # Pressure Test Files
 Test/PressureVesselTest/
 
+.venv/
+venv/
+.vscode/
