@@ -70,7 +70,7 @@
 #define RAM_PST_POSTION_MIN 0x40  
 #define RAM_PST_POSITION_MAX 0x44  
 #define RAM_PST_RATE 0x48  
-#define RAM_PST_POSITION_IN
+#define RAM_PST_POSITION_IN 0x5C
 #define RAM_PST_ENC_COUNTS 0x50  
 #define RAM_TRV_DIR 0x60  
 #define RAM_TRV_ENG 0x61  
@@ -182,8 +182,8 @@ void MEM_Init(void);
 void MEM_clear_temp(void);
 void MEM_Write(void);
 
-uint8_t* MEM_Get_Write_Addr(uint16_t offset);
-uint8_t* MEM_Get_Read_Addr(uint16_t offset);
+const uint8_t* MEM_Get_Write_Addr(uint16_t offset);
+const uint8_t* MEM_Get_Read_Addr(uint16_t offset);
 
 void MEM_Set_VOL_Setpoint(float value);
 void MEM_Set_LEN_Setpoint(float value);
@@ -197,7 +197,7 @@ void MEM_Set_Var_Write(uint8_t value);
 void MEM_Set_User_Override(bool value);
 void MEM_Set_Travel_Direction(int8_t dir);
 void MEM_Set_Travel_Engage(bool state);
-void MEM_Set_Serial_Number(char *value);
+void MEM_Set_Serial_Number(volatile char *value);
 
 
 uint8_t MEM_Get_VAR_Write(void);

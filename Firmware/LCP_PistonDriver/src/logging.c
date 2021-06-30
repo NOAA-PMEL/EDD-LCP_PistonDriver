@@ -1,8 +1,8 @@
 #include "logging.h"
 
 
-#define INCLUDE_CONSOLE
-#include "bsp.h"
+//#define INCLUDE_CONSOLE
+#include <bsp/bsp.h>
 
 sLog_t Log;
 
@@ -10,40 +10,39 @@ STATIC eLogging_t LogLevel = LOG_NONE;
 
 STATIC char sendstr[256];
 
-void LOG_Debug(const char *data)
+STATIC void LOG_Debug(const char *data)
 {   
-    if( LogLevel == LOG_Debug)
+    if( LogLevel == LOG_DEBUG)
     {
         BSP_CNSL_puts("DEBUG: ");
-        BSP_CNSL_puts(data);
+        BSP_CNSL_puts((char*)data);
     }
-    LOG_Log(data, LOG_DEBUG);
 }
 
-void LOG_Warning(const char *data)
+STATIC void LOG_Warning(const char *data)
 {
-    if( (LogLevel == LOG_Debug) || (LogLevel == LOG_Warning) )
+    if( (LogLevel == LOG_DEBUG) || (LogLevel == LOG_WARNING) )
     {
         BSP_CNSL_puts("WARNING: ");
-        BSP_CNSL_puts(data);
+        BSP_CNSL_puts((char*)data);
     }
 }
 
-void LOG_Error(const char *data)
+STATIC void LOG_Error(const char *data)
 {
-    if( (LogLevel >= LOG_Debug) && (LogLevel <= LOG_Error))
+    if( (LogLevel >= LOG_DEBUG) && (LogLevel <= LOG_ERROR))
     {
         BSP_CNSL_puts("ERROR: ");
         BSP_CNSL_puts(data);
     }
 }
 
-void LOG_SetLevel(eLogging_t type)
+STATIC void LOG_SetLevel(eLogging_t type)
 {
     LogLevel = type;
 }
 
-eLogging_t LOG_GetLevel(void)
+STATIC eLogging_t LOG_GetLevel(void)
 {
     return LogLevel;
 }

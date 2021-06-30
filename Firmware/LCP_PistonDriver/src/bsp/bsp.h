@@ -38,7 +38,7 @@ void BSP_DBG_puts(char *str);
 void BSP_DBG_putc(char c);
 #endif 
 
-#if INCLUDE_CONSOLE
+//#if INCLUDE_CONSOLE
 
 /** !brief Init Console Port
  * 
@@ -52,12 +52,12 @@ void BSP_CNSL_UART_Init(void);
  * Send string over console
  * 
  */
-int BSP_CNSL_puts(char *str);
+int BSP_CNSL_puts(const char *str);
 int BSP_CNSL_putc(char c);
 
 char BSP_CNSL_getc(void);
 
-#endif
+//#endif
 
 /** !brief 12V Power ON
  * 

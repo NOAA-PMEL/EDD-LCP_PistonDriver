@@ -20,7 +20,10 @@ int cli_cmd_led_state(int argc, char *argv[]);
 int cli_cmd_hello(int argc, char *argv[]);
 int cli_cmd_get(int argc, char *argv[]);
 int cli_cmd_set(int argc, char *argv[]);
-
+int cli_cmd_get_sernum(const char *key, const void *val, uint32_t len);
+int cli_cmd_get_id(const char *key, const void *val, uint32_t len) ;
+int cli_cmd_get_firmware(const char *key, const void *val, uint32_t len);
+int cli_cmd_get_report(const char *key, const void *val, uint32_t len);
 
 // extern const sShellCommand *const g_shell_commands; 
 // extern const size_t g_num_shell_commands;

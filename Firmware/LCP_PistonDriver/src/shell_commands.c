@@ -10,8 +10,8 @@ bool kv_store_write(const char *key, const void *val, uint32_t len) {
 }
 
 bool cli_get(const char *key, const void *val, uint32_t len) {
-    float temp_f = 0.0f;
-    uint16_t temp_u16 = 0u;
+//    float temp_f = 0.0f;
+//    uint16_t temp_u16 = 0u;
     char t_str[64]; 
     memset(t_str, 0, 64);
 
@@ -202,7 +202,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
 
     if(strncmp(key, "year", 4) == 0)
     {
-      sprintf(t_str, "%u", SYS_Get_YearBuilt);
+      sprintf(t_str, "%u", SYS_Get_YearBuilt());
       shell_put_line(t_str);
       return true;
     }
@@ -223,7 +223,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
       return true;
     }
 
-    char user[24];
+//    char user[24];
     if(SYS_Is_Admin() != true)
     {
       return false;
@@ -238,14 +238,14 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
 
     if(strncmp(key, "udir", 5) == 0)
     {
-      sprintf(t_str, "%f", MEM_Get_TRV_Direction());
+      sprintf(t_str, "%i", MEM_Get_TRV_Direction());
       shell_put_line(t_str);
       return true;
     }
 
     if(strncmp(key, "ueng", 5) == 0)
     {
-      sprintf(t_str, "%f", MEM_Get_TRV_Engaged());
+      sprintf(t_str, "%u", MEM_Get_TRV_Engaged());
       shell_put_line(t_str);
       return true;
     }
@@ -292,19 +292,19 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
 
     if(strncmp(key, "pidp", 4) == 0)
     {
-      MEM_Set_PID_Coeff_P(float(val));
+      MEM_Set_PID_Coeff_P(atof(val));
       return true;
     }
 
     if(strncmp(key, "pidi", 4) == 0)
     {
-      MEM_Set_PID_Coeff_I(float(val));
+      MEM_Set_PID_Coeff_I(atof(val));
       return true;
     }
 
     if(strncmp(key, "pidd", 4) == 0)
     {
-      MEM_Set_PID_Coeff_D(float(val));
+      MEM_Set_PID_Coeff_D(atof(val));
       return true;
     }
 
@@ -364,13 +364,13 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
     
     if(strncmp(key, "year", 4) == 0)
     {
-      SYS_Set_YearBuilt(val);
+      SYS_Set_YearBuilt((uint16_t) atoi(val));
       return true;
     }
 
     if(strncmp(key, "serial", 6) == 0)
     {
-      SYS_Set_SerialNumber(val);
+      SYS_Set_SerialNumber((char*)val);
       return true;
     }
 
@@ -407,20 +407,23 @@ bool led_set_state( const char *key, const void *val, uint32_t len) {
   return true;
 }
 
-bool cli_cmd_get_sernum(const char *key, const void *val, uint32_t len) {
+int cli_cmd_get_sernum(const char *key, const void *val, uint32_t len) {
 
+  return 1;
 }
 
-bool cli_cmd_get_id(const char *key, const void *val, uint32_t len) {
+int cli_cmd_get_id(const char *key, const void *val, uint32_t len) {
 
+  return 1;
 }
 
-bool cli_cmd_get_firmware(const char *key, const void *val, uint32_t len) {
+int cli_cmd_get_firmware(const char *key, const void *val, uint32_t len) {
   shell_put_line(FIRMWARE);
+  return 1;
 }
 
-bool cli_cmd_get_rerport(const char *key, const void *val, uint32_t len) {
-
+int cli_cmd_get_report(const char *key, const void *val, uint32_t len) {
+  return 1;
 }
 
 
@@ -521,23 +524,23 @@ static const sShellCommand s_shell_commands[] = {
   {"get", cli_cmd_get, "Get value of register/variable"},
   {"set", cli_cmd_set, "Set value of register/variable"},
   {"", NULL, "***System Information***"},
-  {"ser", cli_cmd_get_sernum, "Return serial number"},
-  {"id", cli_cmd_get_id,"Return system id"},
-  {"ver", cli_cmd_get_firmware, "Return firmware version"},
-  {"report", cli_cmd_get_report, "Return System Report"},
+//  {"ser", cli_cmd_get_sernum, "Return serial number"},
+//  {"id", cli_cmd_get_id,"Return system id"},
+//  {"ver", cli_cmd_get_firmware, "Return firmware version"},
+//  {"report", cli_cmd_get_report, "Return System Report"},
   {"", NULL, "*** Other ***"},
   {"LED", cli_cmd_led_state, "Set LED State"},
-  {"restart", cli_cmd_restart, "Restart micro"},
+//  {"restart", cli_cmd_restart, "Restart micro"},
   {"hello", cli_cmd_hello, "Say hello"},
   {"help", shell_help_handler, "Lists all commands"},
 };
 
 
-static const sGetCommand s_shell_get_commands[] = {
-  {"vset", NULL, "Get desired volume setpoint (in^3/float)"},
-  {"vtotal", NULL, "Get current total volume (in^3/float)"},
-  {"lset", NULL, "Get piston length setpoint(in/float)"},
-  
-}
+//static const sGetCommand s_shell_get_commands[] = {
+//  {"vset", NULL, "Get desired volume setpoint (in^3/float)"},
+//  {"vtotal", NULL, "Get current total volume (in^3/float)"},
+//  {"lset", NULL, "Get piston length setpoint(in/float)"},
+//  
+//};
 const sShellCommand *const g_shell_commands = s_shell_commands;
 const size_t g_num_shell_commands = ARRAY_SIZE(s_shell_commands);

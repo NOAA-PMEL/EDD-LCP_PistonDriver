@@ -145,13 +145,13 @@ void BSP_CNSL_UART_Init(void)
   BSP_UART_Init(EUSCI_A0_BASE);
 }
 
-int BSP_CNSL_puts(char *str)
+int BSP_CNSL_puts(const char *str)
 {
 
  return BSP_UART_puts(EUSCI_A0_BASE, str); 
 }
 
-int BSP_CNSL_putc(char c)
+int BSP_CNSL_putc(const char c)
 {
   return BSP_UART_putc(EUSCI_A0_BASE, c); 
 }

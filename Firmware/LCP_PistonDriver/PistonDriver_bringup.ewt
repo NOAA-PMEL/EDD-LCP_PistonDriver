@@ -2524,6 +2524,12 @@
             <name>$PROJ_DIR$\src\encoder.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\src\logging.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\logging.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\src\memory.c</name>
         </file>
         <file>
@@ -2540,6 +2546,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\src\shell_commands.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\sysinfo.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\sysinfo.h</name>
         </file>
     </group>
     <group>

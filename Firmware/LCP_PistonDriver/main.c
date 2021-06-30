@@ -2,6 +2,7 @@
 #include <system/System.h>
 #include <bsp/bsp.h>
 #include <stdio.h>
+#include "logging.h"
 #include "shell.h"
 #include "DRV8874.h"
 #include "encoder.h"
@@ -13,7 +14,7 @@ int main( void )
   __bis_SR_register(GIE);
   
   BSP_LED_Set(LED_GREEN); 
-  ENC_Init();
+//  ENC_Init();
   DRV8874_init();
   
 //  MEM_Init();
@@ -21,9 +22,9 @@ int main( void )
 //  memset(value, 0xA0, 256);
 //  MEM_Write_RAM_Struct(MEM_RAM_2, 0x00, value, 256);
   
-  uint16_t i = 0;
-  float temp = 0.0f;
-  char voltage[24];
+//  uint16_t i = 0;
+//  float temp = 0.0f;
+//  char voltage[24];
 
   BSP_DBG_puts("DEBUG UART");
   
@@ -42,5 +43,5 @@ int main( void )
     
   }
 
-  return 0;
+//  return 0;
 }

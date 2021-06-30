@@ -8,14 +8,14 @@ STATIC char sys_user_name[13] = "guest";
 STATIC uint16_t sys_year_built;
 STATIC bool admin_mode = false;
 
-void SYS_SET_SerialNumber(char* sernum)
+void SYS_Set_SerialNumber(char* sernum)
 {
     uint8_t len = strlen(sernum);
     if(len > 8){
         len = 8;
     }
 
-    strcpy(sys_serial_num, sernum, len);
+    strncpy(sys_serial_num, sernum, len);
 
 }
 
