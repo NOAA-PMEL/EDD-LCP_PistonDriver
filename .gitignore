@@ -108,6 +108,9 @@ Firmware/LCP_PistonDriver/path.txt
 
 Backup*.*
 
+
+# Archives
+archive/
 # Pressure Test Files
 Test/PressureVesselTest/
 
