@@ -122,3 +122,6 @@ __pycache__/
 .venv/
 venv/
 .vscode/
+
+# Excel
+~*.xlsx
