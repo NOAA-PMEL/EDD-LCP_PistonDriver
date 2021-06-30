@@ -109,6 +109,10 @@ Firmware/LCP_PistonDriver/path.txt
 # Pressure Test Files
 Test/PressureVesselTest/
 
+
+# Python
+__pycache__/
+*.egg_info/
 .venv/
 venv/
 .vscode/
