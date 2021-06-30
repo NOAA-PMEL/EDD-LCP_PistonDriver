@@ -119,7 +119,8 @@ Test/PressureVesselTest/
 __pycache__/
 /*.egg_info/
 /*.egg_info
-.egg-info/
+*.egg-info/
+*.egg-info
 .venv/
 venv/
 .vscode/
