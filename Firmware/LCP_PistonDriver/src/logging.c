@@ -16,6 +16,7 @@ STATIC void LOG_Debug(const char *data)
     {
         BSP_CNSL_puts("DEBUG: ");
         BSP_CNSL_puts((char*)data);
+        BSP_CNSL_puts("\r\n");
     }
 }
 
@@ -25,6 +26,7 @@ STATIC void LOG_Warning(const char *data)
     {
         BSP_CNSL_puts("WARNING: ");
         BSP_CNSL_puts((char*)data);
+        BSP_CNSL_puts("\r\n");
     }
 }
 
@@ -34,6 +36,7 @@ STATIC void LOG_Error(const char *data)
     {
         BSP_CNSL_puts("ERROR: ");
         BSP_CNSL_puts(data);
+        BSP_CNSL_puts("\r\n");
     }
 }
 
@@ -55,4 +58,6 @@ void LOG_Init(void)
     Log.Error = &LOG_Error;
     Log.Set = &LOG_SetLevel;
     Log.Get = &LOG_GetLevel;
+    
+    Log.Set(LOG_NONE);
 }

@@ -1,6 +1,7 @@
 #include "shell_commands.h"
 #include "memory.h"
 #include "sysinfo.h"
+#include "logging.h"
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
@@ -219,7 +220,8 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "level", 5) == 0)
     {
       // sprintf(t_str, "%f", MEM_Get_PID_Coeff_P());
-      shell_put_line(t_str);
+      
+//      shell_put_line(t_str);
       return true;
     }
 
@@ -317,6 +319,10 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "level", 5) == 0)
     {
       /** @todo Set Logging level */
+      Log.Set(atoi(val));
+      Log.Debug("Debug Active");
+      Log.Warning("Warning Active");
+      Log.Error("Error Active");
       return true;
     }
 
@@ -325,13 +331,20 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
       /** @todo Reset the board */
       return true;
     }
+    if(strncmp(key, "user", 4) == 0)
+    {
+      /** Set the username */
+      SYS_Set_UserName((char*) val);
+      
+      return true;
+    } 
 
 
     if(SYS_Is_Admin() != true)
     {
       return false;
     }
-
+   
     if(strncmp(key, "utest", 5) == 0)
     {
       /** Not currently implemented */

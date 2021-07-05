@@ -429,12 +429,6 @@ void MEM_Set_User_Override(volatile bool value)
 
 void MEM_Set_Travel_Direction(volatile int8_t dir)
 {
-    /** Check User Override Mode */
-    if(*RAM.USR_override != true)
-    {
-        return;
-    }
-
     /** Set commanded direction */
     if( dir == -1 )
     {
@@ -452,12 +446,6 @@ void MEM_Set_Travel_Direction(volatile int8_t dir)
 
 void MEM_Set_Travel_Engage(volatile bool state)
 {    
-    /** Check User Override Mode */
-    if(*RAM.USR_override != true)
-    {
-        return;
-    }
-
     /** Set commanded state */
     if(state)
     {

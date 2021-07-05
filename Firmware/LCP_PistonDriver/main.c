@@ -11,6 +11,7 @@ int main( void )
 {
   // Initialize the system  
   BSP_Init();
+  LOG_Init();
   __bis_SR_register(GIE);
   
   BSP_LED_Set(LED_GREEN); 
@@ -27,6 +28,9 @@ int main( void )
 //  char voltage[24];
 
   BSP_DBG_puts("DEBUG UART");
+  Log.Debug("Starting Debugger");
+  Log.Warning("Starting Warner");
+  Log.Error("Starting Errorer");
   
   sShellImpl shell_impl = {
     .send_char = BSP_CNSL_putc,
