@@ -62,7 +62,8 @@ void ENC_Init(void);
 void ENC_FactoryReset(void);
 double ENC_Get_Length(void);
 void ENC_Set_MaxLength(double val) ;
-
+void ENC_Increment(void);
+void ENC_SetDir(int8_t dir);
 
 #ifdef TEST
 extern volatile int32_t g_encoder_counter;

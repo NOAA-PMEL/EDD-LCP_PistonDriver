@@ -72,6 +72,12 @@ void ENC_Init(void) {
 //    ESI_disable();
 }
 
+void ENC_SetDir(int8_t dir)
+{
+  assert( (dir == -1) || (dir == 1) );
+  g_encoder_direction = dir;
+}
+
 double ENC_Get_Length(void)
 {
     assert(encSettings.distance > 0);

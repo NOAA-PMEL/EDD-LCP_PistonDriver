@@ -121,7 +121,12 @@ __interrupt void Port_1 (void)
       break;			/*Vector 0 - No Interrupt */
     case P1IV_P1IFG0:
       break;		/* Vector 2 - Interrupt on Pin 1, Pin 0*/
+    case P1IV_P1IFG3:
       GPIO_int_1_callback();
+      break;
+    case P1IV_P1IFG4:
+      GPIO_int_1_callback();
+      break;
     default:
       break;
   }

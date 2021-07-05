@@ -204,15 +204,15 @@ extern const driverlib_gpio_cfg_t g_BSP_GPIO_MD_IPROPI;
 /***********************************************
  * Encoder Pin A
  **********************************************/
-#define BSP_GPIO_ENCODER_A_PORT           ( PORT_P9)
-#define BSP_GPIO_ENCODER_A_PIN            ( PIN0)
+#define BSP_GPIO_ENCODER_A_PORT           ( PORT_P1)
+#define BSP_GPIO_ENCODER_A_PIN            ( PIN3)
 extern const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_A;
 
 /***********************************************
  * Encoder Pin B
  **********************************************/
-#define BSP_GPIO_ENCODER_B_PORT           ( PORT_P9)
-#define BSP_GPIO_ENCODER_B_PIN            ( PIN1)
+#define BSP_GPIO_ENCODER_B_PORT           ( PORT_P1)
+#define BSP_GPIO_ENCODER_B_PIN            ( PIN4)
 extern const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_B;
 
 #endif

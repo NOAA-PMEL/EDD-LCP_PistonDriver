@@ -464,11 +464,13 @@ ePistonRunError_t PIS_Run_to_volume(double volume)
 
 void PIS_Extend(void)
 {
+  ENC_SetDir(1);
   DRV8874_forward();
 }
 
 void PIS_Retract(void)
 {
+  ENC_SetDir(-1);
   DRV8874_reverse();
 }
 

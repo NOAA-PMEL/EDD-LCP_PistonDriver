@@ -13,13 +13,13 @@ int main( void )
   // Initialize the system  
   BSP_Init();
   LOG_Init();
-  __bis_SR_register(GIE);
+  
   
   BSP_LED_Set(LED_GREEN); 
 //  ENC_Init();
 //  DRV8874_init();
   PIS_Init();
-  
+  __bis_SR_register(GIE);
 //  MEM_Init();
 //  uint8_t value[256];
 //  memset(value, 0xA0, 256);
