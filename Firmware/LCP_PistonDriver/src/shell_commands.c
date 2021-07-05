@@ -2,6 +2,7 @@
 #include "memory.h"
 #include "sysinfo.h"
 #include "logging.h"
+#include "DRV8874.h"
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 
@@ -304,7 +305,6 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
       if(strncmp(key, "serial", 5) == 0)
       {
         Log.Debug("get serial called");
-        // sprintf(t_str, "%f", MEM_Get_PID_Coeff_P());
         SYS_Get_SerialNumber(t_str);
         shell_put_line(t_str);
         return true;
@@ -321,7 +321,7 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
     memset(v_str, 0, 64);
     if(Log.Get() == LOG_DEBUG)
     {
-      sprintf(v_str, "value= %s", val);
+      sprintf(v_str, "value= %s", (char*)val);
     }
   
     if(strncmp(key, "vset", 4) == 0)
@@ -377,7 +377,7 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
       Log.Debug("set level called");
       Log.Debug(v_str);
       /** @todo Set Logging level */
-      Log.Set(atoi(val));
+      Log.Set((eLogging_t)atoi(val));
       Log.Debug("Debug Active");
       Log.Warning("Warning Active");
       Log.Error("Error Active");
@@ -499,22 +499,39 @@ bool led_set_state( const char *key, const void *val, uint32_t len) {
   return true;
 }
 
-int cli_cmd_get_sernum(const char *key, const void *val, uint32_t len) {
 
+int cli_cmd_get_id(int argc, char *argv[]){
+  shell_put_line(SYS_ID);
   return 1;
 }
 
-int cli_cmd_get_id(const char *key, const void *val, uint32_t len) {
-
-  return 1;
-}
-
-int cli_cmd_get_firmware(const char *key, const void *val, uint32_t len) {
+int cli_cmd_get_firmware(int argc, char *argv[]){
   shell_put_line(FIRMWARE);
   return 1;
 }
 
-int cli_cmd_get_report(const char *key, const void *val, uint32_t len) {
+int cli_cmd_get_report(int argc, char *argv[]){
+  char report[64];
+  char t_str[16];
+  memset(report, 0, 64);
+  // Serial Number:     value
+  // System ID:         value
+  // Firmware Version:  value
+  // vset(in3):         value
+  // Log Level:         value
+  shell_put_line("********* SYSTEM REPORT *********");
+  sprintf(report, "System ID\t\t: %s", SYS_ID);
+  shell_put_line(report);
+  SYS_Get_SerialNumber(t_str);
+  sprintf(report, "Serial Number\t\t: %s", t_str);
+  shell_put_line(report);
+  sprintf(report, "Firmware Version\t: %s", FIRMWARE);
+  shell_put_line(report);
+  sprintf(report, "Year Built\t\t: %u", SYS_Get_YearBuilt());
+  shell_put_line(report);
+  sprintf(report, "Log Level\t\t: %u", Log.Get());
+  shell_put_line(report);
+  
   return 1;
 }
 
@@ -567,6 +584,11 @@ int cli_cmd_led_state(int argc, char *argv[]) {
   return 0;
 }
 
+int cli_get_ser(int argc, char *argv[]){
+
+  return true;
+}
+
 
 int cli_cmd_get(int argc, char *argv[]) {
   /** Expect 3 arguments
@@ -616,10 +638,10 @@ static const sShellCommand s_shell_commands[] = {
   {"get", cli_cmd_get, "Get value of register/variable"},
   {"set", cli_cmd_set, "Set value of register/variable"},
   {"", NULL, "***System Information***"},
-//  {"ser", cli_cmd_get_sernum, "Return serial number"},
-//  {"id", cli_cmd_get_id,"Return system id"},
-//  {"ver", cli_cmd_get_firmware, "Return firmware version"},
-//  {"report", cli_cmd_get_report, "Return System Report"},
+  {"ser", cli_get_ser, "Get Serial Number"},
+  {"id", cli_cmd_get_id,"Return system id"},
+  {"ver", cli_cmd_get_firmware, "Return firmware version"},
+  {"report", cli_cmd_get_report, "Return System Report"},
   {"", NULL, "*** Other ***"},
   {"LED", cli_cmd_led_state, "Set LED State"},
 //  {"restart", cli_cmd_restart, "Restart micro"},
