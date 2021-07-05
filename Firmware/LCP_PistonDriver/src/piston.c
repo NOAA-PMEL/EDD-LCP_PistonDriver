@@ -462,6 +462,20 @@ ePistonRunError_t PIS_Run_to_volume(double volume)
 }
 
 
+void PIS_Extend(void)
+{
+  DRV8874_forward();
+}
+
+void PIS_Retract(void)
+{
+  DRV8874_reverse();
+}
+
+void PIS_Stop(void)
+{
+  DRV8874_stop();
+}
 /**********************************************************************************
  * Function: PIS_Write_length()
  *

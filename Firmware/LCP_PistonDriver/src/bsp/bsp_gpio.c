@@ -83,6 +83,17 @@ bool BSP_GPIO_Read(const driverlib_gpio_cfg_t *p)
 }
 
 
+void BSP_GPIO_SetInterrupt(const driverlib_gpio_cfg_t *p)
+{
+    GPIO_enableInterrupt(p->port, p->pin); 
+  
+}
+void BSP_GPIO_ClearInterrupt(const driverlib_gpio_cfg_t *p)
+{
+    GPIO_disableInterrupt(p->port, p->pin);
+}
+
+
 void BSP_GPIOCallback(uint16_t int_num, void function(void))
 {
   switch(int_num){
@@ -110,6 +121,7 @@ __interrupt void Port_1 (void)
       break;			/*Vector 0 - No Interrupt */
     case P1IV_P1IFG0:
       break;		/* Vector 2 - Interrupt on Pin 1, Pin 0*/
+      GPIO_int_1_callback();
     default:
       break;
   }

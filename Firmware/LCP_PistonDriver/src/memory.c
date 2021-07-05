@@ -8,6 +8,7 @@
 #include "memory.h"
 #include <assert.h>
 #include <stdint.h>
+#include "piston.h"
 
 /**********************************************************************************
 * Preprocessor Constants
@@ -430,18 +431,11 @@ void MEM_Set_User_Override(volatile bool value)
 void MEM_Set_Travel_Direction(volatile int8_t dir)
 {
     /** Set commanded direction */
-    if( dir == -1 )
-    {
-        /** @todo Call the piston retract routine */
-    } else if( dir == 1)
-    {
-        /** @todo Call the piston extend routine */
-
-    } else {
-        return;
-    }
+    assert( (dir==1) || (dir==-1) );
     /** Update the RAM */
     *RAM.TRV_dir = dir;
+    
+    MEM_Set_Travel_Engage(*RAM.TRV_eng);
 }
 
 void MEM_Set_Travel_Engage(volatile bool state)
@@ -450,8 +444,17 @@ void MEM_Set_Travel_Engage(volatile bool state)
     if(state)
     {
         /** @todo Call the piston engage function */
+      if(*RAM.TRV_dir == PISTON_DIR_RETRACT)
+      {
+        PIS_Extend();
+      } else {
+        PIS_Retract();
+      }
+      *RAM.TRV_eng = true;
     } else {
         /** @todo Call the piston stop function */
+      PIS_Stop();
+      *RAM.TRV_eng = false;
     }
     
 }

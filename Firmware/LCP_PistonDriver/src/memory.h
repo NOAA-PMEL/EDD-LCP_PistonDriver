@@ -120,6 +120,8 @@
 
 
 #define VAR_WRITE_KEY   (0xA5)
+#define PISTON_DIR_EXTEND       ( 1 )
+#define PISTON_DIR_RETRACT      ( -1 )
 
 /**********************************************************************************
 * Typdefs

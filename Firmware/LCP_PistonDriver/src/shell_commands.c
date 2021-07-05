@@ -190,6 +190,14 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
       shell_put_line(t_str);
       return true;
     }
+    
+    if(strncmp(key, "mcurrent", 7) == 0)
+    {
+      Log.Debug("get mcurrent called");
+      sprintf(t_str, "mcurrent= %f", DRV8847_read_current());
+      shell_put_line(t_str);
+      return true;
+    }
 
     if(strncmp(key, "pidp", 4) == 0)
     {
@@ -371,6 +379,7 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
       MEM_Set_PID_Used((bool)atoi(val));
       return true;
     }
+    
 
     if(strncmp(key, "level", 5) == 0)
     {
@@ -424,7 +433,7 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
       {
         Log.Debug("set ueng called");
         Log.Debug(v_str);
-        MEM_Set_Travel_Direction((uint8_t)atoi(val));
+        MEM_Set_Travel_Engage((uint8_t)atoi(val));
         return true;
       }
 

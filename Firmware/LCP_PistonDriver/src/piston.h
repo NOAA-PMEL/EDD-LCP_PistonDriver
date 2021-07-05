@@ -172,6 +172,9 @@ double PIS_Read(ePistonRead_t read);
 void PIS_Write(ePistonWrite_t write, double value);
 ePistonRunError_t PIS_Run_to_length(double length);
 ePistonRunError_t PIS_Run_to_volume(double volume);
+void PIS_Extend(void);
+void PIS_Retract(void);
+void PIS_Stop(void);
 
 /**********************************************************************************
  * Unit Test Variables & Static Prototpyes

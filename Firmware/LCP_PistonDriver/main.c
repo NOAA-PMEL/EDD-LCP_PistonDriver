@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include "logging.h"
 #include "shell.h"
-#include "DRV8874.h"
+//#include "DRV8874.h"
+#include "piston.h"
 #include "encoder.h"
 #include "memory.h"
 int main( void )
@@ -16,7 +17,8 @@ int main( void )
   
   BSP_LED_Set(LED_GREEN); 
 //  ENC_Init();
-  DRV8874_init();
+//  DRV8874_init();
+  PIS_Init();
   
 //  MEM_Init();
 //  uint8_t value[256];

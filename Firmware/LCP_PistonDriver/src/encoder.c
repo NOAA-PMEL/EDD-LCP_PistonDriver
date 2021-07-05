@@ -1,6 +1,8 @@
 #include "encoder.h"
 
 STATIC PERSISTENT volatile int32_t g_encoder_counter;
+STATIC PERSISTENT volatile int32_t g_encoder_direction;
+
 STATIC PERSISTENT sEncoderSettings_t encSettings = {
     .min_count = ENCODER_MIN_COUNT_DEFAULT,
     .max_count = ENCODER_MAX_COUNT_DEFAULT,
@@ -52,13 +54,22 @@ STATIC double _calculate_length(void)
 }
 
 
+void ENC_Increment(void)
+{
+  g_encoder_counter += g_encoder_direction;
+}
 
 void ENC_Init(void) {
-    BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
-    BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
-    
-    esiConfig();
-    ESI_disable();
+      BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
+      BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
+      
+      BSP_GPIOCallback(1, &ENC_Increment);
+      BSP_GPIOCallback(2, &ENC_Increment);
+
+      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
+      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+//    esiConfig();
+//    ESI_disable();
 }
 
 double ENC_Get_Length(void)
