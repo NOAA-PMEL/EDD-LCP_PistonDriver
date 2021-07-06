@@ -125,7 +125,7 @@ __interrupt void Port_1 (void)
       GPIO_int_1_callback();
       break;
     case P1IV_P1IFG4:
-      GPIO_int_1_callback();
+//      GPIO_int_1_callback();
       break;
     default:
       break;

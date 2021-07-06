@@ -191,6 +191,14 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
       return true;
     }
     
+    if(strncmp(key, "encode", 6) == 0)
+    {
+      Log.Debug("get encode called");
+      sprintf(t_str, "encode= %li", ENC_Get_count());
+      shell_put_line(t_str);
+      return true;
+    }
+    
     if(strncmp(key, "mcurrent", 7) == 0)
     {
       Log.Debug("get mcurrent called");

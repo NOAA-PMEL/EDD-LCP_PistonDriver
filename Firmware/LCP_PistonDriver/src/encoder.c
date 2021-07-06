@@ -59,6 +59,11 @@ void ENC_Increment(void)
   g_encoder_counter += g_encoder_direction;
 }
 
+int32_t ENC_Get_count(void)
+{
+  return g_encoder_counter;
+}
+
 void ENC_Init(void) {
       BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
       BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);

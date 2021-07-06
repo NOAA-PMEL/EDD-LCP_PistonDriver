@@ -63,6 +63,7 @@ void ENC_FactoryReset(void);
 double ENC_Get_Length(void);
 void ENC_Set_MaxLength(double val) ;
 void ENC_Increment(void);
+int32_t ENC_Get_count(void);
 void ENC_SetDir(int8_t dir);
 
 #ifdef TEST
