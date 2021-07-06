@@ -9,7 +9,7 @@ void BSP_Init(void)
   WDTCTL = WDTPW + WDTHOLD;
     
   /** Initialize Timers */
-  Timer0_A3_Init();
+//  Timer0_A3_Init();
   Timer3_A2_Init();
   
   /** Initialize FRAM Control */

@@ -1,4 +1,5 @@
 #include "encoder.h"
+#include "bsp/bsp_timer_a.h"
 
 STATIC PERSISTENT volatile int32_t g_encoder_counter;
 STATIC PERSISTENT volatile int32_t g_encoder_direction;
@@ -65,16 +66,30 @@ int32_t ENC_Get_count(void)
 }
 
 void ENC_Init(void) {
-      BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
-      BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
-      
-      BSP_GPIOCallback(1, &ENC_Increment);
-      BSP_GPIOCallback(2, &ENC_Increment);
+  /** Configure the toggle pins no matter what */
+//  BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
+//  BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
+  /** Use for GPIO based encoder interrupts (works, but not the best)*/
 
-      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
-      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+//      
+//      BSP_GPIOCallback(1, &ENC_Increment);
+//      BSP_GPIOCallback(2, &ENC_Increment);
+//
+//      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
+//      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+  
+  /** Use for Timer B based counting (testing now) */
+  P1DIR &= ~(BIT3|BIT4);
+  P1SEL1 |= (BIT3|BIT4);
+  P1SEL0 |= (BIT3|BIT4);
+  
+  Timer_A_Init();
+//  Timer_A_Start();
+  
+  /** Use for ESI based (does not work) */
 //    esiConfig();
 //    ESI_disable();
+  
 }
 
 void ENC_SetDir(int8_t dir)

@@ -2217,6 +2217,9 @@
                 <name>$PROJ_DIR$\src\bsp\bsp_pwm.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_timer_a.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_uart.c</name>
             </file>
             <file>

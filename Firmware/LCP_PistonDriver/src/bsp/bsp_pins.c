@@ -197,12 +197,12 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_A = {
   .port = BSP_GPIO_ENCODER_A_PORT,
   .pin = BSP_GPIO_ENCODER_A_PIN,
   .mode = GPIO_SET_AS_INPUT,
-//  .function = TERNARY_MODULE_FUNCTION
+  .function = TERNARY_MODULE_FUNCTION
 };
 
 const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_B = {
   .port = BSP_GPIO_ENCODER_B_PORT,
   .pin = BSP_GPIO_ENCODER_B_PIN,
   .mode = GPIO_SET_AS_INPUT,
-//  .function = TERNARY_MODULE_FUNCTION
+  .function = TERNARY_MODULE_FUNCTION
 };

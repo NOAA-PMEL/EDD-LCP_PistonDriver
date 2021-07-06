@@ -579,6 +579,37 @@ int cli_cmd_hello(int argc, char *argv[]) {
   return 0;
 }
 
+int cli_cmd_debug(int argc, char *argv[]){
+  /** Set Log Level to debug */
+  Log.Set(LOG_DEBUG);
+  
+  /** Set username to admin */
+  SYS_Set_UserName("admin");
+  
+  return 0;
+}
+
+int cli_cmd_rev(int argc, char *argv[]) {
+  Log.Debug("rev command");
+  MEM_Set_Travel_Direction(-1);
+  MEM_Set_Travel_Engage(true);
+  
+  return 0;
+}
+
+int cli_cmd_fwd(int argc, char *argv[]) {
+  Log.Debug("fwd command");
+  MEM_Set_Travel_Direction(1);
+  MEM_Set_Travel_Engage(true);
+  return 0;
+}
+
+int cli_cmd_stop(int argc, char *argv[]) {
+  Log.Debug("stop command");
+  MEM_Set_Travel_Engage(false);  
+  return 0;
+}
+
 int cli_cmd_led_state(int argc, char *argv[]) {
   /** Expect 3 arguments 
    * 1. Command Name
@@ -660,6 +691,10 @@ static const sShellCommand s_shell_commands[] = {
   {"ver", cli_cmd_get_firmware, "Return firmware version"},
   {"report", cli_cmd_get_report, "Return System Report"},
   {"", NULL, "*** Other ***"},
+  {"debug", cli_cmd_debug, "Set Debug state"},
+  {"rev", cli_cmd_rev, "Retract piston"},
+  {"fwd", cli_cmd_fwd, "Extend piston"},
+  {"stop", cli_cmd_stop, "Stop piston"},
   {"LED", cli_cmd_led_state, "Set LED State"},
 //  {"restart", cli_cmd_restart, "Restart micro"},
   {"hello", cli_cmd_hello, "Say hello"},
