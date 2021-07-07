@@ -355,36 +355,116 @@ ePistonRunError_t PIS_Run_to_length(double length)
     PIS_Write_length(length);
 
     actuator.setpoint_flag = false;
-    if(length > actuator.current_length)
+    if(length > ENC_Get_Length())
     {
-        PIS_Extend();
+        PIS_Extend(true, 100);
         actuator.move_dir = PISRunFwd;
-    } else if(length < actuator.current_length)
+    } else if(length < ENC_Get_Length())
     {
-        PIS_Retract();
+        PIS_Retract(true, 100);
+        actuator.move_dir = PISRunRev;
     } else {
         actuator.setpoint_flag = true;
     }
 
     float current = 0.0f;
+    bool current_stop = false;
+    bool setpoint_reached = false;
     do{
-        #ifdef TEST
-        actuator.setpoint_flag = true;
-        #endif
+//        #ifdef TEST
+//        actuator.setpoint_flag = true;
+//        #endif
         //* @todo Add sleep function */
-        current = DRV8847_read_current();
-        if( (actuator.move_dir == PISRunFwd) && \
-            (length < actuator.current_length))
+        
+//        float current_length = PIS_Read_length();
+        
+        float diff = PIS_Read_length() - length;
+        
+        if(fabs(diff) < 0.005)
         {
-            DRV8874_stop();
-            break;
-        }
+          DRV8874_stop();
+          actuator.setpoint_flag = true;
+        } 
+//        else if(fabs(diff) < 0.5f) {
+//          if(actuator.speed > ACTUATOR_SPEED)
+//          {
+//            if(actuator.move_dir == PISRunFwd) 
+//            {
+//              PIS_Extend(false, ACTUATOR_SPEED);
+//            } else {
+//              PIS_Retract(false, ACTUATOR_SPEED);
+//            }
+//          }
+//        } else {
+//          
+//          if( (actuator.move_dir == PISRunFwd) &&
+//              (diff > 0) )
+//          {
+//            DRV8874_stop();
+//            actuator.setpoint_flag = true;
+//          } else if( (actuator.move_dir == PISRunRev) &&
+//                    (diff < 0) )
+//          {
+//            DRV8874_stop();
+//            actuator.setpoint_flag = true;
+//          } else {
+//            actuator.setpoint_flag = false;
+//          }
+//        }  
+        
+//        if( (actuator.move_dir == PISRunFwd) && \
+//            (length < current_length))
+//        {
+//          sprintf(temp, "Fwd, current_length = %.4f", current_length);
+//          Log.Warning(temp);
+//          DRV8874_stop();
+//            break;
+//        } else if( (actuator.move_dir == PISRunRev) && \
+//                   (length > current_length) )
+//        {
+//          sprintf(temp, "Rev, current_length = %.4f", current_length);
+//          Log.Warning(temp);
+//          DRV8874_stop();
+//            break;
+//        }
+        
+        
+//        if(0.5f > fabs(current_length - length))
+//        {
+//          
+//        }
 
-    }while((actuator.setpoint_flag != true) && (current >= 0.1f));
-
+        
+        
+      current = DRV8847_read_current();
+      current_stop = (current >= 0.005f);
+      setpoint_reached = (actuator.setpoint_flag);
+    }while(!actuator.setpoint_flag && current_stop);
+    
+    Log.Debug("Exited do/while loop");
+    PIS_Stop();
+    
+    if(current_stop == false)
+    {
+      sprintf(temp, "Current at stop condition = %.4f", current);
+      Log.Debug(temp);
+    }
+    
+    if(actuator.setpoint_flag)
+    {
+      Log.Debug("Setpoint (supposedly) reached");
+    }
+    sprintf(temp, "Position at stop = %.4f", ENC_Get_Length());
+    Log.Debug(temp);
+    float diff = ENC_Get_Length() - length;
+    sprintf(temp, "Diff = %0.4f", diff);
+    Log.Debug(temp);
+    
+    
     // printf("%i, %f", actuator.setpoint_flag, current);
     if((actuator.setpoint_flag == true) && (current <= 0.1))
     {
+        
         // printf("In Error");
         error = PISErrorStalled;
         /** Log Error Stalled */
@@ -472,34 +552,54 @@ ePistonRunError_t PIS_Run_to_volume(double volume)
 }
 
 
-void PIS_Extend(void)
+void PIS_Extend(bool startup, uint8_t speed)
 {
-  ENC_SetDir(1);
-  DRV8874_reverse();
+  Log.Debug("PIS_Extend called");
+  if(ENC_GetDir() == DIR_RETRACT)
+  {
+    Log.Debug("Stopping movement before Extending");
+    PIS_Stop();
+  }
+  ENC_SetDir(DIR_EXTEND);
+  DRV8874_reverse(speed);
+  actuator.speed = speed;
+  actuator.move_dir = PISRunFwd;
 }
 
-void PIS_Retract(void)
+void PIS_Retract(bool startup, uint8_t speed)
 {
-  ENC_SetDir(-1);
-  DRV8874_forward();
+  Log.Debug("PIS_Retract called");
+  if(ENC_GetDir() == DIR_EXTEND)
+  {
+    Log.Debug("Stopping movement before Retracting");
+    PIS_Stop();
+  }
+  ENC_SetDir(DIR_RETRACT);
+  DRV8874_forward(speed);
+  actuator.speed = speed;
+  actuator.move_dir = PISRunRev;
 }
 
 void PIS_Stop(void)
 {
+  Log.Debug("PIS_Stop called");
   DRV8874_stop();
+  actuator.move_dir = PISRunStop;
 }
 
 void PIS_Reset_to_Zero(void)
 {
-    Log.Debug("PIS_Reset_to_Zero called");
+  char temp[32];
+  Log.Debug("PIS_Reset_to_Zero called");
   int32_t count = ENC_Get_count();
-  PIS_Retract();
+  PIS_Retract(true, 100);
   __delay_cycles(0xFFFFFFFF);
   
-  while( (fabs(PIS_Read_current()) > 0.000001f) && 
+  while( (fabs(PIS_Read_current()) > 0.05f) && 
         (count != ENC_Get_count()) )
   {
-    Log.Debug("Resetting to zero");
+    sprintf(temp, "Resetting to zero: pos = %0.4f", ENC_Get_Length());
+    Log.Debug(temp);
     __delay_cycles(0x00FFFFFF);
   }
   Log.Debug("Move Complete");
@@ -509,15 +609,17 @@ void PIS_Reset_to_Zero(void)
 
 void PIS_Run_to_Full(void)
 {
+  char temp[32];
   int32_t count = ENC_Get_count();  
   Log.Debug("PIS_Run_to_Full called");
-  PIS_Extend();
+  PIS_Extend(true, 100);
    __delay_cycles(0xFFFFFFFF);
   
   while( (fabs(PIS_Read_current()) > 0.000001f) && 
           (count != ENC_Get_count()) )
   {
-      Log.Debug("Running to full");
+    sprintf(temp, "Running to full: pos = %0.4f", ENC_Get_Length());
+      Log.Debug(temp);
       __delay_cycles(0x00FFFFFF);
   }
   Log.Debug("Move Complete");
@@ -662,7 +764,12 @@ STATIC void PIS_Write_volume(double volume)
  * @see PIS_Write
  */
 STATIC double PIS_Read_length(void) {
+//  Log.Debug("PIS_Read_length called");
+  
     double length = ENC_Get_Length();
+    char temp[32];
+    sprintf(temp, "length = %.4f", length);
+    Log.Debug(temp);
     if( (length > 0.0f) && (length <= smallPiston._max_length))
     {
         smallPiston._length = length;
@@ -910,10 +1017,10 @@ STATIC void _PIS_Run(ePistonRunDir_t dir)
     switch(dir)
     {
         case PISRunFwd:
-            DRV8874_forward();
+            DRV8874_forward(100);
             break;
         case PISRunRev:
-            DRV8874_reverse();
+            DRV8874_reverse(100);
             break;
         case PISRunStop:
             DRV8874_stop();

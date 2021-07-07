@@ -20,7 +20,7 @@
 
 /** Encoder Settings */
 #define SYS_ENCODER_MIN_COUNT_DEFAULT   ( 0 ) 
-#define SYS_ENCODER_MAX_COUNT_DEFAULT   ( 1000000 )
+#define SYS_ENCODER_MAX_COUNT_DEFAULT   ( 75000 )
 #define SYS_ENCODER_LENGTH_DEFAULT      ( 11.77 )
 
 /*******************************************************************************

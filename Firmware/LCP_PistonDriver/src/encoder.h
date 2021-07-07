@@ -40,6 +40,11 @@ typedef enum ePistonType {
     NO_PISTON
 }ePistionType_t;
 
+typedef enum ePistonDir {
+  DIR_EXTEND = 1,
+  DIR_RETRACT = -1
+}ePistonDir_t;
+
 /** 
  * @brief Encoder Settings Struct
  * @struct Encoder Settings
@@ -69,6 +74,7 @@ int32_t ENC_Get_count(void);
 int32_t ENC_Get_min_count(void);
 int32_t ENC_Get_max_count(void);
 void ENC_SetDir(int8_t dir);
+int8_t ENC_GetDir(void);
 
 #ifdef TEST
 extern volatile int32_t g_encoder_counter;

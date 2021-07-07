@@ -469,6 +469,13 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
         PIS_Calibrate();
         return true;
       }
+    
+      if(strncmp(key, "zero", 4) == 0)
+      {
+        Log.Debug("set zero called");
+        PIS_Reset_to_Zero();
+        return true;
+      }
       
       if(strncmp(key, "encode", 6) == 0)
       {

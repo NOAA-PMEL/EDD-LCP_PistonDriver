@@ -7,8 +7,10 @@ void DRV8874_init( void );
 void DRV8874_enable( void );
 void DRV8874_disable( void );
 void DRV8874_disable( void );
-void DRV8874_forward( void );
-void DRV8874_reverse( void );
+void DRV8874_forward( uint8_t percent );
+//void DRV8874_forward_change_speed(uint8_t percent);
+void DRV8874_reverse( uint8_t percent );
+//void DRV8874_reverse_change_speed(uint8_t percent);
 void DRV8874_stop( void );
 float DRV8847_read_current( void );
 

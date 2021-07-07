@@ -104,7 +104,7 @@
                 </option>
                 <option>
                     <name>GStackSize2</name>
-                    <state>256</state>
+                    <state>100</state>
                 </option>
                 <option>
                     <name>GHeapSize2</name>
@@ -116,7 +116,7 @@
                 </option>
                 <option>
                     <name>GHeap20Size</name>
-                    <state>80</state>
+                    <state>8</state>
                 </option>
                 <option>
                     <name>GeneralMisraRules98</name>

@@ -1,5 +1,5 @@
 #include "bsp_pwm.h"
-
+#include "logging.h"
 //Timer_B_outputPWMParam param = {
 //  .clockSource = TIMER_B_CLOCKSOURCE_SMCLK,             /** 2MHz */
 //  .clockSourceDivider = TIMER_B_CLOCKSOURCE_DIVIDER_1, 
@@ -34,12 +34,12 @@ void BSP_PWM_Init(void)
   Timer_B_outputPWM(TIMER_B0_BASE, &param1);
 }
 
-
 void BPS_PWM_SetPWM(uint8_t chan, uint16_t pwm)
-{
+{  
   if(pwm > 1024) {
     pwm = 1024;
   }
+  
   if(chan == 0) {
     param0.dutyCycle = pwm;
     Timer_B_outputPWM(TIMER_B0_BASE, &param0);
@@ -47,6 +47,6 @@ void BPS_PWM_SetPWM(uint8_t chan, uint16_t pwm)
     param1.dutyCycle = pwm;
     Timer_B_outputPWM(TIMER_B0_BASE, &param1);
   }
-  
+
   __bis_SR_register(GIE);
 }

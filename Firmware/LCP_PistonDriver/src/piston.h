@@ -60,6 +60,8 @@
 #define SYSTEM_MIN_LENGTH         (0.0f)
 #define SYSTEM_MAX_LENGTH         (SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH)
 
+   
+#define ACTUATOR_SPEED            ( 30 )
 
 /**********************************************************************************
  * MACROS
@@ -141,6 +143,7 @@ typedef struct sActuator {
     double setpoint;                    /**< Piston length setpoint (in) */
     double _conversion_factor;           /**< Conversion factor to calculate "length" cnt/in */
     double _range;                       /**< Offset range (in) */
+    uint8_t speed;                      /**< Actuator Speed (0 - 100) */
     int32_t enc_min;                    /**< Encoder count min (Zero count) */
     int32_t enc_max;                    /**< Encoder count max (Full extend count) */
     ePistonRunDir_t move_dir;           /**< Piston movement direction */
@@ -172,8 +175,8 @@ double PIS_Read(ePistonRead_t read);
 void PIS_Write(ePistonWrite_t write, double value);
 ePistonRunError_t PIS_Run_to_length(double length);
 ePistonRunError_t PIS_Run_to_volume(double volume);
-void PIS_Extend(void);
-void PIS_Retract(void);
+void PIS_Extend(bool startup, uint8_t speed);
+void PIS_Retract(bool startup, uint8_t speed);
 void PIS_Stop(void);
 void PIS_Reset_to_Zero(void);
 void PIS_Run_to_Full(void);

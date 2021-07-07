@@ -13,7 +13,7 @@ int main( void )
   // Initialize the system  
   BSP_Init();
   LOG_Init();
-  
+  MEM_Init();
   
   BSP_LED_Set(LED_GREEN); 
 //  ENC_Init();

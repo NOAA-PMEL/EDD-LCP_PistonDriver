@@ -64,5 +64,9 @@ uint8_t SYS_Get_UserName(char *user)
 
 bool SYS_Is_Admin(void)
 {
-    return admin_mode;
+  if(strncmp("admin", sys_user_name,5)==0)
+  {
+    return true;
+  }
+  return false;
 }

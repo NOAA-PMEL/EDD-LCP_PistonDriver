@@ -123,6 +123,8 @@ STATIC sRAM_t CMDRAM = {
 };
 
 
+
+
 const uint8_t* preadram = (uint8_t*) &storage_ram[0];
 const uint8_t* pwriteram = (uint8_t*) &temp_ram[0];
 
@@ -188,6 +190,9 @@ STATIC void strncpy_volatile(volatile char *s, volatile char *t, size_t n)
 void MEM_Init(void)
 {
     memset_volatile((uint8_t*)temp_ram, 0u, 256);
+    
+    *RAM.PST_position_max = 12.0f;
+    *RAM.PST_position_min = 0.0f;
 }
 
 void MEM_clear_temp(void)
@@ -450,9 +455,9 @@ void MEM_Set_Travel_Engage(volatile bool state)
         /** @todo Call the piston engage function */
       if(*RAM.TRV_dir != PISTON_DIR_RETRACT)
       {
-        PIS_Extend();
+        PIS_Extend(true, 100);
       } else {
-        PIS_Retract();
+        PIS_Retract(true, 100);
       }
       *RAM.TRV_eng = true;
     } else {

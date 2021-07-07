@@ -51,10 +51,12 @@ STATIC void _calculate_encoder_distance(void) {
 
 STATIC double _calculate_length(void) 
 {
-    int32_t temp_u = g_encoder_counter - encSettings.min_count;
+    int32_t temp_u = ENC_Get_count() - encSettings.min_count;
     double temp_f = (double) temp_u;
-    temp_f *= encSettings.conversion_factor;
-    return temp_f;
+    temp_f /= encSettings.max_count;
+    
+//    temp_f *= encSettings.conversion_factor;
+    return temp_f * encSettings.length;
 }
 
 
@@ -128,11 +130,11 @@ void ENC_Init(void) {
   
 }
 
-void ENC_SetDir(int8_t dir)
+void ENC_SetDir(ePistonDir_t dir)
 {
-  assert( (dir == -1) || (dir == 1) );
+  assert( (dir == DIR_EXTEND) || (dir == DIR_RETRACT) );
   g_encoder_direction = dir;
-  if(dir == 1)
+  if(dir == DIR_EXTEND)
   {
     BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);
     BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
@@ -142,9 +144,15 @@ void ENC_SetDir(int8_t dir)
   }
 }
 
+int8_t ENC_GetDir(void)
+{
+  return g_encoder_direction;
+}
+
 double ENC_Get_Length(void)
 {
-    assert(encSettings.distance > 0);
+//    float length = ENC_Get_count() / 
+//    assert(encSettings.distance > 0);
     return _calculate_length();
 }
 
