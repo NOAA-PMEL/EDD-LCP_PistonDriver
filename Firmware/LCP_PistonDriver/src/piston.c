@@ -482,18 +482,53 @@ void PIS_Stop(void)
 
 void PIS_Reset_to_Zero(void)
 {
+    Log.Debug("PIS_Reset_to_Zero called");
+  int32_t count = ENC_Get_count();
   PIS_Retract();
   __delay_cycles(0xFFFFFFFF);
-  int32_t count = ENC_Get_count();
+  
   while( (fabs(PIS_Read_current()) > 0.000001f) && 
         (count != ENC_Get_count()) )
   {
     Log.Debug("Resetting to zero");
-    __delay_cycles(0x000FFFFF);
+    __delay_cycles(0x00FFFFFF);
   }
   Log.Debug("Move Complete");
+  Log.Debug("Resetting encoder");
   ENC_Set_count(0);
 }       
+
+void PIS_Run_to_Full(void)
+{
+  int32_t count = ENC_Get_count();  
+  Log.Debug("PIS_Run_to_Full called");
+  PIS_Extend();
+   __delay_cycles(0xFFFFFFFF);
+  
+  while( (fabs(PIS_Read_current()) > 0.000001f) && 
+          (count != ENC_Get_count()) )
+  {
+      Log.Debug("Running to full");
+      __delay_cycles(0x00FFFFFF);
+  }
+  Log.Debug("Move Complete");
+  Log.Debug("Resetting encoder");
+}
+
+void PIS_Calibrate(void)
+{   
+    Log.Debug("PIS_Calibrate called");
+    Log.Debug("System will Zero, than run to full");
+    Log.Debug("This will take a few minutes");
+
+    PIS_Reset_to_Zero();
+    PIS_Run_to_Full();
+    Log.Debug("Settng max encoder count");
+    ENC_Set_max_count(ENC_Get_count());
+
+
+
+}
 
 
 /**********************************************************************************

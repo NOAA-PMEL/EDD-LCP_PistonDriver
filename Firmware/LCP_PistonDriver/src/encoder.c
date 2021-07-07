@@ -1,5 +1,7 @@
 #include "encoder.h"
+#include "logging.h"
 #include "bsp/bsp_timer_a.h"
+#include <stdio.h>
 
 STATIC PERSISTENT volatile int32_t g_encoder_counter;
 STATIC PERSISTENT volatile int32_t *p_encoder_counter;
@@ -63,13 +65,40 @@ void ENC_Increment(void)
 
 void ENC_Set_count(int32_t val)
 {
+  char temp[40];
+  memset(temp,0,40);
+  sprintf(temp, "Setting encoder to %li", val);
+  Log.Debug(temp);
   *p_encoder_counter = val;
+  sprintf(temp, "Encoder set to %li", *p_encoder_counter);
+  Log.Debug(temp);
 }
+
+void ENC_Set_max_count(int32_t val)
+{
+  char temp[40];
+  memset(temp,0,40);
+  sprintf(temp, "Setting encoder max to %li", val);
+  Log.Debug(temp);
+  pEncSettings->max_count = val;
+  sprintf(temp, "Encoder max set to %li", pEncSettings->max_count);
+  Log.Debug(temp);
+}
+
 int32_t ENC_Get_count(void)
 {
   return *p_encoder_counter;
 }
 
+int32_t ENC_Get_min_count(void)
+{
+  return pEncSettings->min_count;
+}
+
+int32_t ENC_Get_max_count(void)
+{
+  return pEncSettings->max_count;
+}
 void ENC_Init(void) {
   /** Configure the toggle pins no matter what */
   BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);

@@ -34,8 +34,9 @@ int main( void )
 //  Log.Warning("Starting Warner");
 //  Log.Error("Starting Errorer");
   
-  
+  Log.Set(LOG_DEBUG);
   PIS_Reset_to_Zero();
+  Log.Set(LOG_NONE);
   
   sShellImpl shell_impl = {
     .send_char = BSP_CNSL_putc,

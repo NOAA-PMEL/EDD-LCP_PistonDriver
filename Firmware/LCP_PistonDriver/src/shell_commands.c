@@ -1,5 +1,7 @@
 #include "shell_commands.h"
 #include "memory.h"
+#include "piston.h"
+#include "encoder.h"
 #include "sysinfo.h"
 #include "logging.h"
 #include "DRV8874.h"
@@ -460,6 +462,13 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
         MEM_Set_PST_Position_Max(atof(val));
         return true;
       }
+
+      if(strncmp(key, "cal", 3) == 0)
+      {
+        Log.Debug("set cal called");
+        PIS_Calibrate();
+        return true;
+      }
       
       if(strncmp(key, "encode", 6) == 0)
       {
@@ -544,6 +553,8 @@ int cli_cmd_get_report(int argc, char *argv[]){
   // Firmware Version:  value
   // vset(in3):         value
   // Log Level:         value
+  // Encoder Min:       value
+  // Encoder Max:       value
   shell_put_line("********* SYSTEM REPORT *********");
   sprintf(report, "System ID\t\t: %s", SYS_ID);
   shell_put_line(report);
@@ -556,7 +567,10 @@ int cli_cmd_get_report(int argc, char *argv[]){
   shell_put_line(report);
   sprintf(report, "Log Level\t\t: %u", Log.Get());
   shell_put_line(report);
-  
+  sprintf(report, "Encoder Min\t\t: %lu",ENC_Get_min_count());
+  shell_put_line(report);
+  sprintf(report, "Encoder Max\t\t: %lu",ENC_Get_max_count());
+  shell_put_line(report);
   return 1;
 }
 
