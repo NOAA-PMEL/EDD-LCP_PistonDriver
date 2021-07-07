@@ -87,21 +87,37 @@ void DRV8874_stop( void ) {
 
 float DRV8847_read_current( void )
 {
-  float a_ipropi = 444e-6;      /** @todo This needs to be somewhere else */
+//  float a_ipropi = 444e-6;      /** @todo This needs to be somewhere else */
+//  
+//  /** Read voltage */
+//  float v_ipropi = _read_adc12_volts();
+//  v_ipropi *= a_ipropi;
+//  float i_propi = v_ipropi / 750.0f;
+//  
+//  float i = i_propi * 2197.8f;
+//  
+//  /** Convert to amps */
+//  return i / 2;
+  float v_ipropi = 0.0f;
+  float i_propi = 0.0f;
   
-  /** Read voltage */
-  float v_ipropi = _read_adc12_volts();
-  v_ipropi *= a_ipropi;
-  float i_propi = v_ipropi / 750.0f;
+  for(uint8_t i=0; i<10; i++)
+  {
+    v_ipropi += _read_adc12_volts();
+  }
+  v_ipropi = v_ipropi / 10.0f;
+  i_propi = v_ipropi / 750.0f;
+  i_propi = i_propi / 444e-6;
   
-  float i = i_propi * 2197.8f;
   
-  /** Convert to amps */
-  return i / 2;
+//  float v_ipropi = _read_adc12_volts();
+//  float i_propi = v_ipropi / 750.0f;
+  return i_propi;
 }
 
 
 float _read_adc12_volts(void) { 
- float temp_f = (float) (BSP_ADC12_Read() / 4096); 
- return temp_f * 2.0f;
+// float temp_f = (float) (BSP_ADC12_Read() / 4096); 
+// return temp_f * 2.0f;
+  return BSP_ADC12_Read_voltage();
 }

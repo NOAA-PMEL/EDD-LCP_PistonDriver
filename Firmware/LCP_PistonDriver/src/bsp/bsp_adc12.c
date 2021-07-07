@@ -124,6 +124,14 @@ float BSP_ADC12_Read(void)
   
 }
 
+float BSP_ADC12_Read_voltage(void)
+{
+  float volts = *adc * 2.5f;
+  volts = volts / 4096;
+  return volts;
+  
+}
+
 
 uint32_t BSP_ADC12_Address_for_DMA(void)
 {

@@ -8,6 +8,7 @@
 #include "piston.h"
 #include "logging.h"
 #include <math.h>
+#include <stdio.h>
 /**********************************************************************************
  * Preprocessor Constants
  *********************************************************************************/
@@ -345,6 +346,10 @@ ePistonRunError_t PIS_Run_to_length(double length)
     assert(length >= SYSTEM_MIN_LENGTH);
     #endif
 
+    char temp[64];
+    sprintf(temp, "PIS_Run_to_length called with length = %f", length);
+    Log.Debug(temp);
+
     ePistonRunError_t error = PISErrorGeneric;
     /** Update the setpoint and encoder range */
     PIS_Write_length(length);
@@ -352,11 +357,11 @@ ePistonRunError_t PIS_Run_to_length(double length)
     actuator.setpoint_flag = false;
     if(length > actuator.current_length)
     {
-        DRV8874_forward();
+        PIS_Extend();
         actuator.move_dir = PISRunFwd;
     } else if(length < actuator.current_length)
     {
-        DRV8874_reverse();
+        PIS_Retract();
     } else {
         actuator.setpoint_flag = true;
     }
@@ -383,18 +388,22 @@ ePistonRunError_t PIS_Run_to_length(double length)
         // printf("In Error");
         error = PISErrorStalled;
         /** Log Error Stalled */
+        Log.Error("Piston stalled");
         if(actuator.move_dir == PISRunFwd)
         {
             /** Log Stalled Fwd, near full extended hard stop? */
+            Log.Error("Stall near full hard stop");
         }
         else if(actuator.move_dir == PISRunRev)
         {
             /** Log Stalled Rev, near zero hard stop? */
+            Log.Error("Stall near zero hard stop");
         }
     } 
     else if((actuator.setpoint_flag == false))
     {
         /** Log overshoot */
+        Log.Error("Overshoot");
         error = PISErrorOvershoot;
     } 
     else {

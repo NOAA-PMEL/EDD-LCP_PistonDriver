@@ -6,6 +6,7 @@
 * Includes
 *********************************************************************************/
 #include "memory.h"
+#include "logging.h"
 #include <assert.h>
 #include <stdint.h>
 #include "piston.h"
@@ -345,7 +346,10 @@ void MEM_Set_LEN_Setpoint(volatile float value)
     if((*RAM.PST_position_min <= value) && (*RAM.PST_position_max >= value))
     {
         /** @todo Call the length setpoint routine */
-
+        if(PIS_Run_to_length((double) value) != PISErrorNone)
+        {
+            Log.Error("Failed to run to length");
+        }
         /** Update the RAM */
         *RAM.LEN_setpoint = value;
     } else {
