@@ -2,6 +2,7 @@
 #include "bsp/bsp_timer_a.h"
 
 STATIC PERSISTENT volatile int32_t g_encoder_counter;
+STATIC PERSISTENT volatile int32_t *p_encoder_counter;
 STATIC PERSISTENT volatile int32_t g_encoder_direction;
 
 STATIC PERSISTENT sEncoderSettings_t encSettings = {
@@ -57,33 +58,39 @@ STATIC double _calculate_length(void)
 
 void ENC_Increment(void)
 {
-  g_encoder_counter += g_encoder_direction;
+  
 }
 
+void ENC_Set_count(int32_t val)
+{
+  *p_encoder_counter = val;
+}
 int32_t ENC_Get_count(void)
 {
-  return g_encoder_counter;
+  return *p_encoder_counter;
 }
 
 void ENC_Init(void) {
   /** Configure the toggle pins no matter what */
-//  BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
-//  BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
+  BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
+  BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
   /** Use for GPIO based encoder interrupts (works, but not the best)*/
 
 //      
-//      BSP_GPIOCallback(1, &ENC_Increment);
-//      BSP_GPIOCallback(2, &ENC_Increment);
+      BSP_GPIOCallback(1, &ENC_Increment);
+      BSP_GPIOCallback(2, &ENC_Increment);
 //
-//      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
-//      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
+      BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+      
+      p_encoder_counter = BSP_GPIO_Init_Counter(0);
   
   /** Use for Timer B based counting (testing now) */
-  P1DIR &= ~(BIT3|BIT4);
-  P1SEL1 |= (BIT3|BIT4);
-  P1SEL0 |= (BIT3|BIT4);
+//  P1DIR &= ~(BIT3|BIT4);
+//  P1SEL1 |= (BIT3|BIT4);
+//  P1SEL0 |= (BIT3|BIT4);
   
-  Timer_A_Init();
+//  Timer_A_Init();
 //  Timer_A_Start();
   
   /** Use for ESI based (does not work) */
@@ -96,6 +103,14 @@ void ENC_SetDir(int8_t dir)
 {
   assert( (dir == -1) || (dir == 1) );
   g_encoder_direction = dir;
+  if(dir == 1)
+  {
+    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);
+    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
+  } else {
+    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
+    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+  }
 }
 
 double ENC_Get_Length(void)

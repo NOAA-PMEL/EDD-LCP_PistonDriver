@@ -461,6 +461,14 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
         return true;
       }
       
+      if(strncmp(key, "encode", 6) == 0)
+      {
+        Log.Debug("set encode called");
+        Log.Debug(v_str);
+        ENC_Set_count(atol(val));
+        return true;
+      }
+    
       if(strncmp(key, "year", 4) == 0)
       {
         Log.Debug("set year called");

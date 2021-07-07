@@ -444,7 +444,7 @@ void MEM_Set_Travel_Engage(volatile bool state)
     if(state)
     {
         /** @todo Call the piston engage function */
-      if(*RAM.TRV_dir == PISTON_DIR_RETRACT)
+      if(*RAM.TRV_dir != PISTON_DIR_RETRACT)
       {
         PIS_Extend();
       } else {

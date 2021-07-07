@@ -29,10 +29,13 @@ int main( void )
 //  float temp = 0.0f;
 //  char voltage[24];
 
-  BSP_DBG_puts("DEBUG UART");
-  Log.Debug("Starting Debugger");
-  Log.Warning("Starting Warner");
-  Log.Error("Starting Errorer");
+//  BSP_DBG_puts("DEBUG UART");
+//  Log.Debug("Starting Debugger");
+//  Log.Warning("Starting Warner");
+//  Log.Error("Starting Errorer");
+  
+  
+  PIS_Reset_to_Zero();
   
   sShellImpl shell_impl = {
     .send_char = BSP_CNSL_putc,
@@ -40,6 +43,8 @@ int main( void )
   shell_boot(&shell_impl);
   
   char c;
+  
+  
   
   while(1){
 

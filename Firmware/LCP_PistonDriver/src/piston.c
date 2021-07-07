@@ -6,7 +6,8 @@
  * Includes
  *********************************************************************************/
 #include "piston.h"
-
+#include "logging.h"
+#include <math.h>
 /**********************************************************************************
  * Preprocessor Constants
  *********************************************************************************/
@@ -465,19 +466,36 @@ ePistonRunError_t PIS_Run_to_volume(double volume)
 void PIS_Extend(void)
 {
   ENC_SetDir(1);
-  DRV8874_forward();
+  DRV8874_reverse();
 }
 
 void PIS_Retract(void)
 {
   ENC_SetDir(-1);
-  DRV8874_reverse();
+  DRV8874_forward();
 }
 
 void PIS_Stop(void)
 {
   DRV8874_stop();
 }
+
+void PIS_Reset_to_Zero(void)
+{
+  PIS_Retract();
+  __delay_cycles(0xFFFFFFFF);
+  int32_t count = ENC_Get_count();
+  while( (fabs(PIS_Read_current()) > 0.000001f) && 
+        (count != ENC_Get_count()) )
+  {
+    Log.Debug("Resetting to zero");
+    __delay_cycles(0x000FFFFF);
+  }
+  Log.Debug("Move Complete");
+  ENC_Set_count(0);
+}       
+
+
 /**********************************************************************************
  * Function: PIS_Write_length()
  *

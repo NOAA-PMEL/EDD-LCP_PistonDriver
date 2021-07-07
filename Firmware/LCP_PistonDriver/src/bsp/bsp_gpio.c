@@ -1,6 +1,8 @@
 #include "bsp_gpio.h"
 #include "msp430fr5989.h"
 
+volatile int32_t g_gpio_count_0 = 0lu;
+
 void (*GPIO_int_0_callback)(void);
 void (*GPIO_int_1_callback)(void);
 void (*GPIO_int_2_callback)(void);
@@ -24,6 +26,24 @@ __interrupt void Port_2 (void);
 __interrupt void Port_3 (void);
 __interrupt void Port_4 (void);
 __interrupt void Port_9 (void);
+
+
+volatile int32_t * BSP_GPIO_Init_Counter( uint8_t counter)
+{
+  volatile int32_t *p;
+  
+  switch(counter)
+  {
+  case 0:
+    p = &g_gpio_count_0;
+    break;
+  default:
+    break;
+    
+  }
+  
+  return p;
+}
 
 
 void BSP_GPIO_Init(const driverlib_gpio_cfg_t *p)
@@ -89,11 +109,13 @@ bool BSP_GPIO_Read(const driverlib_gpio_cfg_t *p)
 void BSP_GPIO_SetInterrupt(const driverlib_gpio_cfg_t *p)
 {
     GPIO_enableInterrupt(p->port, p->pin); 
+    __bis_SR_register(GIE);
   
 }
 void BSP_GPIO_ClearInterrupt(const driverlib_gpio_cfg_t *p)
 {
     GPIO_disableInterrupt(p->port, p->pin);
+    __bis_SR_register(GIE);
 }
 
 
@@ -125,10 +147,10 @@ __interrupt void Port_1 (void)
     case P1IV_P1IFG0:
       break;		/* Vector 2 - Interrupt on Pin 1, Pin 0*/
     case P1IV_P1IFG3:
-      GPIO_int_1_callback();
+      g_gpio_count_0++;
       break;
     case P1IV_P1IFG4:
-//      GPIO_int_1_callback();
+      g_gpio_count_0--;
       break;
     default:
       break;

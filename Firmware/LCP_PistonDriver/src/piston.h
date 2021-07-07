@@ -175,6 +175,7 @@ ePistonRunError_t PIS_Run_to_volume(double volume);
 void PIS_Extend(void);
 void PIS_Retract(void);
 void PIS_Stop(void);
+void PIS_Reset_to_Zero(void);
 
 /**********************************************************************************
  * Unit Test Variables & Static Prototpyes
