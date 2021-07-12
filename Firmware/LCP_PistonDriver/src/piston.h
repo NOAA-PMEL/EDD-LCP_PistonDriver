@@ -182,6 +182,7 @@ void PIS_Reset_to_Zero(void);
 void PIS_Run_to_Full(void);
 void PIS_Calibrate(void);
 float PIS_Get_Volume(void);
+float PIS_Get_Length(float *small, float *large);
 
 /**********************************************************************************
  * Unit Test Variables & Static Prototpyes

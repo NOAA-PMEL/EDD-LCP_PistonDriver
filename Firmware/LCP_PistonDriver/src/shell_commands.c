@@ -43,6 +43,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "vtotal", 6) == 0)
     {
       Log.Debug("get vtotal called");
+      
       sprintf(t_str, "%.4f", PIS_Get_Volume());
 //      sprintf(t_str, "%f", MEM_Get_VOL_Total());
       shell_put_line(t_str);
@@ -583,6 +584,32 @@ int cli_cmd_get_report(int argc, char *argv[]){
 }
 
 
+int cli_cmd_mem_dump( int argc, char *argv[]) {
+  char temp[8];
+  uint8_t *value;
+  uint16_t idx;
+  MEM_Update();
+  for(uint16_t j = 0; j < 0xF0; j += 0x10)
+  {
+//    shell_put_char('0');
+//    shell_put_char('x');
+    for(uint16_t i=0;i<0x0F; i++)
+    {
+     idx = j + i;
+     value = (uint8_t*)MEM_Get_Read_Addr(idx);
+     shell_put_char(' '); 
+     sprintf(temp, "%02x", *value );
+    shell_put_char( temp[0] );
+    shell_put_char( temp[1] );
+      
+      
+    }
+    shell_put_char('\n');
+
+  }
+  return 1;
+}
+
 int cli_cmd_kv_write(int argc, char *argv[]) {
   // We expect 3 arguments:
   // 1. Command name
@@ -720,6 +747,7 @@ static const sShellCommand s_shell_commands[] = {
   {"id", cli_cmd_get_id,"Return system id"},
   {"ver", cli_cmd_get_firmware, "Return firmware version"},
   {"report", cli_cmd_get_report, "Return System Report"},
+  {"dump", cli_cmd_mem_dump, "Control Memory Dump"},
   {"", NULL, "*** Other ***"},
   {"debug", cli_cmd_debug, "Set Debug state"},
   {"rev", cli_cmd_rev, "Retract piston"},

@@ -202,6 +202,9 @@ void MEM_Set_Travel_Engage(bool state);
 void MEM_Set_Serial_Number(volatile char *value);
 
 
+void  MEM_Update(void);
+
+
 uint8_t MEM_Get_VAR_Write(void);
 bool MEM_Get_USR_Override(void);
 

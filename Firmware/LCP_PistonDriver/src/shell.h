@@ -43,6 +43,7 @@ int shell_help_handler( int argc, char *argv[] );
 /**! Print a line then a newline */
 void shell_put_line( const char *str );
 
+void shell_put_char( const char c);
 
 #ifdef TEST
 extern const sShellCommand *const g_shell_commands; 

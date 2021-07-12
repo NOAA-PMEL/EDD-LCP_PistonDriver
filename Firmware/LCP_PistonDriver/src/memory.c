@@ -156,6 +156,15 @@ STATIC void memset_volatile(volatile void *s, uint8_t c, size_t n)
   }
 }
 
+STATIC void memcpy_volatile(volatile void *s, volatile void *t, uint16_t n)
+{
+  volatile uint8_t *ps = s;
+  volatile uint8_t *pt = t;
+  while(n-->0)
+  {
+    *ps++ = *pt++;
+  }
+}
 
 STATIC uint16_t strlen_volatile(volatile char* s)
 {
@@ -481,12 +490,26 @@ void MEM_Set_Serial_Number(volatile char *value)
 }
 
 
+void  MEM_Update(void)
+{
+  *RAM.VOL_total = PIS_Get_Volume();
+  *RAM.PST_enc_counts = ENC_Get_count();
+
+  *RAM.LEN_total = PIS_Get_Length( (float*) RAM.LEN_small_piston, (float*) RAM.LEN_large_piston);
+  
+  memcpy_volatile(temp_ram, storage_ram, 256);
+}
+
+
 uint8_t MEM_Get_VAR_Write(void) { return *RAM.VAR_write; }
 bool MEM_Get_USR_Override(void) { return (bool) *RAM.USR_override; }
 
 float MEM_Get_VOL_Setpoint(void) { return PIS_Get_Volume(); }
 //return *RAM.VOL_setpoint; }
-float MEM_Get_VOL_Total(void) { return  *RAM.VOL_total; }
+float MEM_Get_VOL_Total(void) { 
+  MEM_Update();
+  return  *RAM.VOL_total; 
+}
 float MEM_Get_VOL_Housing(void) { return  *RAM.VOL_housing;} 
 float MEM_Get_VOL_Small_Piston(void) { return  *RAM.VOL_small_piston;} 
 float MEM_Get_VOL_Large_Piston(void) { return  *RAM.VOL_large_piston;} 

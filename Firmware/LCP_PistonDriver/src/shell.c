@@ -142,6 +142,9 @@ void shell_put_line( const char *str ) {
     prv_echo('\n');
 }
 
+void shell_put_char( const char c) {
+    prv_echo(c);
+}
 int shell_help_handler( int argc, char *argv[] ) {
     SHELL_FOR_EACH_COMMAND(command) {
         prv_echo_str(command->command);

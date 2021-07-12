@@ -22,6 +22,7 @@ int cli_cmd_rev(int argc, char *argv[]);
 int cli_cmd_fwd(int argc, char *argv[]);
 int cli_cmd_stop(int argc, char *argv[]);
 int cli_cmd_led_state(int argc, char *argv[]);
+int cli_cmd_mem_dump( int argc, char *argv[]);
 int cli_cmd_hello(int argc, char *argv[]);
 int cli_cmd_get(int argc, char *argv[]);
 int cli_cmd_set(int argc, char *argv[]);

@@ -624,6 +624,13 @@ void PIS_Calibrate(void)
 }
 
 
+float PIS_Get_Length(float *small, float *large)
+{
+  float length;
+  length = PIS_Read_length();
+  *small = smallPiston._length;
+  *large = largePiston._length;
+}
 float PIS_Get_Volume(void)
 {
   return PIS_Read_volume();
