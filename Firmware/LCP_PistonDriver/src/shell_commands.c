@@ -43,7 +43,8 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "vtotal", 6) == 0)
     {
       Log.Debug("get vtotal called");
-      sprintf(t_str, "%f", MEM_Get_VOL_Total());
+      sprintf(t_str, "%.4f", PIS_Get_Volume());
+//      sprintf(t_str, "%f", MEM_Get_VOL_Total());
       shell_put_line(t_str);
       return true;
     }

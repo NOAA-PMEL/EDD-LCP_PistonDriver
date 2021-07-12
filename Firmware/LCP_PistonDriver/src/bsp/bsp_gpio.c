@@ -147,10 +147,11 @@ __interrupt void Port_1 (void)
     case P1IV_P1IFG0:
       break;		/* Vector 2 - Interrupt on Pin 1, Pin 0*/
     case P1IV_P1IFG3:
-      g_gpio_count_0++;
+      GPIO_int_1_callback();
+//      g_gpio_count_0++;
       break;
     case P1IV_P1IFG4:
-      g_gpio_count_0--;
+//      g_gpio_count_0--;
       break;
     default:
       break;

@@ -338,7 +338,8 @@ void MEM_Set_VOL_Setpoint(volatile float value)
 //    if((MINIMUM_TOTAL_VOLUME <= value) && (MAXIMUM_LARGE_VOLUME >= value))
     {
         /** @todo Call the volume setpoint routine */
-
+        PIS_Run_to_volume(value);
+        
         /** Update the RAM */
         *RAM.VOL_setpoint = value;
     } else {
@@ -483,14 +484,19 @@ void MEM_Set_Serial_Number(volatile char *value)
 uint8_t MEM_Get_VAR_Write(void) { return *RAM.VAR_write; }
 bool MEM_Get_USR_Override(void) { return (bool) *RAM.USR_override; }
 
-float MEM_Get_VOL_Setpoint(void) { return *RAM.VOL_setpoint; }
+float MEM_Get_VOL_Setpoint(void) { return PIS_Get_Volume(); }
+//return *RAM.VOL_setpoint; }
 float MEM_Get_VOL_Total(void) { return  *RAM.VOL_total; }
 float MEM_Get_VOL_Housing(void) { return  *RAM.VOL_housing;} 
 float MEM_Get_VOL_Small_Piston(void) { return  *RAM.VOL_small_piston;} 
 float MEM_Get_VOL_Large_Piston(void) { return  *RAM.VOL_large_piston;} 
 
 float MEM_Get_LEN_Setpoint(void) { return  *RAM.LEN_setpoint;} 
-float MEM_Get_LEN_Total(void) { return  *RAM.LEN_total;} 
+float MEM_Get_LEN_Total(void) { 
+  
+  return ENC_Get_Length();
+}
+//  return  *RAM.LEN_total;} 
 float MEM_Get_LEN_Small_Piston(void) { return  *RAM.LEN_small_piston;} 
 float MEM_Get_LEN_Large_Piston(void) { return  *RAM.LEN_large_piston;} 
 

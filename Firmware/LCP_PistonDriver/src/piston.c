@@ -355,14 +355,24 @@ ePistonRunError_t PIS_Run_to_length(double length)
     PIS_Write_length(length);
 
     actuator.setpoint_flag = false;
-    if(length > ENC_Get_Length())
+    float diff = length - ENC_Get_Length();
+    uint8_t speed;
+    if(diff > 0.5)
     {
-        PIS_Extend(true, 100);
-        actuator.move_dir = PISRunFwd;
-    } else if(length < ENC_Get_Length())
+      speed = 100;
+    } else {
+      speed = 50;
+    }
+    
+    if(diff > 0)
     {
-        PIS_Retract(true, 100);
+        actuator.move_dir = PISRunFwd;           
+        PIS_Extend(true, speed);
+        
+    } else if(diff < 0) 
+    {
         actuator.move_dir = PISRunRev;
+        PIS_Retract(true, speed);
     } else {
         actuator.setpoint_flag = true;
     }
@@ -370,72 +380,36 @@ ePistonRunError_t PIS_Run_to_length(double length)
     float current = 0.0f;
     bool current_stop = false;
     bool setpoint_reached = false;
+    bool slow_speed_flag = false;
     do{
-//        #ifdef TEST
-//        actuator.setpoint_flag = true;
-//        #endif
-        //* @todo Add sleep function */
+
         
-//        float current_length = PIS_Read_length();
+        float current_length = PIS_Read_length();
+        sprintf(temp, "Current length = %.4f", current_length);
+        Log.Debug(temp);
         
-        float diff = PIS_Read_length() - length;
+        float diff = current_length - length;
         
         if(fabs(diff) < 0.005)
         {
           DRV8874_stop();
           actuator.setpoint_flag = true;
         } 
-//        else if(fabs(diff) < 0.5f) {
-//          if(actuator.speed > ACTUATOR_SPEED)
-//          {
-//            if(actuator.move_dir == PISRunFwd) 
-//            {
-//              PIS_Extend(false, ACTUATOR_SPEED);
-//            } else {
-//              PIS_Retract(false, ACTUATOR_SPEED);
-//            }
-//          }
-//        } else {
-//          
-//          if( (actuator.move_dir == PISRunFwd) &&
-//              (diff > 0) )
-//          {
-//            DRV8874_stop();
-//            actuator.setpoint_flag = true;
-//          } else if( (actuator.move_dir == PISRunRev) &&
-//                    (diff < 0) )
-//          {
-//            DRV8874_stop();
-//            actuator.setpoint_flag = true;
-//          } else {
-//            actuator.setpoint_flag = false;
-//          }
-//        }  
-        
-//        if( (actuator.move_dir == PISRunFwd) && \
-//            (length < current_length))
-//        {
-//          sprintf(temp, "Fwd, current_length = %.4f", current_length);
-//          Log.Warning(temp);
-//          DRV8874_stop();
-//            break;
-//        } else if( (actuator.move_dir == PISRunRev) && \
-//                   (length > current_length) )
-//        {
-//          sprintf(temp, "Rev, current_length = %.4f", current_length);
-//          Log.Warning(temp);
-//          DRV8874_stop();
-//            break;
-//        }
-        
-        
-//        if(0.5f > fabs(current_length - length))
-//        {
-//          
-//        }
 
         
-        
+      if(!slow_speed_flag)
+      {
+        if(fabs(diff) <= 0.5)
+        {
+          slow_speed_flag = true;
+          if(actuator.move_dir == PISRunFwd)
+          {
+            PIS_Extend(false, 50);
+          } else {
+            PIS_Retract(false, 50);
+          }
+        }
+      }
       current = DRV8847_read_current();
       current_stop = (current >= 0.005f);
       setpoint_reached = (actuator.setpoint_flag);
@@ -456,16 +430,16 @@ ePistonRunError_t PIS_Run_to_length(double length)
     }
     sprintf(temp, "Position at stop = %.4f", ENC_Get_Length());
     Log.Debug(temp);
-    float diff = ENC_Get_Length() - length;
+    
+    diff = ENC_Get_Length() - length;
     sprintf(temp, "Diff = %0.4f", diff);
     Log.Debug(temp);
     
     
-    // printf("%i, %f", actuator.setpoint_flag, current);
+
     if((actuator.setpoint_flag == true) && (current <= 0.1))
     {
         
-        // printf("In Error");
         error = PISErrorStalled;
         /** Log Error Stalled */
         Log.Error("Piston stalled");
@@ -534,7 +508,8 @@ ePistonRunError_t PIS_Run_to_length(double length)
 ePistonRunError_t PIS_Run_to_volume(double volume)
 {
     ePistonRunError_t error = PISErrorGeneric;
-
+    char temp[64];
+    
     #ifndef TEST
     assert(volume <= SYSTEM_MAX_VOLUME);
     assert(volume >= SYSTEM_MIN_VOLUME);
@@ -546,9 +521,16 @@ ePistonRunError_t PIS_Run_to_volume(double volume)
                         &largePiston,
                         &housing
                     );
-
-    // printf("vol=%f, len=%f, cl=%f\n", volume, length, actuator.current_length);
-    return PIS_Run_to_length(length);
+    
+    error = PIS_Run_to_length(length);
+    
+    sprintf(temp, "Volume at stop = %.4f", PIS_Get_Volume());
+    Log.Debug(temp);
+    float diff = PIS_Get_Volume() - volume;
+    sprintf(temp, "Diff = %0.4f", diff);
+    Log.Debug(temp);
+    
+    return error;
 }
 
 
@@ -641,6 +623,12 @@ void PIS_Calibrate(void)
 
 }
 
+
+float PIS_Get_Volume(void)
+{
+  return PIS_Read_volume();
+  
+}
 
 /**********************************************************************************
  * Function: PIS_Write_length()
@@ -768,8 +756,8 @@ STATIC double PIS_Read_length(void) {
   
     double length = ENC_Get_Length();
     char temp[32];
-    sprintf(temp, "length = %.4f", length);
-    Log.Debug(temp);
+//    sprintf(temp, "length = %.4f", length);
+//    Log.Debug(temp);
     if( (length > 0.0f) && (length <= smallPiston._max_length))
     {
         smallPiston._length = length;

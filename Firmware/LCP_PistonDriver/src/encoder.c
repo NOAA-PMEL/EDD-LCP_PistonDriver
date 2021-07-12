@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 STATIC PERSISTENT volatile int32_t g_encoder_counter;
-STATIC PERSISTENT volatile int32_t *p_encoder_counter;
+STATIC PERSISTENT volatile int32_t *p_encoder_counter = &g_encoder_counter;
 STATIC PERSISTENT volatile int32_t g_encoder_direction;
 
 STATIC PERSISTENT sEncoderSettings_t encSettings = {
@@ -62,7 +62,7 @@ STATIC double _calculate_length(void)
 
 void ENC_Increment(void)
 {
-  
+  *p_encoder_counter += g_encoder_direction;
 }
 
 void ENC_Set_count(int32_t val)
@@ -109,12 +109,12 @@ void ENC_Init(void) {
 
 //      
       BSP_GPIOCallback(1, &ENC_Increment);
-      BSP_GPIOCallback(2, &ENC_Increment);
+//      BSP_GPIOCallback(2, &ENC_Increment);
 //
       BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
       BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
       
-      p_encoder_counter = BSP_GPIO_Init_Counter(0);
+//      p_encoder_counter = BSP_GPIO_Init_Counter(0);
   
   /** Use for Timer B based counting (testing now) */
 //  P1DIR &= ~(BIT3|BIT4);
@@ -133,15 +133,15 @@ void ENC_Init(void) {
 void ENC_SetDir(ePistonDir_t dir)
 {
   assert( (dir == DIR_EXTEND) || (dir == DIR_RETRACT) );
-  g_encoder_direction = dir;
-  if(dir == DIR_EXTEND)
-  {
+  g_encoder_direction = (int32_t)dir;
+//  if(dir == DIR_EXTEND)
+//  {
     BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);
     BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
-  } else {
-    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
-    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
-  }
+//  } else {
+//    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
+//    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+//  }
 }
 
 int8_t ENC_GetDir(void)
