@@ -178,3 +178,12 @@ void BSP_12V_Off(void)
 }
 
 
+void _delay_ms(uint32_t seconds)
+{
+  while(--seconds > 0)
+  {
+    __delay_cycles(5000);
+  }
+}
+
+

@@ -14,7 +14,7 @@
 /**********************************************************************************
 * Preprocessor Constants
 *********************************************************************************/
-#define HOUSING_VOLUME      ( 10.0f )
+//#define HOUSING_VOLUME      ( 10.0f )
 #define MINIMUM_TOTAL_VOLUME      ( HOUSING_VOLUME )
 #define MAXIMUM_SMALL_VOLUME        ( 20f )
 #define MAXIMUM_LARGE_VOLUME        ( 50f )
@@ -347,7 +347,7 @@ void MEM_Set_VOL_Setpoint(volatile float value)
 //    if((MINIMUM_TOTAL_VOLUME <= value) && (MAXIMUM_LARGE_VOLUME >= value))
     {
         /** @todo Call the volume setpoint routine */
-        PIS_Run_to_volume(value);
+//        PIS_Run_to_volume(value);
         
         /** Update the RAM */
         *RAM.VOL_setpoint = value;
@@ -361,10 +361,10 @@ void MEM_Set_LEN_Setpoint(volatile float value)
     if((*RAM.PST_position_min <= value) && (*RAM.PST_position_max >= value))
     {
         /** @todo Call the length setpoint routine */
-        if(PIS_Run_to_length((double) value) != PISErrorNone)
-        {
-            Log.Error("Failed to run to length");
-        }
+//        if(PIS_Run_to_length((double) value) != PISErrorNone)
+//        {
+//            Log.Error("Failed to run to length");
+//        }
         /** Update the RAM */
         *RAM.LEN_setpoint = value;
     } else {
@@ -460,21 +460,21 @@ void MEM_Set_Travel_Direction(volatile int8_t dir)
 void MEM_Set_Travel_Engage(volatile bool state)
 {    
     /** Set commanded state */
-    if(state)
-    {
-        /** @todo Call the piston engage function */
-      if(*RAM.TRV_dir != PISTON_DIR_RETRACT)
-      {
-        PIS_Extend(true, 100);
-      } else {
-        PIS_Retract(true, 100);
-      }
-      *RAM.TRV_eng = true;
-    } else {
-        /** @todo Call the piston stop function */
-      PIS_Stop();
-      *RAM.TRV_eng = false;
-    }
+//    if(state)
+//    {
+//        /** @todo Call the piston engage function */
+//      if(*RAM.TRV_dir != PISTON_DIR_RETRACT)
+//      {
+//        PIS_Extend(true, 100);
+//      } else {
+//        PIS_Retract(true, 100);
+//      }
+//      *RAM.TRV_eng = true;
+//    } else {
+//        /** @todo Call the piston stop function */
+//      PIS_Stop();
+//      *RAM.TRV_eng = false;
+//    }
     
 }
 
@@ -492,10 +492,10 @@ void MEM_Set_Serial_Number(volatile char *value)
 
 void  MEM_Update(void)
 {
-  *RAM.VOL_total = PIS_Get_Volume();
+//  *RAM.VOL_total = PIS_Get_Volume();
   *RAM.PST_enc_counts = ENC_Get_count();
 
-  *RAM.LEN_total = PIS_Get_Length( (float*) RAM.LEN_small_piston, (float*) RAM.LEN_large_piston);
+//  *RAM.LEN_total = PIS_Get_Length( (float*) RAM.LEN_small_piston, (float*) RAM.LEN_large_piston);
   
   memcpy_volatile(temp_ram, storage_ram, 256);
 }
@@ -504,8 +504,8 @@ void  MEM_Update(void)
 uint8_t MEM_Get_VAR_Write(void) { return *RAM.VAR_write; }
 bool MEM_Get_USR_Override(void) { return (bool) *RAM.USR_override; }
 
-float MEM_Get_VOL_Setpoint(void) { return PIS_Get_Volume(); }
-//return *RAM.VOL_setpoint; }
+float MEM_Get_VOL_Setpoint(void) {return *RAM.VOL_setpoint; }
+
 float MEM_Get_VOL_Total(void) { 
   MEM_Update();
   return  *RAM.VOL_total; 
@@ -519,7 +519,7 @@ float MEM_Get_LEN_Total(void) {
   
   return ENC_Get_Length();
 }
-//  return  *RAM.LEN_total;} 
+
 float MEM_Get_LEN_Small_Piston(void) { return  *RAM.LEN_small_piston;} 
 float MEM_Get_LEN_Large_Piston(void) { return  *RAM.LEN_large_piston;} 
 

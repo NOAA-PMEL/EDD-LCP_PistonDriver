@@ -73,7 +73,7 @@ void ENC_Set_max_count(int32_t val);
 int32_t ENC_Get_count(void);
 int32_t ENC_Get_min_count(void);
 int32_t ENC_Get_max_count(void);
-void ENC_SetDir(int8_t dir);
+void ENC_SetDir(ePistonDir_t dir);
 int8_t ENC_GetDir(void);
 
 #ifdef TEST

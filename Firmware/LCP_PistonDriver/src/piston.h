@@ -130,6 +130,7 @@ typedef struct sPistonVolume {
     double _volume;      /**< Piston volume (in^3) */
     double _length;      /**< Length of piston (in) */
     double _diameter;    /**< Diameter of piston (in) */
+    double _area;        /**< Area of piston (in) */
     double _max_length;  /**< Maximum length of piston (in) */
     double _max_volume;  /**< Maximum volume of piston (in) */
 }sPistonVolume_t;
@@ -148,6 +149,9 @@ typedef struct sActuator {
     int32_t enc_max;                    /**< Encoder count max (Full extend count) */
     ePistonRunDir_t move_dir;           /**< Piston movement direction */
     bool setpoint_flag;                 /**< Setpoint reached, True or False */
+    bool at_zero;                       /**< At zero limit (full retratction ) */
+    bool at_full;                       /**< At full limit (full extension) */
+    bool in_motion;                     /**< Actuator is engaged. */
 }sActuator_t;
 
 /**
@@ -182,7 +186,20 @@ void PIS_Reset_to_Zero(void);
 void PIS_Run_to_Full(void);
 void PIS_Calibrate(void);
 float PIS_Get_Volume(void);
+float PIS_Get_vset(void);
+float PIS_Get_volume_small(void);
+float PIS_Get_volume_large(void);
+float PIS_Get_area_small(void);
+float PIS_Get_area_large(void);
+float PIS_Get_lset(void);
 float PIS_Get_Length(float *small, float *large);
+int8_t PIS_Get_direction(void);
+bool PIS_is_at_zero(void);
+bool PIS_is_at_full(void);
+int32_t PIS_Get_encoder_count(void);
+float PIS_Get_motor_current(void);
+bool PIS_is_moving(void);
+
 
 /**********************************************************************************
  * Unit Test Variables & Static Prototpyes

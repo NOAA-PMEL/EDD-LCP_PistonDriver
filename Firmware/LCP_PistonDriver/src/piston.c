@@ -7,6 +7,7 @@
  *********************************************************************************/
 #include "piston.h"
 #include "logging.h"
+#include "memory.h"
 #include <math.h>
 #include <stdio.h>
 /**********************************************************************************
@@ -68,13 +69,13 @@ STATIC sActuator_t actuator = {
 /** 
  * Defines the full profiler piston system struct
  */
-STATIC sPistonSystem_t profiler = {
-    .volume = 0,
-    .actuator = &actuator,
-    .smallPiston = &smallPiston,
-    .largePiston = &largePiston,
-    .housing = &housing
-};
+//STATIC sPistonSystem_t profiler = {
+//    .volume = 0,
+//    .actuator = &actuator,
+//    .smallPiston = &smallPiston,
+//    .largePiston = &largePiston,
+//    .housing = &housing
+//};
 
 
 /**********************************************************************************
@@ -250,6 +251,7 @@ double PIS_Read(ePistonRead_t read)
         return (double) PIS_Read_current();
     } else {
         /** @todo Add Logging Error */
+      return 0.0f;
     }
 }
 
@@ -379,7 +381,7 @@ ePistonRunError_t PIS_Run_to_length(double length)
 
     float current = 0.0f;
     bool current_stop = false;
-    bool setpoint_reached = false;
+//    bool setpoint_reached = false;
     bool slow_speed_flag = false;
     do{
 
@@ -410,9 +412,9 @@ ePistonRunError_t PIS_Run_to_length(double length)
           }
         }
       }
-      current = DRV8847_read_current();
+      current = DRV8874_read_current();
       current_stop = (current >= 0.005f);
-      setpoint_reached = (actuator.setpoint_flag);
+//      setpoint_reached = (actuator.setpoint_flag);
     }while(!actuator.setpoint_flag && current_stop);
     
     Log.Debug("Exited do/while loop");
@@ -428,6 +430,7 @@ ePistonRunError_t PIS_Run_to_length(double length)
     {
       Log.Debug("Setpoint (supposedly) reached");
     }
+    _delay_ms(100);
     sprintf(temp, "Position at stop = %.4f", ENC_Get_Length());
     Log.Debug(temp);
     
@@ -630,12 +633,83 @@ float PIS_Get_Length(float *small, float *large)
   length = PIS_Read_length();
   *small = smallPiston._length;
   *large = largePiston._length;
+  return length;
 }
 float PIS_Get_Volume(void)
 {
   return PIS_Read_volume();
   
 }
+
+float PIS_Get_vset(void)
+{
+  return MEM_Get_VOL_Setpoint(); 
+}
+
+float PIS_Get_volume_small(void)
+{
+  PIS_Read_volume();
+  return smallPiston._volume;
+}
+
+float PIS_Get_volume_large(void)
+{
+  PIS_Read_volume();
+  return largePiston._volume;
+}
+
+float PIS_Get_area_small(void)
+{
+  return smallPiston._area;
+}
+
+float PIS_Get_area_large(void)
+{
+  return largePiston._area;
+}
+
+float PIS_Get_lset(void)
+{
+  return MEM_Get_LEN_Setpoint();
+}
+
+int8_t PIS_Get_direction(void)
+{
+  return actuator.move_dir;
+}
+
+bool PIS_is_at_zero(void)
+{
+  return actuator.at_zero;
+}
+
+bool PIS_is_at_full(void)
+{
+  return actuator.at_full;
+}
+
+int32_t PIS_Get_encoder_count(void)
+{
+  return ENC_Get_count();
+}
+
+float PIS_Get_motor_current(void)
+{
+  return DRV8874_read_current();
+}
+
+bool PIS_is_moving(void)
+{
+  if(  fabs(DRV8874_read_current() > 0.05) && 
+        actuator.move_dir != PISRunStop)
+  {
+    return true;
+  } else
+  {
+    return false;
+  }
+}
+
 
 /**********************************************************************************
  * Function: PIS_Write_length()
@@ -762,7 +836,7 @@ STATIC double PIS_Read_length(void) {
 //  Log.Debug("PIS_Read_length called");
   
     double length = ENC_Get_Length();
-    char temp[32];
+//    char temp[32];
 //    sprintf(temp, "length = %.4f", length);
 //    Log.Debug(temp);
     if( (length > 0.0f) && (length <= smallPiston._max_length))
@@ -847,7 +921,7 @@ STATIC double PIS_Read_volume(void) {
  * @see PIS_Write
  */
 STATIC float PIS_Read_current(void) {
-    return DRV8847_read_current();
+    return DRV8874_read_current();
 }
 
 /** @brief Calculate the min/max encoder count 

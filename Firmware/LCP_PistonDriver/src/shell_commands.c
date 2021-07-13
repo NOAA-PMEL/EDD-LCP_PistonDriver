@@ -34,7 +34,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "vset", 4) == 0)
     {
       Log.Debug("get vset called");
-      sprintf(t_str, "%f", MEM_Get_VOL_Setpoint());
+      sprintf(t_str, "%f", PIS_Get_vset());
       shell_put_line(t_str);\
       return true;
     }
@@ -53,7 +53,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "vsmall", 6) == 0)
     {
       Log.Debug("get vsmall called");
-      sprintf(t_str, "%f", MEM_Get_VOL_Small_Piston());
+      sprintf(t_str, "%f", PIS_Get_volume_small());
       shell_put_line(t_str);
       return true;
     }
@@ -61,7 +61,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "vlarge", 6) == 0)
     {
       Log.Debug("get vlarge called");
-      sprintf(t_str, "%f", MEM_Get_VOL_Large_Piston());
+      sprintf(t_str, "%f", PIS_Get_volume_large());
       shell_put_line(t_str);
       return true;
     }
@@ -78,7 +78,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "asmall", 6) == 0)
     {
       Log.Debug("get asmall called");
-      sprintf(t_str, "%f", MEM_Get_AREA_Small_Piston());
+      sprintf(t_str, "%f", PIS_Get_area_small());
       shell_put_line(t_str);
       return true;
     }
@@ -86,7 +86,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "alarge", 6) == 0)
     {
       Log.Debug("get alarge called");
-      sprintf(t_str, "%f", MEM_Get_AREA_Large_Piston());
+      sprintf(t_str, "%f", PIS_Get_area_large());
       shell_put_line(t_str);
       return true;
     }
@@ -94,7 +94,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "lset", 4) == 0)
     {
       Log.Debug("get lset called");
-      sprintf(t_str, "%f", MEM_Get_LEN_Setpoint());
+      sprintf(t_str, "%f", PIS_Get_lset());
       shell_put_line(t_str);
       return true;
     }
@@ -102,7 +102,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "ltotal", 6) == 0)
     {
       Log.Debug("get ltotal called");
-      sprintf(t_str, "%f", MEM_Get_LEN_Total());
+      sprintf(t_str, "%f", PIS_Get_Length(NULL, NULL));
       shell_put_line(t_str);
       return true;
     }
@@ -110,7 +110,9 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "lsmall", 6) == 0)
     {
       Log.Debug("get lsmall called");
-      sprintf(t_str, "%f", MEM_Get_LEN_Small_Piston());
+      float small;
+      PIS_Get_Length(&small, NULL);
+      sprintf(t_str, "%f", small);
       shell_put_line(t_str);
       return true;
     }
@@ -118,7 +120,9 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "llarge", 6) == 0)
     {
       Log.Debug("get llarge called");
-      sprintf(t_str, "%f", MEM_Get_LEN_Large_Piston());
+      float large;
+      PIS_Get_Length(NULL, &large);
+      sprintf(t_str, "%f", large);
       shell_put_line(t_str);
       return true;
     }
@@ -150,7 +154,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "tdir", 4) == 0)
     {
       Log.Debug("get tdir called");
-      sprintf(t_str, "%i", MEM_Get_TRV_Direction());
+      sprintf(t_str, "%i", PIS_Get_direction());
       shell_put_line(t_str);
       return true;
     }
@@ -166,7 +170,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "tzero", 5) == 0)
     {
       Log.Debug("get tzero called");
-      sprintf(t_str, "%u", (uint8_t) MEM_Get_TRV_Zero());
+      sprintf(t_str, "%u", (uint8_t) PIS_is_at_zero());
       shell_put_line(t_str);
       return true;
     }
@@ -174,7 +178,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "tfull", 5) == 0)
     {
       Log.Debug("get tfull called");
-      sprintf(t_str, "%u", (uint8_t) MEM_Get_TRV_Full());
+      sprintf(t_str, "%u", (uint8_t) PIS_is_at_full());
       shell_put_line(t_str);
       return true;
     }
@@ -198,7 +202,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "encode", 6) == 0)
     {
       Log.Debug("get encode called");
-      sprintf(t_str, "encode= %li", ENC_Get_count());
+      sprintf(t_str, "encode= %li", PIS_Get_encoder_count());
       shell_put_line(t_str);
       return true;
     }
@@ -206,7 +210,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
     if(strncmp(key, "mcurrent", 7) == 0)
     {
       Log.Debug("get mcurrent called");
-      sprintf(t_str, "mcurrent= %f", DRV8847_read_current());
+      sprintf(t_str, "mcurrent= %f", PIS_Get_motor_current());
       shell_put_line(t_str);
       return true;
     }
@@ -292,7 +296,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
       if(strncmp(key, "udir", 5) == 0)
       {
         Log.Debug("get udir called");
-        sprintf(t_str, "%i", MEM_Get_TRV_Direction());
+        sprintf(t_str, "%i", PIS_Get_direction());
         shell_put_line(t_str);
         return true;
       }
@@ -348,7 +352,7 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
     {
       Log.Debug("set vset called");
       Log.Debug(v_str);
-      MEM_Set_VOL_Setpoint(atof(val));
+      PIS_Run_to_volume(atof(val));
       return true;
     }
 
@@ -356,7 +360,7 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
     {
       Log.Debug("set lset called");
       Log.Debug(v_str);
-      MEM_Set_LEN_Setpoint(atof(val));
+      PIS_Run_to_length(atof(val));
       return true;
     }
 
@@ -648,22 +652,26 @@ int cli_cmd_debug(int argc, char *argv[]){
 
 int cli_cmd_rev(int argc, char *argv[]) {
   Log.Debug("rev command");
-  MEM_Set_Travel_Direction(-1);
-  MEM_Set_Travel_Engage(true);
+  PIS_Retract(true, 100);
+  
+//  MEM_Set_Travel_Direction(-1);
+//  MEM_Set_Travel_Engage(true);
   
   return 0;
 }
 
 int cli_cmd_fwd(int argc, char *argv[]) {
   Log.Debug("fwd command");
-  MEM_Set_Travel_Direction(1);
-  MEM_Set_Travel_Engage(true);
+  PIS_Extend(true, 100);
+//  MEM_Set_Travel_Direction(1);
+//  MEM_Set_Travel_Engage(true);
   return 0;
 }
 
 int cli_cmd_stop(int argc, char *argv[]) {
   Log.Debug("stop command");
-  MEM_Set_Travel_Engage(false);  
+  PIS_Stop();
+//  MEM_Set_Travel_Engage(false);  
   return 0;
 }
 

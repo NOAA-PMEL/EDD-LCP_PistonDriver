@@ -6,7 +6,7 @@ STATIC volatile uint8_t storage_ram[256];
 STATIC char sys_serial_num[9];
 STATIC char sys_user_name[13] = "guest";
 STATIC uint16_t sys_year_built;
-STATIC bool admin_mode = false;
+//STATIC bool admin_mode = false;
 
 void SYS_Set_SerialNumber(char* sernum)
 {
@@ -48,12 +48,12 @@ void SYS_Set_UserName(char *user)
     }
     strncpy(sys_user_name, user, len);
     
-    if(strcmp("admin", sys_user_name) == 0)
-    {
-        admin_mode = true;
-    } else {
-        admin_mode = false;
-    }
+//    if(strcmp("admin", sys_user_name) == 0)
+//    {
+//        admin_mode = true;
+//    } else {
+//        admin_mode = false;
+//    }
 }
 
 uint8_t SYS_Get_UserName(char *user)

@@ -194,7 +194,7 @@ void DRV8874_stop( void ) {
   speed_rev = 0;
 }
 
-float DRV8847_read_current( void )
+float DRV8874_read_current( void )
 {
 //  float a_ipropi = 444e-6;      /** @todo This needs to be somewhere else */
 //  
