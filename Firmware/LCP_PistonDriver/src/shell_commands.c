@@ -589,11 +589,11 @@ int cli_cmd_mem_dump( int argc, char *argv[]) {
   uint8_t *value;
   uint16_t idx;
   MEM_Update();
-  for(uint16_t j = 0; j < 0xF0; j += 0x10)
+  for(uint16_t j = 0; j < 0x100; j += 0x10)
   {
 //    shell_put_char('0');
 //    shell_put_char('x');
-    for(uint16_t i=0;i<0x0F; i++)
+    for(uint16_t i=0;i<0x10; i++)
     {
      idx = j + i;
      value = (uint8_t*)MEM_Get_Read_Addr(idx);
