@@ -592,7 +592,8 @@ int cli_cmd_mem_dump( int argc, char *argv[]) {
   char temp[8];
   uint8_t *value;
   uint16_t idx;
-  MEM_Update();
+  
+  
   for(uint16_t j = 0; j < 0x100; j += 0x10)
   {
 //    shell_put_char('0');

@@ -107,6 +107,8 @@ STATIC double _PIS_calculate_volume_from_length(
     const sPistonVolume_t *housing
      );
 
+STATIC bool _check_is_at_zero(void);
+
 /**********************************************************************************
  * Function Definitions
  *********************************************************************************/
@@ -139,6 +141,7 @@ STATIC double _PIS_calculate_volume_from_length(
  * @see PIS_Write
  */
 void PIS_Init(void) {
+    Log.Debug("Initializing Piston Functions");
     DRV8874_init();
     ENC_Init();
 }
@@ -172,6 +175,7 @@ void PIS_Init(void) {
  * @see PIS_Write
  */
 void PIS_Enable(void) {
+    Log.Debug("Enabling Piston Control");
     DRV8874_enable();
 }
 
@@ -206,6 +210,7 @@ void PIS_Enable(void) {
  * @see PIS_Write
  */
 void PIS_Disable(void) {
+    Log.Debug("Disabling Piston Control");
     DRV8874_disable();   
 }
 
@@ -287,21 +292,21 @@ double PIS_Read(ePistonRead_t read)
  * @see PIS_Read
  * @see PIS_Write
  */
-void PIS_Write(ePistonWrite_t write, double value)
-{
-    switch(write)
-    {
-        case PISWriteLength:
-            
-            break;
-        case PISWriteVolume:
-
-            break;
-        default:
-        /** @todo Add Logging Error */
-            break;
-    }
-}
+//void PIS_Write(ePistonWrite_t write, double value)
+//{
+//    switch(write)
+//    {
+//        case PISWriteLength:
+//            
+//            break;
+//        case PISWriteVolume:
+//
+//            break;
+//        default:
+//        /** @todo Add Logging Error */
+//            break;
+//    }
+//}
 
 /**********************************************************************************
  * Function: PIS_Run_to_length()
@@ -341,13 +346,21 @@ void PIS_Write(ePistonWrite_t write, double value)
  * @see PIS_Run_to_length
  * @see PIS_Run_to_volume
  */
-ePistonRunError_t PIS_Run_to_length(double length)
+ePistonRunError_t PIS_Run_to_length(float length)
 {
     #ifndef TEST
     assert(length <= SYSTEM_MAX_LENGTH);
     assert(length >= SYSTEM_MIN_LENGTH);
     #endif
-
+    MEM_Set_f(LEN_setpoint, length);
+    
+    double volume = _PIS_calculate_volume_from_length( 
+                    length,
+                    &smallPiston,
+                    &largePiston,
+                    &housing);
+    MEM_Set_f(VOL_setpoint, volume); 
+    
     char temp[64];
     sprintf(temp, "PIS_Run_to_length called with length = %f", length);
     Log.Debug(temp);
@@ -381,7 +394,6 @@ ePistonRunError_t PIS_Run_to_length(double length)
 
     float current = 0.0f;
     bool current_stop = false;
-//    bool setpoint_reached = false;
     bool slow_speed_flag = false;
     do{
 
@@ -414,7 +426,6 @@ ePistonRunError_t PIS_Run_to_length(double length)
       }
       current = DRV8874_read_current();
       current_stop = (current >= 0.005f);
-//      setpoint_reached = (actuator.setpoint_flag);
     }while(!actuator.setpoint_flag && current_stop);
     
     Log.Debug("Exited do/while loop");
@@ -508,7 +519,7 @@ ePistonRunError_t PIS_Run_to_length(double length)
  * @see PIS_Run_to_length
  * @see PIS_Run_to_volume
  */
-ePistonRunError_t PIS_Run_to_volume(double volume)
+ePistonRunError_t PIS_Run_to_volume(float volume)
 {
     ePistonRunError_t error = PISErrorGeneric;
     char temp[64];
@@ -517,13 +528,15 @@ ePistonRunError_t PIS_Run_to_volume(double volume)
     assert(volume <= SYSTEM_MAX_VOLUME);
     assert(volume >= SYSTEM_MIN_VOLUME);
     #endif
-
+    MEM_Set_f(VOL_setpoint, volume);
+    
     double length = _PIS_estimate_length_from_volume(
                         volume, 
                         &smallPiston, 
                         &largePiston,
                         &housing
                     );
+    
     
     error = PIS_Run_to_length(length);
     
@@ -547,6 +560,7 @@ void PIS_Extend(bool startup, uint8_t speed)
   }
   ENC_SetDir(DIR_EXTEND);
   DRV8874_reverse(speed);
+  MEM_Set_u8(TRV_eng, true);
   actuator.speed = speed;
   actuator.move_dir = PISRunFwd;
 }
@@ -561,6 +575,7 @@ void PIS_Retract(bool startup, uint8_t speed)
   }
   ENC_SetDir(DIR_RETRACT);
   DRV8874_forward(speed);
+  MEM_Set_u8(TRV_eng, true);
   actuator.speed = speed;
   actuator.move_dir = PISRunRev;
 }
@@ -569,6 +584,7 @@ void PIS_Stop(void)
 {
   Log.Debug("PIS_Stop called");
   DRV8874_stop();
+  MEM_Set_u8(TRV_eng, false);
   actuator.move_dir = PISRunStop;
 }
 
@@ -578,14 +594,16 @@ void PIS_Reset_to_Zero(void)
   Log.Debug("PIS_Reset_to_Zero called");
   int32_t count = ENC_Get_count();
   PIS_Retract(true, 100);
-  __delay_cycles(0xFFFFFFFF);
+  _delay_ms(500);
   
-  while( (fabs(PIS_Read_current()) > 0.05f) && 
-        (count != ENC_Get_count()) )
+//  while( (fabs(PIS_Read_current()) > 0.05f) && 
+//        (count != ENC_Get_count()) )
+  while(_check_is_at_zero() == false)
   {
     sprintf(temp, "Resetting to zero: pos = %0.4f", ENC_Get_Length());
     Log.Debug(temp);
-    __delay_cycles(0x00FFFFFF);
+
+    _delay_ms(1000);
   }
   Log.Debug("Move Complete");
   Log.Debug("Resetting encoder");
@@ -618,15 +636,44 @@ void PIS_Calibrate(void)
     Log.Debug("This will take a few minutes");
 
     PIS_Reset_to_Zero();
+    
     PIS_Run_to_Full();
+    
     Log.Debug("Settng max encoder count");
     ENC_Set_max_count(ENC_Get_count());
-
+    
+    PIS_Reset_to_Zero();
+    
+    Log.Debug("*** Calibration Complete ***");
 
 
 }
 
 
+/**********************************************************************************
+ * Function: PIS_is_at_zero()
+ *
+ *//**
+ * \b Description:
+ * 
+ * This function returns true if the actuator is fully retracted, false otherwise.
+ * 
+ * @param float *small Pointer to small piston length
+ * @param float *large Pointer to large piston length
+ * 
+ * @return bool
+ * 
+ * \b Example:
+ * @code
+ * PIS_Init();
+ * PIS_Extend();
+ * _delay_ms(5000);
+ * float small, large, total;
+ * length = PIS_Get_Length(&small, &large); 
+ * 
+ * @endcode
+ *
+ */
 float PIS_Get_Length(float *small, float *large)
 {
   float length;
@@ -678,25 +725,119 @@ int8_t PIS_Get_direction(void)
   return actuator.move_dir;
 }
 
+
+/**********************************************************************************
+ * Function: PIS_is_at_zero()
+ *
+ *//**
+ * \b Description:
+ * 
+ * This function returns true if the actuator is fully retracted, false otherwise.
+ * 
+ * 
+ * @return bool
+ * 
+ * \b Example:
+ * @code
+ * PIS_Init();
+ * PIS_Retract();
+ * _delay_ms(50000);
+ * if( PIS_is_at_zero())
+ * {
+ *    printf("Fully Extended");
+ * } 
+ * 
+ * @endcode
+ *
+ */
 bool PIS_is_at_zero(void)
 {
+
   return actuator.at_zero;
 }
 
+/**********************************************************************************
+ * Function: PIS_is_at_full()
+ *
+ *//**
+ * \b Description:
+ * 
+ * This function returns true if the actuator is fully extended, false otherwise.
+ * 
+ * 
+ * @return bool
+ * 
+ * \b Example:
+ * @code
+ * PIS_Init();
+ * PIS_Extend();
+ * _delay_ms(50000);
+ * if( PIS_is_at_full())
+ * {
+ *    printf("Fully Extended");
+ * } 
+ * 
+ * @endcode
+ *
+ */
 bool PIS_is_at_full(void)
 {
   return actuator.at_full;
 }
 
+
+/**********************************************************************************
+ * Function: PIS_Get_encoder_count()
+ *
+ *//**
+ * \b Description:
+ * 
+ * This function returns the current encoder count.
+ * 
+ * 
+ * @return int32_t Current
+ * 
+ * \b Example:
+ * @code
+ * PIS_Init();
+ * PIS_Extend();
+ * _delay_ms(500);
+ * PIS_Stop();
+ * int32_t count = PIS_Get_encoder_count();
+ * 
+ * @endcode
+ *
+ */
 int32_t PIS_Get_encoder_count(void)
 {
   return ENC_Get_count();
 }
 
+
+/**********************************************************************************
+ * Function: PIS_Get_motor_current()
+ *
+ *//**
+ * \b Description:
+ * 
+ * This function returns the motor current in amps (estimate, not calibrated).
+ * 
+ * 
+ * @return float Current
+ * 
+ * \b Example:
+ * @code
+ * PIS_Init();
+ * float current = PIS_Get_motor_current();
+ * 
+ * @endcode
+ *
+ */
 float PIS_Get_motor_current(void)
 {
   return DRV8874_read_current();
 }
+
 
 bool PIS_is_moving(void)
 {
@@ -790,17 +931,17 @@ STATIC void PIS_Write_length(double setpoint) {
  * @see PIS_Read
  * @see PIS_Write
  */
-STATIC void PIS_Write_volume(double volume)
-{
-   double length = _PIS_estimate_length_from_volume(
-                                        volume,
-                                        &smallPiston, 
-                                        &largePiston,
-                                        &housing
-                                        );
-
-    PIS_Write_length(length);
-}
+//STATIC void PIS_Write_volume(double volume)
+//{
+//   double length = _PIS_estimate_length_from_volume(
+//                                        volume,
+//                                        &smallPiston, 
+//                                        &largePiston,
+//                                        &housing
+//                                        );
+//
+//    PIS_Write_length(length);
+//}
 
 /**********************************************************************************
  * Function: PIS_Read_length()
@@ -832,13 +973,8 @@ STATIC void PIS_Write_volume(double volume)
  * @see PIS_Read
  * @see PIS_Write
  */
-STATIC double PIS_Read_length(void) {
-//  Log.Debug("PIS_Read_length called");
-  
+STATIC double PIS_Read_length(void) {  
     double length = ENC_Get_Length();
-//    char temp[32];
-//    sprintf(temp, "length = %.4f", length);
-//    Log.Debug(temp);
     if( (length > 0.0f) && (length <= smallPiston._max_length))
     {
         smallPiston._length = length;
@@ -850,6 +986,10 @@ STATIC double PIS_Read_length(void) {
         smallPiston._length = 0.0f;
         largePiston._length = 0.0f;
     }
+    
+    MEM_Set_LEN_Setpoint(length);
+    MEM_Set_f(LEN_small_piston, smallPiston._length);
+    MEM_Set_f(LEN_large_piston, largePiston._length);
     return length;
 }
 
@@ -887,7 +1027,13 @@ STATIC double PIS_Read_volume(void) {
     PIS_Read_length();
     smallPiston._volume = smallPiston._length * smallPiston._diameter * PI;
     largePiston._volume = largePiston._length * largePiston._diameter * PI;
-    return housing._volume + smallPiston._volume + largePiston._volume;
+    float total = housing._volume + smallPiston._volume + largePiston._volume;
+    
+    MEM_Set_f(VOL_small_piston, smallPiston._volume);
+    MEM_Set_f(VOL_large_piston, largePiston._volume);
+    MEM_Set_f(VOL_total, total);
+    
+    return total;
 }
 
 /**********************************************************************************
@@ -973,34 +1119,23 @@ STATIC double _PIS_estimate_length_from_volume(
     assert( volume >= housing->_max_volume);
     assert( volume <= (housing->_max_volume + small->_max_volume + large->_max_volume));
     #endif
-    // printf("Volume=%f, max=%f ",volume, (housing->_max_volume + small->_max_volume + large->_max_volume + actuator._range));
 
     if((volume <= housing->_max_volume+0.001) && (volume >= housing->_max_volume-0.001))
     {
         length = 0.0f;
-        // printf("Housing Only: length=%f\n", length);
     }
     else if (volume <= (housing->_max_volume + small->_max_volume))
     {
         volume -= housing->_max_volume;
         length = volume / (small->_diameter * PI);
-        
-        // printf("Housing + Small: length=%f\n", length);
-        // return length;
     }
     else if (volume <= (housing->_max_volume + small->_max_volume + large->_max_volume + 0.1))
     {
         volume -= (housing->_max_volume + small->_max_volume);
         length = (volume / (large->_diameter*PI)) + small->_max_length;
-        // printf("Housing + Both: length=%f\n", length);
-        // return length;
     } else {
-        // printf("Nothin");
         length =  -1.0f;
     }
-    // else if
-
-    // printf("\nLength=%f", length);
     return length;
 }
 
@@ -1081,20 +1216,66 @@ STATIC double _PIS_calculate_volume_from_length(
  * @see PIS_Read
  * @see PIS_Write
  */
-STATIC void _PIS_Run(ePistonRunDir_t dir)
+//STATIC void _PIS_Run(ePistonRunDir_t dir)
+//{
+//    switch(dir)
+//    {
+//        case PISRunFwd:
+//            DRV8874_forward(100);
+//            break;
+//        case PISRunRev:
+//            DRV8874_reverse(100);
+//            break;
+//        case PISRunStop:
+//            DRV8874_stop();
+//            break;
+//        default:
+//            break;
+//    }
+//}
+
+/**********************************************************************************
+ * Function: _check_is_at_zero()
+ *
+ *//**
+ * \b Description:
+ * 
+ * This function starts checks to see if the piston is at the zero .
+ * 
+ * PRE-CONDITION: Piston must be in a commanded movement state
+ * PRE-CONDITION: Piston must be enabled
+ * 
+ * POST-CONDITION: No change
+ *  
+ * @return bool True=At Zero, False= Not at Zero
+ * 
+ * \b Example:
+ * @code
+ * PIS_Init();
+ * PIS_Enable();
+ * PIS_Retract();
+ * while(_check_is_at_zero() == false);
+ * 
+ * @endcode
+ *
+ * @see PIS_Init
+ * @see PIS_Enable
+ * @see PIS_Disable
+ * @see PIS_Read
+ * @see PIS_Write
+ */
+STATIC bool _check_is_at_zero(void)
 {
-    switch(dir)
-    {
-        case PISRunFwd:
-            DRV8874_forward(100);
-            break;
-        case PISRunRev:
-            DRV8874_reverse(100);
-            break;
-        case PISRunStop:
-            DRV8874_stop();
-            break;
-        default:
-            break;
-    }
+    
+  int32_t count = ENC_Get_count();
+  _delay_ms(1);
+  
+  // MUST BE CALLED WHILE IN MOTION
+  if( (PIS_Read_current()> 0.05) && (count != ENC_Get_count()) )
+  {
+    return false;
+  } else {
+    return true;
+  }
+
 }

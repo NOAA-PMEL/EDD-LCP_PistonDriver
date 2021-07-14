@@ -1,4 +1,6 @@
 #include "DRV8874.h"
+#include "logging.h"
+#include <stdio.h>
 
 float _read_adc12_volts(void) ;
 uint16_t _calculate_pwm(uint8_t percent);
@@ -33,16 +35,22 @@ void DRV8874_init(void) {
 
 
 
-void DRV8874_enable( void ) {
+void DRV8874_enable( void ) 
+{
+  Log.Debug("Enabling DRV8874");
   BSP_12V_On();
 }
 
 
-void DRV8874_disable( void ) {
+void DRV8874_disable( void ) 
+{
+  Log.Debug("Disabling DRV8874");
   BSP_12V_Off();
 }
 
-void DRV8874_forward( uint8_t percent ){
+void DRV8874_forward( uint8_t percent )
+{
+  char temp[80];
   speed_rev = 0;
   BSP_GPIO_Set(&g_BSP_GPIO_MD_SLEEP);
 #ifdef DRV8874_NO_PWM
@@ -55,6 +63,7 @@ void DRV8874_forward( uint8_t percent ){
   
   if( target == speed_fwd)
   {
+    Log.Debug("Already at target speed");
     return;
   }
   else if(target > speed_fwd)
@@ -64,6 +73,8 @@ void DRV8874_forward( uint8_t percent ){
     inc = -1;
   }
   
+  sprintf(temp, "Setting DRV8874 FORWARD at %u%%, pwm = %u", percent, target);
+  Log.Debug(temp);
   do {
     BPS_PWM_SetPWM(1, speed_fwd);  
     __delay_cycles(1000);
@@ -71,47 +82,15 @@ void DRV8874_forward( uint8_t percent ){
   } while (target != speed_fwd);
   
   
-//  // EN/IN1 is Low
-//  BPS_PWM_SetPWM(0,0);
-//  speed_rev = 0;
-//  DRV8874_forward_change_speed(100);
-//for(uint16_t i=0; i<1024; i++)
-//  {
-//    // PH/IN2 is PWMed
-//    BPS_PWM_SetPWM(1, i);
-//    __delay_cycles(1000);
-//  }
 #endif
-//  speed_fwd = 1024;
 
 }
 
-//void DRV8874_forward_change_speed(uint8_t percent)
-//{
-//  BPS_PWM_SetPWM(0,0);
-//  uint16_t target = _calculate_pwm(percent);
-//  int16_t inc = 0;
-//  
-//  if( target == speed_fwd)
-//  {
-//    return;
-//  }
-//  else if(target > speed_fwd)
-//  {
-//    inc = 1;
-//  }else {
-//    inc = -1;
-//  }
-//  
-//  do {
-//    BPS_PWM_SetPWM(0, speed_fwd);  
-//    __delay_cycles(1000);
-//    speed_fwd += inc;
-//  } while (target != speed_fwd);
-//}
 
-void DRV8874_reverse( uint8_t percent ) {
 
+void DRV8874_reverse( uint8_t percent ) 
+ {
+  char temp[80];
   speed_fwd = 0;
   BSP_GPIO_Set(&g_BSP_GPIO_MD_SLEEP);
 #ifdef DRV8874_NO_PWM
@@ -124,6 +103,7 @@ void DRV8874_reverse( uint8_t percent ) {
  
   if( target == speed_rev)
   {
+    Log.Debug("Already at target speed");
     return;
   }
   else if(target > speed_rev)
@@ -132,52 +112,19 @@ void DRV8874_reverse( uint8_t percent ) {
   }else {
     inc = -1;
   }
+ sprintf(temp, "Setting DRV8874 FORWARD at %u%%, pwm = %u", percent, target);
+ Log.Debug(temp);
   do {
     BPS_PWM_SetPWM(0, speed_rev);  
     __delay_cycles(1000);
     speed_rev += inc;
   } while (target != speed_rev);
-//  // PH/IN2 is Low
-//  BPS_PWM_SetPWM(1,0);
-//  speed_fwd = 0;
-//
-//  BPS_PWM_SetPWM(0, 0);
-//  DRV8874_reverse_change_speed(100);
-//  for(uint16_t i=0; i<1024; i++)
-//  {
-////     EN/IN1 is PWMed
-//    BPS_PWM_SetPWM(0, i);
-//    __delay_cycles(1000);
-//  }
-#endif
 
-//  speed_rev = 1024;
-  
+#endif 
 
 }
 
-//void DRV8874_reverse_change_speed(uint8_t percent)
-//{
-//  BPS_PWM_SetPWM(1,0);
-//  uint16_t target = _calculate_pwm(percent);
-//  int16_t inc = 0;
-// 
-//  if( target == speed_fwd)
-// {
-//  return;
-//}
-//  else if(target > speed_fwd)
-//  {
-//    inc = 1;
-//}else {
-//  inc = -1;
-//}
-// do {
-//    BPS_PWM_SetPWM(1, _calculate_pwm(percent));  
-//  __delay_cycles(1000);
-//  speed_fwd += inc;
-//} while (target != speed_fwd);
-//}
+
 
 
 void DRV8874_stop( void ) {
@@ -192,21 +139,13 @@ void DRV8874_stop( void ) {
   
   speed_fwd = 0;
   speed_rev = 0;
+  Log.Debug("DRV8874 Stopped");
 }
 
 float DRV8874_read_current( void )
 {
-//  float a_ipropi = 444e-6;      /** @todo This needs to be somewhere else */
-//  
-//  /** Read voltage */
-//  float v_ipropi = _read_adc12_volts();
-//  v_ipropi *= a_ipropi;
-//  float i_propi = v_ipropi / 750.0f;
-//  
-//  float i = i_propi * 2197.8f;
-//  
+
 //  /** Convert to amps */
-//  return i / 2;
   float v_ipropi = 0.0f;
   float i_propi = 0.0f;
   
@@ -218,16 +157,12 @@ float DRV8874_read_current( void )
   i_propi = v_ipropi / 750.0f;
   i_propi = i_propi / 444e-6;
   
-  
-//  float v_ipropi = _read_adc12_volts();
-//  float i_propi = v_ipropi / 750.0f;
   return i_propi;
 }
 
 
 float _read_adc12_volts(void) { 
-// float temp_f = (float) (BSP_ADC12_Read() / 4096); 
-// return temp_f * 2.0f;
+
   return BSP_ADC12_Read_voltage();
 }
 

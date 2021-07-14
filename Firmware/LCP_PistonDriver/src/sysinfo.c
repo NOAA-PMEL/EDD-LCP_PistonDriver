@@ -1,4 +1,5 @@
 #include "sysinfo.h"
+#include "memory.h"
 #include <string.h>
 
 
@@ -16,7 +17,7 @@ void SYS_Set_SerialNumber(char* sernum)
     }
 
     strncpy(sys_serial_num, sernum, len);
-
+    MEM_Set_Serial_Number(sernum);
 }
 
 uint8_t SYS_Get_SerialNumber(char* sernum)
@@ -32,6 +33,7 @@ void SYS_Set_YearBuilt(uint16_t year)
     {
         sys_year_built = year;
     }
+    MEM_Set_YearBuilt(year);
 }
 
 uint16_t SYS_Get_YearBuilt(void)

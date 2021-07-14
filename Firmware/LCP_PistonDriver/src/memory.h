@@ -126,6 +126,47 @@
 /**********************************************************************************
 * Typdefs
 *********************************************************************************/
+
+typedef enum eRamVars_f {
+  VOL_setpoint,
+  VOL_total,
+  VOL_housing,
+  VOL_small_piston,
+  VOL_large_piston,
+  LEN_setpoint,
+  LEN_total,
+  LEN_small_piston,
+  LEN_large_piston,
+  ARE_small_piston,
+  ARE_large_piston,
+  PST_position_min,
+  PST_position_max,
+  PST_rate,
+  PST_position,
+  PID_coeff_p,
+  PID_coeff_i,
+  PID_coeff_d,
+  
+}eRamVars_f_t;
+
+typedef enum eRamVars_i8 {
+  TRV_dir,
+}eRamVars_i8_t;
+
+typedef enum eRamVars_u8 {
+  VAR_write,
+  USR_override,
+  TRV_eng,
+  TRV_zero,
+  TRV_full,
+  TRV_min,
+  TRV_max,
+}eRamVars_u8_t;
+
+//typedef enum eRamVars_c {
+//    SYS_ser_num,  
+//}eRamVars_c_t;
+
 typedef struct sRAM {
     
     volatile float *VOL_setpoint;
@@ -200,10 +241,10 @@ void MEM_Set_User_Override(bool value);
 void MEM_Set_Travel_Direction(int8_t dir);
 void MEM_Set_Travel_Engage(bool state);
 void MEM_Set_Serial_Number(volatile char *value);
-
-
-void  MEM_Update(void);
-
+void MEM_Set_f(eRamVars_f_t type, float value);
+void MEM_Set_u8(eRamVars_u8_t type, uint8_t value);
+void MEM_Set_i8(eRamVars_i8_t type, int8_t value);
+void MEM_Set_YearBuilt(volatile uint16_t year);
 
 uint8_t MEM_Get_VAR_Write(void);
 bool MEM_Get_USR_Override(void);

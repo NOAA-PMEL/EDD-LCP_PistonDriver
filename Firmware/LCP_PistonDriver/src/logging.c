@@ -8,7 +8,7 @@ sLog_t Log;
 
 STATIC eLogging_t LogLevel = LOG_NONE;
 
-STATIC char sendstr[256];
+//STATIC char sendstr[256];
 
 STATIC void LOG_Debug(const char *data)
 {   

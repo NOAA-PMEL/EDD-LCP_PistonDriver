@@ -341,16 +341,102 @@ const uint8_t* MEM_Get_Read_Addr(volatile uint16_t offset)
 }
 
 
+void MEM_Set_f(eRamVars_f_t type, float value)
+{
+  char temp[32];
+  switch(type)
+  {
+  case VOL_setpoint:
+     memcpy((float*)RAM.VOL_setpoint, (float*)&value, sizeof(float));
+    break;
+  case VOL_total:
+     memcpy((float*)RAM.VOL_total, (float*)&value, sizeof(float));
+    break;
+  case VOL_housing:
+    
+    break;
+  case VOL_small_piston:
+     memcpy((float*)RAM.VOL_small_piston, (float*)&value, sizeof(float));
+    break;
+  case VOL_large_piston:
+     memcpy((float*)RAM.VOL_large_piston, (float*)&value, sizeof(float));
+    break;
+  case LEN_setpoint:
+     memcpy((float*)RAM.LEN_setpoint, (float*)&value, sizeof(float));
+    break;
+  case LEN_total:
+     memcpy((float*)RAM.LEN_total, (float*)&value, sizeof(float));
+    break;
+  case LEN_small_piston:
+     memcpy((float*)RAM.LEN_small_piston, (float*)&value, sizeof(float));
+    break;
+  case LEN_large_piston:
+     memcpy((float*)RAM.LEN_large_piston, (float*)&value, sizeof(float));
+     break;
+    
+  case PST_position:
+     memcpy((float*)RAM.PST_position, (float*)&value, sizeof(float));
+    break;
+  default:
+    
+    sprintf(temp, "MEM_Set_f called with invalid value = %f", value);
+    Log.Error(temp);
+    break;
+  }
+  
+}
+
+void MEM_Set_u8(eRamVars_u8_t type, uint8_t value)
+{
+  char temp[32];
+  switch(type)
+  {
+  case TRV_eng:
+    *RAM.TRV_eng = value;
+    memcpy((uint8_t*)RAM.TRV_eng, (uint8_t*)&value, sizeof(uint8_t));
+    break;
+  case TRV_zero:
+    memcpy((uint8_t*)RAM.TRV_zero, (uint8_t*)&value, sizeof(uint8_t));
+    break;
+  case TRV_full:
+    memcpy((uint8_t*)RAM.TRV_full, (uint8_t*)&value, sizeof(uint8_t));
+    break;
+  default:
+
+    sprintf(temp, "MEM_Set_u8 called with invalid value = %u", value);
+    Log.Error(temp);
+  }
+  
+}
+
+void MEM_Set_i8(eRamVars_i8_t type, int8_t value)
+{
+  char temp[32];
+  switch(type)
+  {
+  case TRV_dir:
+//    *RAM.TRV_dir = value;
+    memcpy((uint8_t*)RAM.TRV_dir, (int8_t*)&value, sizeof(int8_t));
+    break;
+  default:
+    sprintf(temp, "MEM_Set_i8 called with invalid value = %d", value);
+    Log.Error(temp);
+  }
+  
+}
+
+//void MEM_Set_c(eRamVars_c_t type, char *c, uint8_t len)
+//{
+//  
+//}
+
 void MEM_Set_VOL_Setpoint(volatile float value)
 {
     if( (MINIMUM_TOTAL_VOLUME <= value) )
-//    if((MINIMUM_TOTAL_VOLUME <= value) && (MAXIMUM_LARGE_VOLUME >= value))
     {
-        /** @todo Call the volume setpoint routine */
-//        PIS_Run_to_volume(value);
-        
         /** Update the RAM */
-        *RAM.VOL_setpoint = value;
+//        *RAM.VOL_setpoint = value;
+      memcpy((float*)RAM.VOL_setpoint, (float*)&value, sizeof(float));
     } else {
         /** Raise value error */
     }
@@ -360,13 +446,8 @@ void MEM_Set_LEN_Setpoint(volatile float value)
 {
     if((*RAM.PST_position_min <= value) && (*RAM.PST_position_max >= value))
     {
-        /** @todo Call the length setpoint routine */
-//        if(PIS_Run_to_length((double) value) != PISErrorNone)
-//        {
-//            Log.Error("Failed to run to length");
-//        }
         /** Update the RAM */
-        *RAM.LEN_setpoint = value;
+         memcpy((float*)RAM.LEN_setpoint, (float*)&value, sizeof(float));
     } else {
         /** Raise value error */
     }
@@ -460,21 +541,6 @@ void MEM_Set_Travel_Direction(volatile int8_t dir)
 void MEM_Set_Travel_Engage(volatile bool state)
 {    
     /** Set commanded state */
-//    if(state)
-//    {
-//        /** @todo Call the piston engage function */
-//      if(*RAM.TRV_dir != PISTON_DIR_RETRACT)
-//      {
-//        PIS_Extend(true, 100);
-//      } else {
-//        PIS_Retract(true, 100);
-//      }
-//      *RAM.TRV_eng = true;
-//    } else {
-//        /** @todo Call the piston stop function */
-//      PIS_Stop();
-//      *RAM.TRV_eng = false;
-//    }
     
 }
 
@@ -490,69 +556,50 @@ void MEM_Set_Serial_Number(volatile char *value)
 }
 
 
-void  MEM_Update(void)
+void MEM_Set_YearBuilt(volatile uint16_t year)
 {
-//  *RAM.VOL_total = PIS_Get_Volume();
-  *RAM.PST_enc_counts = ENC_Get_count();
-
-//  *RAM.LEN_total = PIS_Get_Length( (float*) RAM.LEN_small_piston, (float*) RAM.LEN_large_piston);
-  
-  memcpy_volatile(temp_ram, storage_ram, 256);
+  assert(year > 2020);
+  *RAM.SYS_year_built = year;
 }
 
 
-uint8_t MEM_Get_VAR_Write(void) { return *RAM.VAR_write; }
-bool MEM_Get_USR_Override(void) { return (bool) *RAM.USR_override; }
 
-float MEM_Get_VOL_Setpoint(void) {return *RAM.VOL_setpoint; }
-
-float MEM_Get_VOL_Total(void) { 
-  MEM_Update();
-  return  *RAM.VOL_total; 
-}
-float MEM_Get_VOL_Housing(void) { return  *RAM.VOL_housing;} 
-float MEM_Get_VOL_Small_Piston(void) { return  *RAM.VOL_small_piston;} 
-float MEM_Get_VOL_Large_Piston(void) { return  *RAM.VOL_large_piston;} 
-
-float MEM_Get_LEN_Setpoint(void) { return  *RAM.LEN_setpoint;} 
-float MEM_Get_LEN_Total(void) { 
-  
-  return ENC_Get_Length();
-}
-
-float MEM_Get_LEN_Small_Piston(void) { return  *RAM.LEN_small_piston;} 
-float MEM_Get_LEN_Large_Piston(void) { return  *RAM.LEN_large_piston;} 
-
-float MEM_Get_AREA_Small_Piston(void) { return  *RAM.ARE_small_piston;} 
-float MEM_Get_AREA_Large_Piston(void) { return  *RAM.ARE_large_piston;} 
-
-float MEM_Get_PST_Position_Min(void) { return  *RAM.PST_position_min;} 
-float MEM_Get_PST_Position_Max(void) { return  *RAM.PST_position_max;} 
-uint32_t MEM_Get_PST_Encoder_Counts(void) { return  *RAM.PST_enc_counts;} 
-float MEM_Get_PST_Rate(void) { return  *RAM.PST_rate;} 
-float MEM_Get_PST_Position(void) { return  *RAM.PST_position;} 
-
-int8_t MEM_Get_TRV_Direction(void) { return  *RAM.TRV_dir;} 
-bool MEM_Get_TRV_Engaged(void) { return  *RAM.TRV_eng;} 
-bool MEM_Get_TRV_Zero(void) { return  *RAM.TRV_zero;} 
-bool MEM_Get_TRV_Full(void) { return  *RAM.TRV_full;} 
-bool MEM_Get_TRV_Min(void) { return  *RAM.TRV_min;} 
-bool MEM_Get_TRV_Max(void) { return  *RAM.TRV_max;} 
-
-double MEM_Get_BAT_Retcap(void) { return  *RAM.BAT_retcap;} 
-double MEM_Get_BAT_Repsoc(void) { return  *RAM.BAT_repsoc;} 
-double MEM_Get_BAT_Vcell(void) { return  *RAM.BAT_vcell;} 
-double MEM_Get_BAT_Current(void) { return  *RAM.BAT_current;} 
-double MEM_Get_BAT_Status(void) { return  *RAM.BAT_status;} 
-void MEM_Get_SYS_Id(char* value){ strncpy_volatile(value, RAM.SYS_id, 8);}
-uint16_t MEM_Get_SYS_Year_Built(void) { return  *RAM.SYS_year_built;} 
-uint8_t MEM_Get_SYS_Firmware_Major(void) { return  *RAM.SYS_firm_maj;} 
-uint8_t MEM_Get_SYS_Firmware_Minor(void) { return  *RAM.SYS_firm_min;} 
-uint32_t MEM_Get_SYS_Firmware_Build(void) { return  *RAM.SYS_firm_build;} 
-
-float MEM_Get_PID_Coeff_P(void) { return  *RAM.PID_coeff_p;} 
-float MEM_Get_PID_Coeff_I(void) { return  *RAM.PID_coeff_i;} 
-float MEM_Get_PID_Coeff_D(void) { return  *RAM.PID_coeff_d;} 
-float MEM_Get_PID_Used(void) { return  *RAM.PID_used;} 
-
+uint8_t MEM_Get_VAR_Write(void)             { return *RAM.VAR_write; }
+bool MEM_Get_USR_Override(void)             { return (bool) *RAM.USR_override; }
+float MEM_Get_VOL_Setpoint(void)            {return *RAM.VOL_setpoint; }
+float MEM_Get_VOL_Total(void)               { return  *RAM.VOL_total; }
+float MEM_Get_VOL_Housing(void)             { return  *RAM.VOL_housing;} 
+float MEM_Get_VOL_Small_Piston(void)        { return  *RAM.VOL_small_piston;} 
+float MEM_Get_VOL_Large_Piston(void)        { return  *RAM.VOL_large_piston;} 
+float MEM_Get_LEN_Setpoint(void)            { return  *RAM.LEN_setpoint;} 
+float MEM_Get_LEN_Total(void)               { return *RAM.PST_enc_counts;}
+float MEM_Get_LEN_Small_Piston(void)        { return  *RAM.LEN_small_piston;} 
+float MEM_Get_LEN_Large_Piston(void)        { return  *RAM.LEN_large_piston;} 
+float MEM_Get_AREA_Small_Piston(void)       { return  *RAM.ARE_small_piston;} 
+float MEM_Get_AREA_Large_Piston(void)       { return  *RAM.ARE_large_piston;} 
+float MEM_Get_PST_Position_Min(void)        { return  *RAM.PST_position_min;} 
+float MEM_Get_PST_Position_Max(void)        { return  *RAM.PST_position_max;} 
+uint32_t MEM_Get_PST_Encoder_Counts(void)   { return  *RAM.PST_enc_counts;} 
+float MEM_Get_PST_Rate(void)                { return  *RAM.PST_rate;} 
+float MEM_Get_PST_Position(void)            { return  *RAM.PST_position;} 
+int8_t MEM_Get_TRV_Direction(void)          { return  *RAM.TRV_dir;} 
+bool MEM_Get_TRV_Engaged(void)              { return  *RAM.TRV_eng;} 
+bool MEM_Get_TRV_Zero(void)                 { return  *RAM.TRV_zero;} 
+bool MEM_Get_TRV_Full(void)                 { return  *RAM.TRV_full;} 
+bool MEM_Get_TRV_Min(void)                  { return  *RAM.TRV_min;} 
+bool MEM_Get_TRV_Max(void)                  { return  *RAM.TRV_max;} 
+double MEM_Get_BAT_Retcap(void)             { return  *RAM.BAT_retcap;} 
+double MEM_Get_BAT_Repsoc(void)             { return  *RAM.BAT_repsoc;} 
+double MEM_Get_BAT_Vcell(void)              { return  *RAM.BAT_vcell;} 
+double MEM_Get_BAT_Current(void)            { return  *RAM.BAT_current;} 
+double MEM_Get_BAT_Status(void)             { return  *RAM.BAT_status;} 
+void MEM_Get_SYS_Id(char* value)            { strncpy_volatile(value, RAM.SYS_id, 8);}
+uint16_t MEM_Get_SYS_Year_Built(void)       { return  *RAM.SYS_year_built;} 
+uint8_t MEM_Get_SYS_Firmware_Major(void)    { return  *RAM.SYS_firm_maj;} 
+uint8_t MEM_Get_SYS_Firmware_Minor(void)    { return  *RAM.SYS_firm_min;} 
+uint32_t MEM_Get_SYS_Firmware_Build(void)   { return  *RAM.SYS_firm_build;} 
+float MEM_Get_PID_Coeff_P(void)             { return  *RAM.PID_coeff_p;} 
+float MEM_Get_PID_Coeff_I(void)             { return  *RAM.PID_coeff_i;} 
+float MEM_Get_PID_Coeff_D(void)             { return  *RAM.PID_coeff_d;} 
+float MEM_Get_PID_Used(void)                { return  *RAM.PID_used;} 
 void MEM_Get_SYS_Serial_Number(char* value) { strncpy_volatile(value, RAM.SYS_ser_num, 8);};

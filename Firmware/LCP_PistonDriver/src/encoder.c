@@ -1,5 +1,6 @@
 #include "encoder.h"
 #include "logging.h"
+#include "memory.h"
 #include "bsp/bsp_timer_a.h"
 #include <stdio.h>
 
@@ -16,33 +17,33 @@ STATIC PERSISTENT sEncoderSettings_t encSettings = {
 
 STATIC PERSISTENT sEncoderSettings_t *pEncSettings = &encSettings;
 
-STATIC bool _set_min_count(int32_t val) {
-    if( val < 0 ) 
-    {
-        return false;
-    }
-    encSettings.min_count = val;
-    return true;
-}
-
-STATIC bool _set_max_count(int32_t val)
-{
-    if( (val < 0) || (val < encSettings.min_count) )
-    {
-        return false;
-    }
-
-    encSettings.max_count = val;
-    return true;
-}
-
-STATIC void _clear_enc_counter(void) {
-    g_encoder_counter = encSettings.min_count;
-}
-
-STATIC void _set_max_enc_counter(void) {
-    g_encoder_counter = encSettings.max_count;
-}
+//STATIC bool _set_min_count(int32_t val) {
+//    if( val < 0 ) 
+//    {
+//        return false;
+//    }
+//    encSettings.min_count = val;
+//    return true;
+//}
+//
+//STATIC bool _set_max_count(int32_t val)
+//{
+//    if( (val < 0) || (val < encSettings.min_count) )
+//    {
+//        return false;
+//    }
+//
+//    encSettings.max_count = val;
+//    return true;
+//}
+//
+//STATIC void _clear_enc_counter(void) {
+//    g_encoder_counter = encSettings.min_count;
+//}
+//
+//STATIC void _set_max_enc_counter(void) {
+//    g_encoder_counter = encSettings.max_count;
+//}
 
 STATIC void _calculate_encoder_distance(void) {
     
@@ -134,6 +135,7 @@ void ENC_SetDir(ePistonDir_t dir)
 {
   assert( (dir == DIR_EXTEND) || (dir == DIR_RETRACT) );
   g_encoder_direction = (int32_t)dir;
+  MEM_Set_i8(TRV_dir, dir);
 //  if(dir == DIR_EXTEND)
 //  {
     BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);

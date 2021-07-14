@@ -57,7 +57,7 @@
                 </option>
                 <option>
                     <name>RTConfigPath</name>
-                    <state>$TOOLKIT_DIR$\lib\dlib\dl430xlldn.h</state>
+                    <state>$TOOLKIT_DIR$\lib\dlib\dl430xlsdn.h</state>
                 </option>
                 <option>
                     <name>RTLibraryPath</name>
@@ -112,7 +112,7 @@
                 </option>
                 <option>
                     <name>RadioDataModelType</name>
-                    <state>2</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>GHeap20Size</name>
@@ -2327,15 +2327,27 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_esi.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_esi.h</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_esi_cal.c</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_esi_cal.h</name>
+                <excluded>
+                    <configuration>Debug</configuration>
+                </excluded>
             </file>
             <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_gpio.c</name>
