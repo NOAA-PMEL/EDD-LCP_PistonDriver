@@ -15,7 +15,8 @@ int main( void )
   LOG_Init();
   MEM_Init();
   
-  BSP_LED_Set(LED_GREEN); 
+  BSP_LED_Clear(LED_GREEN); 
+  BSP_LED_Clear(LED_BLUE);
 //  ENC_Init();
 //  DRV8874_init();
   PIS_Init();
@@ -25,15 +26,8 @@ int main( void )
 //  memset(value, 0xA0, 256);
 //  MEM_Write_RAM_Struct(MEM_RAM_2, 0x00, value, 256);
   
-//  uint16_t i = 0;
-//  float temp = 0.0f;
-//  char voltage[24];
 
-//  BSP_DBG_puts("DEBUG UART");
-//  Log.Debug("Starting Debugger");
-//  Log.Warning("Starting Warner");
-//  Log.Error("Starting Errorer");
-  
+
   Log.Set(LOG_DEBUG);
   PIS_Reset_to_Zero();
   Log.Set(LOG_NONE);

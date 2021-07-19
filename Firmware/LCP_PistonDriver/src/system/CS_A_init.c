@@ -53,7 +53,7 @@ void CS_A_Init(void)
     /*
      * Setting SMCLK source from CS_DCOCLK_SELECT with the divider of CS_CLOCK_DIVIDER_4.
      */
-    CS_initClockSignal( CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_4);
+    CS_initClockSignal( CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_8);
 
     /*
      * Setting ACLK source from CS_VLOCLK_SELECT with the divider of CS_CLOCK_DIVIDER_1.
@@ -63,7 +63,8 @@ void CS_A_Init(void)
     /*
      * Set DCO frequency to 8000000 Hz
      */
-    CS_setDCOFreq (CS_DCORSEL_0, CS_DCOFSEL_6);
+//    CS_setDCOFreq (CS_DCORSEL_0, CS_DCOFSEL_6);
+    CS_setDCOFreq (CS_DCORSEL_1, CS_DCOFSEL_4);
 
     /*
      * Clears all oscillator fault flags including global oscillator fault flag

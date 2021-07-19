@@ -168,23 +168,24 @@ float _read_adc12_volts(void) {
 
 uint16_t _calculate_pwm(uint8_t percent)
 {
-  uint16_t pwm;
-  if(percent >= 100)
-  {
-    pwm = 1024;
-  } else if (percent >= 75)
-  {
-    pwm = 768;
-  } else if (percent >= 50)
-  {
-    pwm = 512;
-  } else if (percent >= 25)
-  {
-    pwm = 256;
-  } else
-  {
-    pwm = 0;
-  }
+  float pwm;
+//  if(percent >= 100)
+//  {
+//    pwm = 1024;
+//  } else if (percent >= 75)
+//  {
+//    pwm = 768;
+//  } else if (percent >= 50)
+//  {
+//    pwm = 512;
+//  } else if (percent >= 25)
+//  {
+//    pwm = 256;
+//  } else
+//  {
+//    pwm = 0;
+//  }
+  pwm = ((float)percent * 1024)/100;
   
-  return pwm;
+  return (uint16_t)pwm;
 }

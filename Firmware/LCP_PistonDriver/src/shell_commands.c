@@ -472,7 +472,19 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
       if(strncmp(key, "cal", 3) == 0)
       {
         Log.Debug("set cal called");
-        PIS_Calibrate();
+        PIS_Calibrate((uint8_t) atoi(val));
+        return true;
+      }
+      
+      if(strncmp(key, "fwd", 3) == 0)
+      {
+        PIS_Extend(true, (uint8_t) atoi(val));
+        return true;
+      }
+      
+      if(strncmp(key, "rev", 3) == 0)
+      {
+        PIS_Retract(true, (uint8_t) atoi(val));
         return true;
       }
     
@@ -480,6 +492,13 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
       {
         Log.Debug("set zero called");
         PIS_Reset_to_Zero();
+        return true;
+      }
+      
+      if(strncmp(key, "full", 4) == 0)
+      {
+        Log.Debug("set full called");
+        PIS_Run_to_Full();
         return true;
       }
       

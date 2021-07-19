@@ -374,7 +374,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
     uint8_t speed;
     if(diff > 0.5)
     {
-      speed = 100;
+      speed = 50;
     } else {
       speed = 50;
     }
@@ -615,21 +615,21 @@ void PIS_Run_to_Full(void)
   char temp[32];
   int32_t count = ENC_Get_count();  
   Log.Debug("PIS_Run_to_Full called");
-  PIS_Extend(true, 100);
-   __delay_cycles(0xFFFFFFFF);
+  PIS_Extend(true, 50);
+   _delay_ms(1000);
   
   while( (fabs(PIS_Read_current()) > 0.000001f) && 
           (count != ENC_Get_count()) )
   {
     sprintf(temp, "Running to full: pos = %0.4f", ENC_Get_Length());
       Log.Debug(temp);
-      __delay_cycles(0x00FFFFFF);
+      _delay_ms(1000);
   }
   Log.Debug("Move Complete");
   Log.Debug("Resetting encoder");
 }
 
-void PIS_Calibrate(void)
+void PIS_Calibrate(uint8_t cal)
 {   
     Log.Debug("PIS_Calibrate called");
     Log.Debug("System will Zero, than run to full");
@@ -642,8 +642,10 @@ void PIS_Calibrate(void)
     Log.Debug("Settng max encoder count");
     ENC_Set_max_count(ENC_Get_count());
     
-    PIS_Reset_to_Zero();
-    
+    if(cal == 1)
+    {
+      PIS_Reset_to_Zero();
+    }
     Log.Debug("*** Calibration Complete ***");
 
 
@@ -978,6 +980,7 @@ STATIC double PIS_Read_length(void) {
     if( (length > 0.0f) && (length <= smallPiston._max_length))
     {
         smallPiston._length = length;
+        largePiston._length = 0.0f;
     } else if( (length > 0.0f) && (length <= (smallPiston._max_length + largePiston._max_length)))
     {
         smallPiston._length = smallPiston._max_length;

@@ -184,7 +184,7 @@ void PIS_Retract(bool startup, uint8_t speed);
 void PIS_Stop(void);
 void PIS_Reset_to_Zero(void);
 void PIS_Run_to_Full(void);
-void PIS_Calibrate(void);
+void PIS_Calibrate(uint8_t cal);
 float PIS_Get_Volume(void);
 float PIS_Get_vset(void);
 float PIS_Get_volume_small(void);

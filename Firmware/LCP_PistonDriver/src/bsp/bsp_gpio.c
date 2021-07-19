@@ -55,7 +55,19 @@ void BSP_GPIO_Init(const driverlib_gpio_cfg_t *p)
     {
       GPIO_setAsOutputPin(p->port, p->pin);
     } else {
-      GPIO_setAsInputPin(p->port, p->pin);
+      if(p->pullups == 0)
+      {
+        GPIO_setAsInputPin(p->port, p->pin);
+      }
+      else if(p->pullups == 1)
+      {
+        GPIO_setAsInputPinWithPullUpResistor(p->port, p->pin);
+      }
+      else if(p->pullups == 2)
+      {
+        GPIO_setAsInputPinWithPullDownResistor(p->port, p->pin);
+      }
+      
     }
 //  } else {
   if(p->function != DEFAULT_MODULE_FUNCTION) {
@@ -140,6 +152,10 @@ void BSP_GPIOCallback(uint16_t int_num, void function(void))
 #pragma vector=PORT1_VECTOR
 __interrupt void Port_1 (void)
 {
+  volatile static uint8_t fwd_state = 0;
+  volatile static uint8_t rev_state = 0;
+  volatile uint8_t value;
+  
   switch (__even_in_range(P1IV,P1IV_P1IFG7))
   {
     case P1IV_NONE:
@@ -147,11 +163,82 @@ __interrupt void Port_1 (void)
     case P1IV_P1IFG0:
       break;		/* Vector 2 - Interrupt on Pin 1, Pin 0*/
     case P1IV_P1IFG3:
-      GPIO_int_1_callback();
+      
+    value = GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4);
+    
+    if( (fwd_state == 0) && (value == 0) ) 
+    {
+      fwd_state = 1;
+    }
+    
+    if( (rev_state == 0 ) && (value == 1) )
+    {
+      rev_state = 1;
+    }
+//      if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4))
+//      {
+//        if(fwd_state == 0)
+//        {
+//          GPIO_int_1_callback(); // Increment
+//          fwd_state = 1;
+//        } 
+//      } else {
+//        if(rev_state == 0)
+//        {
+//          GPIO_int_2_callback();
+//          rev_state = 1;
+//        }
+//      }
+//      GPIO_disableInterrupt(GPIO_PORT_P1, GPIO_PIN3);
+//      GPIO_int_1_callback();
+//      GPIO_clearInterrupt(GPIO_PORT_P1, GPIO_PIN3);
+//      GPIO_enableInterrupt(GPIO_PORT_P1, GPIO_PIN3);
+      
 //      g_gpio_count_0++;
       break;
     case P1IV_P1IFG4:
-//      g_gpio_count_0--;
+    value = GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN3);
+ 
+/** Rising Edge States */
+//    if( (fwd_state == 1) && (value == 1) ) 
+//    {
+//      GPIO_int_2_callback();
+//      fwd_state = 0;
+//    }
+//    
+//    if( (rev_state == 1 ) && (value == 0) )
+//    {
+//      GPIO_int_1_callback();
+//      rev_state = 0;
+//    }
+    
+    /** Falling Edge States */
+    if( (fwd_state == 1) && (value == 1))
+    {
+      GPIO_int_2_callback();
+      fwd_state = 0;
+    }
+         
+    if( (rev_state == 1) && (value == 0) )
+    {
+      GPIO_int_1_callback();
+      rev_state = 0;
+    }
+      
+
+      //      g_gpio_count_0--;
+//      if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN3))
+//      {
+//        if(fwd_state == 1)
+//        {
+//          fwd_state = 0;
+//        }
+//      } else {
+//        if(rev_state == 1)
+//        {
+//          rev_state = 0;
+//        }
+//      }
       break;
     default:
       break;

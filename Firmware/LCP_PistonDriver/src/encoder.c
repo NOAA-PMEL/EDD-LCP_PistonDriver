@@ -63,9 +63,14 @@ STATIC double _calculate_length(void)
 
 void ENC_Increment(void)
 {
-  *p_encoder_counter += g_encoder_direction;
+//  *p_encoder_counter += g_encoder_direction;
+  g_encoder_counter++;
 }
 
+void ENC_Decrement(void)
+{
+  g_encoder_counter--;
+}
 void ENC_Set_count(int32_t val)
 {
   char temp[40];
@@ -110,6 +115,7 @@ void ENC_Init(void) {
 
 //      
       BSP_GPIOCallback(1, &ENC_Increment);
+      BSP_GPIOCallback(2, &ENC_Decrement);
 //      BSP_GPIOCallback(2, &ENC_Increment);
 //
       BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
@@ -138,8 +144,10 @@ void ENC_SetDir(ePistonDir_t dir)
   MEM_Set_i8(TRV_dir, dir);
 //  if(dir == DIR_EXTEND)
 //  {
+    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
     BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);
     BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
+    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
 //  } else {
 //    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
 //    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);

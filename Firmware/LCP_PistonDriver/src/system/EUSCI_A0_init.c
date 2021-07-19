@@ -35,6 +35,7 @@ void EUSCI_A0_Init(void)
   EUSCI_A_UART_initParam param = {
     .selectClockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,
     .clockPrescalar = 17,
+//    .clockPrescalar = 34,
     .firstModReg = 0,
     .secondModReg = 74,
     .parity = EUSCI_A_UART_NO_PARITY,
