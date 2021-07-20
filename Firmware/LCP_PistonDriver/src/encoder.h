@@ -77,8 +77,11 @@ int32_t ENC_Get_max_count(void);
 void ENC_SetDir(ePistonDir_t dir);
 int8_t ENC_GetDir(void);
 
+extern volatile int32_t g_encoder_direction;
+
 #ifdef TEST
 extern volatile int32_t g_encoder_counter;
+
 
 #endif
 

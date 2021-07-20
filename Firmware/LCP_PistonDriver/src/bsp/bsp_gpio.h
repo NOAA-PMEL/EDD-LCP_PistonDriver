@@ -12,3 +12,4 @@ bool BSP_GPIO_Read(const driverlib_gpio_cfg_t *p);
 void BSP_GPIO_SetInterrupt(const driverlib_gpio_cfg_t *p);
 void BSP_GPIO_ClearInterrupt(const driverlib_gpio_cfg_t *p);
 void BSP_GPIOCallback(uint16_t int_num, void function(void));
+void BSP_GPIOCallback_i(uint16_t int_num, int8_t function(void));

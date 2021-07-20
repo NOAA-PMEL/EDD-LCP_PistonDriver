@@ -116,6 +116,8 @@ void ENC_Init(void) {
 //      
       BSP_GPIOCallback(1, &ENC_Increment);
       BSP_GPIOCallback(2, &ENC_Decrement);
+      BSP_GPIOCallback_i(10, &ENC_GetDir);
+      
 //      BSP_GPIOCallback(2, &ENC_Increment);
 //
       BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);

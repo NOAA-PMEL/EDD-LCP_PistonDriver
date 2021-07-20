@@ -11,6 +11,7 @@ void (*GPIO_int_4_callback)(void);
 void (*GPIO_int_5_callback)(void);
 void (*GPIO_int_6_callback)(void);
 void (*GPIO_int_7_callback)(void);
+int8_t (*GPIO_int_10_callback)(void);
 
 void (*GPIO_int_0_callback)(void) = 0;
 void (*GPIO_int_1_callback)(void) = 0;
@@ -20,6 +21,7 @@ void (*GPIO_int_4_callback)(void) = 0;
 void (*GPIO_int_5_callback)(void) = 0;
 void (*GPIO_int_6_callback)(void) = 0;
 void (*GPIO_int_7_callback)(void) = 0;
+int8_t (*GPIO_int_10_callback)(void) = 0;
 
 __interrupt void Port_1 (void);
 __interrupt void Port_2 (void);
@@ -147,6 +149,13 @@ void BSP_GPIOCallback(uint16_t int_num, void function(void))
 
 }
 
+void BSP_GPIOCallback_i(uint16_t int_num, int8_t function(void))
+{
+  switch(int_num) {
+    case 10: GPIO_int_10_callback = function; break;
+  }
+}
+
 
 
 #pragma vector=PORT1_VECTOR
@@ -155,6 +164,7 @@ __interrupt void Port_1 (void)
   volatile static uint8_t fwd_state = 0;
   volatile static uint8_t rev_state = 0;
   volatile uint8_t value;
+  volatile int8_t dir; 
   
   switch (__even_in_range(P1IV,P1IV_P1IFG7))
   {
@@ -165,15 +175,19 @@ __interrupt void Port_1 (void)
     case P1IV_P1IFG3:
       
     value = GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4);
-    
-    if( (fwd_state == 0) && (value == 0) ) 
+    dir = GPIO_int_10_callback();
+    if(dir == -1)
     {
-      fwd_state = 1;
-    }
-    
-    if( (rev_state == 0 ) && (value == 1) )
+      if( (fwd_state == 0) && (value == 0) ) 
+      {
+        fwd_state = 1;
+      }
+    } else if( dir == 1)
     {
-      rev_state = 1;
+      if( (rev_state == 0 ) && (value == 1) )
+      {
+        rev_state = 1;
+      }
     }
 //      if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN4))
 //      {
@@ -213,18 +227,22 @@ __interrupt void Port_1 (void)
 //    }
     
     /** Falling Edge States */
-    if( (fwd_state == 1) && (value == 1))
+    dir = GPIO_int_10_callback();
+    if(dir == -1)
     {
-      GPIO_int_2_callback();
-      fwd_state = 0;
-    }
-         
-    if( (rev_state == 1) && (value == 0) )
+      if( (fwd_state == 1) && (value == 1))
+      {
+        GPIO_int_2_callback();
+        fwd_state = 0;
+      }
+    } else if( dir == 1)
     {
-      GPIO_int_1_callback();
-      rev_state = 0;
-    }
-      
+      if( (rev_state == 1) && (value == 0) )
+      {
+        GPIO_int_1_callback();
+        rev_state = 0;
+      }
+    }      
 
       //      g_gpio_count_0--;
 //      if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN3))
