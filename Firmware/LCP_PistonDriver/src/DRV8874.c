@@ -149,7 +149,7 @@ float DRV8874_read_current( void )
   float v_ipropi = 0.0f;
   float i_propi = 0.0f;
   
-  for(uint8_t i=0; i<10; i++)
+  for(uint8_t i=0; i<25; i++)
   {
     v_ipropi += _read_adc12_volts();
   }

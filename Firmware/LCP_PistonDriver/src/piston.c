@@ -372,11 +372,11 @@ ePistonRunError_t PIS_Run_to_length(float length)
     actuator.setpoint_flag = false;
     float diff = length - ENC_Get_Length();
     uint8_t speed;
-    if(diff > 0.5)
+    if(diff > PISTON_SLOW_SPEED_LENGTH)
     {
-      speed = 50;
+      speed = 100;
     } else {
-      speed = 50;
+      speed = 80;
     }
     
     if(diff > 0)
@@ -404,7 +404,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
         
         float diff = current_length - length;
         
-        if(fabs(diff) < 0.005)
+        if(fabs(diff) < 0.01)
         {
           DRV8874_stop();
           actuator.setpoint_flag = true;
@@ -413,14 +413,14 @@ ePistonRunError_t PIS_Run_to_length(float length)
         
       if(!slow_speed_flag)
       {
-        if(fabs(diff) <= 0.5)
+        if(fabs(diff) <= PISTON_SLOW_SPEED_LENGTH)
         {
           slow_speed_flag = true;
           if(actuator.move_dir == PISRunFwd)
           {
-            PIS_Extend(false, 50);
+            PIS_Extend(false, PISTON_SLOW_SPEED);
           } else {
-            PIS_Retract(false, 50);
+            PIS_Retract(false, PISTON_SLOW_SPEED);
           }
         }
       }
@@ -441,7 +441,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
     {
       Log.Debug("Setpoint (supposedly) reached");
     }
-    _delay_ms(100);
+    _delay_ms(1000);
     sprintf(temp, "Position at stop = %.4f", ENC_Get_Length());
     Log.Debug(temp);
     
@@ -615,7 +615,7 @@ void PIS_Run_to_Full(void)
   char temp[32];
   int32_t count = ENC_Get_count();  
   Log.Debug("PIS_Run_to_Full called");
-  PIS_Extend(true, 50);
+  PIS_Extend(true, 100);
    _delay_ms(1000);
   
   while( (fabs(PIS_Read_current()) > 0.000001f) && 
