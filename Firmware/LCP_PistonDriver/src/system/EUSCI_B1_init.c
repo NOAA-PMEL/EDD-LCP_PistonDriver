@@ -27,67 +27,83 @@
  */
 void EUSCI_B1_Init(void)
 {
-    EUSCI_B_I2C_initMasterParam param = {
-        .selectClockSource = EUSCI_B_I2C_CLOCKSOURCE_SMCLK,
-        .i2cClk = 2000000,
-        .dataRate = EUSCI_B_I2C_SET_DATA_RATE_400KBPS,
-        .byteCounterThreshold = 0,
-        .autoSTOPGeneration = EUSCI_B_I2C_NO_AUTO_STOP
+    EUSCI_B_I2C_initSlaveParam param = {
+        .slaveAddress = 0x6C,
+        .slaveAddressOffset = EUSCI_B_I2C_OWN_ADDRESS_OFFSET0,
+        .slaveOwnAddressEnable = EUSCI_B_I2C_OWN_ADDRESS_ENABLE
     };
+    // EUSCI_B_I2C_initMasterParam param = {
+    //     .selectClockSource = EUSCI_B_I2C_CLOCKSOURCE_SMCLK,
+    //     .i2cClk = 2000000,
+    //     .dataRate = EUSCI_B_I2C_SET_DATA_RATE_400KBPS,
+    //     .byteCounterThreshold = 0,
+    //     .autoSTOPGeneration = EUSCI_B_I2C_NO_AUTO_STOP
+    // };
     /* USER CODE START (section: EUSCI_B1_Init_prologue) */
     /* User initialization code */
     /* USER CODE END (section: EUSCI_B1_Init_prologue) */
 
     /* initialize I2C master mode */
-    EUSCI_B_I2C_initMaster(EUSCI_B1_BASE, &param);
+    // EUSCI_B_I2C_initMaster(EUSCI_B1_BASE, &param);
+    EUSCI_B_I2C_initSlave(EUSCI_B1_BASE, &param);
     
     /* set mode of I2C */
-    EUSCI_B_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
+    // EUSCI_B_I2C_setMode(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_MODE);
 
     /* set the address that I2C master will place on the bus */
-    EUSCI_B_I2C_setSlaveAddress(EUSCI_B1_BASE, 108);
+    // EUSCI_B_I2C_setSlaveAddress(EUSCI_B1_BASE, 108);
 
     /* enable I2C */
     EUSCI_B_I2C_enable(EUSCI_B1_BASE);
 
     /* disable interrupt EUSCI_B_I2C_TRANSMIT_INTERRUPT0 */
-    EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_INTERRUPT0);
+    uint16_t interrupts =   EUSCI_B_I2C_TRANSMIT_INTERRUPT0 | 
+                            EUSCI_B_I2C_RECEIVE_INTERRUPT0 | 
+                            EUSCI_B_I2C_START_INTERRUPT | 
+                            EUSCI_B_I2C_STOP_INTERRUPT | 
+                            EUSCI_B_I2C_NAK_INTERRUPT |  
+                            EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT;
 
-    /* enable interrupt EUSCI_B_I2C_RECEIVE_INTERRUPT0 */
-    EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_RECEIVE_INTERRUPT0);
+    EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, ~interrupts);
+    EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, interrupts);
+    
+    // EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_INTERRUPT0);
 
-    /* disable interrupt EUSCI_B_I2C_TRANSMIT_INTERRUPT1 */
-    EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_INTERRUPT1);
+    // /* enable interrupt EUSCI_B_I2C_RECEIVE_INTERRUPT0 */
+    // EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_RECEIVE_INTERRUPT0);
 
-    /* enable interrupt EUSCI_B_I2C_RECEIVE_INTERRUPT1 */
-    EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_RECEIVE_INTERRUPT1);
+    // /* disable interrupt EUSCI_B_I2C_TRANSMIT_INTERRUPT1 */
+    // EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_INTERRUPT1);
 
-    /* disable interrupt EUSCI_B_I2C_TRANSMIT_INTERRUPT2 */
-    EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_INTERRUPT2);
+    // /* enable interrupt EUSCI_B_I2C_RECEIVE_INTERRUPT1 */
+    // // EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_RECEIVE_INTERRUPT1);
 
-    /* enable interrupt EUSCI_B_I2C_RECEIVE_INTERRUPT2 */
-    EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_RECEIVE_INTERRUPT2);
+    // /* disable interrupt EUSCI_B_I2C_TRANSMIT_INTERRUPT2 */
+    // EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_INTERRUPT2);
 
-    /* disable interrupt EUSCI_B_I2C_TRANSMIT_INTERRUPT3 */
-    EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_INTERRUPT3);
+    // /* enable interrupt EUSCI_B_I2C_RECEIVE_INTERRUPT2 */
+    // EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_RECEIVE_INTERRUPT2);
 
-    /* enable interrupt EUSCI_B_I2C_RECEIVE_INTERRUPT3 */
-    EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_RECEIVE_INTERRUPT3);
+    // /* disable interrupt EUSCI_B_I2C_TRANSMIT_INTERRUPT3 */
+    // EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_TRANSMIT_INTERRUPT3);
 
-    /* disable interrupt EUSCI_B_I2C_START_INTERRUPT */
-    EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_START_INTERRUPT);
+    // /* enable interrupt EUSCI_B_I2C_RECEIVE_INTERRUPT3 */
+    // EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_RECEIVE_INTERRUPT3);
 
-    /* enable interrupt EUSCI_B_I2C_STOP_INTERRUPT */
-    EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_STOP_INTERRUPT);
+    // /* disable interrupt EUSCI_B_I2C_START_INTERRUPT */
+    // EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_START_INTERRUPT);
 
-    /* enable interrupt EUSCI_B_I2C_NAK_INTERRUPT */
-    EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_NAK_INTERRUPT);
+    // /* enable interrupt EUSCI_B_I2C_STOP_INTERRUPT */
+    // EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_STOP_INTERRUPT);
 
-    /* disable interrupt EUSCI_B_I2C_ARBITRATIONLOST_INTERRUPT */
-    EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_ARBITRATIONLOST_INTERRUPT);
+    // /* enable interrupt EUSCI_B_I2C_NAK_INTERRUPT */
+    // EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_NAK_INTERRUPT);
 
-    /* disable interrupt EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT */
-    EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT);
+    // /* disable interrupt EUSCI_B_I2C_ARBITRATIONLOST_INTERRUPT */
+    // EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_ARBITRATIONLOST_INTERRUPT);
+
+    // /* disable interrupt EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT */
+    // EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT);
 
     /* USER CODE START (section: EUSCI_B1_Init_epilogue) */
     /* User code */

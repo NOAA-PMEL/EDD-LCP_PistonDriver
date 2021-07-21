@@ -8,12 +8,15 @@
 #include "piston.h"
 #include "encoder.h"
 #include "memory.h"
+#include "control.h"
+
 int main( void )
 {
   // Initialize the system  
   BSP_Init();
   LOG_Init();
   MEM_Init();
+  CTRL_Init();
   
   BSP_LED_Clear(LED_GREEN); 
   BSP_LED_Clear(LED_BLUE);

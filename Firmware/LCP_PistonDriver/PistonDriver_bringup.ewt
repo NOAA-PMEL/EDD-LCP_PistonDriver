@@ -2199,6 +2199,12 @@
                 <name>$PROJ_DIR$\src\bsp\bsp_gpio.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_i2c.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_i2c.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_led.c</name>
             </file>
             <file>
@@ -2513,6 +2519,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\src\config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\control.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\control.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\src\DRV8874.c</name>

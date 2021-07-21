@@ -57,11 +57,11 @@
                 </option>
                 <option>
                     <name>RTConfigPath</name>
-                    <state>$TOOLKIT_DIR$\lib\dlib\dl430xlsdn.h</state>
+                    <state>$TOOLKIT_DIR$\lib\dlib\dl430xlldn.h</state>
                 </option>
                 <option>
                     <name>RTLibraryPath</name>
-                    <state>$TOOLKIT_DIR$\lib\dlib\dl430xlldn.r43</state>
+                    <state>$TOOLKIT_DIR$\lib\dlib\dl430xsldn.r43</state>
                 </option>
                 <option>
                     <name>Input variant</name>
@@ -108,11 +108,11 @@
                 </option>
                 <option>
                     <name>GHeapSize2</name>
-                    <state>160</state>
+                    <state>100</state>
                 </option>
                 <option>
                     <name>RadioDataModelType</name>
-                    <state>0</state>
+                    <state>2</state>
                 </option>
                 <option>
                     <name>GHeap20Size</name>
@@ -822,11 +822,11 @@
                 </option>
                 <option>
                     <name>XclOverride</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>XclFile</name>
-                    <state>$TOOLKIT_DIR$\config\linker\lnk430fr5989.xcl</state>
+                    <state>$PROJ_DIR$\linker\lnk430fr5989.xcl</state>
                 </option>
                 <option>
                     <name>XclFileSlave</name>
@@ -2356,6 +2356,12 @@
                 <name>$PROJ_DIR$\src\bsp\bsp_gpio.h</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_i2c.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\src\bsp\bsp_i2c.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\src\bsp\bsp_led.c</name>
             </file>
             <file>
@@ -2673,6 +2679,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\src\config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\control.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\control.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\src\DRV8874.c</name>
