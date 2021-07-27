@@ -1,6 +1,8 @@
 #include "bsp_i2c.h"
+#include <driverlib/eusci_b_i2c.h>
 #include "buffer_c.h"
 #include <assert.h>
+
 
 volatile static eI2CState_t I2C_STATE;
 volatile static sI2Command_t i2c1;
@@ -19,6 +21,39 @@ static void _BSP_I2C_State_Machine(eI2CIntCond_t cond);
 static void _BSP_clear_struct(volatile sI2Command_t *p);
 
 
+/**
+ *
+ *
+ */
+struct CtrlNode {
+  sI2Command_t data;
+  struct CtrlNode* next;
+};
+
+
+__persistent static struct CtrlNode node[5] = {NULL, NULL};
+//__persistent static struct CtrlNode n1 = {NULL, NULL};
+//__persistent static struct CtrlNode n2 = {NULL, NULL};
+//__persistent static struct CtrlNode n3 = {NULL, NULL};
+
+static void _add_call_to_list(struct CtrlNode* head, sI2Command_t *p)
+{
+  struct CtrlNode* temp = head;
+  uint8_t idx = 0;
+  while(temp)
+  {
+    temp = temp->next;
+    idx++;
+  }
+  
+  if(idx == 6)
+  {
+    node[5].next = &node[0];
+  } else {
+    node[idx-1].next = &node[idx+1];
+  }
+  
+}
 
 void BSP_I2C_Init(uint16_t baseAddr)
 {
@@ -34,6 +69,27 @@ void BSP_I2C_Init(uint16_t baseAddr)
   _BSP_clear_struct(&i2c1);
 }
 
+
+void BSP_I2C_Disable(uint16_t baseAddr)
+{
+  EUSCI_B_I2C_disable(baseAddr);
+  EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, 0xFFFF);
+}
+
+
+void BSP_I2C_Enable(uint16_t baseAddr)
+{
+  EUSCI_B_I2C_enable(baseAddr);
+  uint16_t interrupts =   EUSCI_B_I2C_TRANSMIT_INTERRUPT0 | 
+                          EUSCI_B_I2C_RECEIVE_INTERRUPT0 | 
+                          EUSCI_B_I2C_START_INTERRUPT | 
+                          EUSCI_B_I2C_STOP_INTERRUPT | 
+                          EUSCI_B_I2C_NAK_INTERRUPT |  
+                          EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT;
+
+  EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, ~interrupts);
+  EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, interrupts);
+}
 
 // void BSP_I2C_puts(uint16_t baseAddr, const char *str, uint8_t length)
 // {
@@ -69,7 +125,7 @@ void BSP_I2CCallback(uint16_t int_num, void function(volatile sI2Command_t *p))
 
 static void _BSP_I2C_State_Machine(eI2CIntCond_t cond)
 {
-  uint8_t data=0;
+  char data=0;
 
   switch(I2C_STATE)
   {
@@ -80,22 +136,14 @@ static void _BSP_I2C_State_Machine(eI2CIntCond_t cond)
       }
       break;
     case I2C_Rx_Offset:
-      BufferC_getc((sCircularBufferC_t*)&i2c1.rxBuf, (uint8_t*)&data);
+      BufferC_getc((sCircularBufferC_t*)&i2c1.rxBuf, &data);
       i2c1.addr_offset = data;
-//      if(EUSCI_B_I2C_getMode(EUSCI_B1_BASE))
-//      {
-        /** Get Data */
-//        I2C_int_0_callback(&i2c1);
 
-        for(uint8_t i=0; i< 25; i++)
-        {
-          BufferC_putc((sCircularBufferC_t*) &i2c1.txBuf, i+'a');
-        }
-//        I2C_STATE = I2C_Read_Mode;
-//      } else {
-        I2C_STATE = I2C_Write_Mode;
-//        BufferC_putc((sCircularBufferC_t*)&i2c1.rxBuf, EUSCI_B_I2C_slaveGetData(EUSCI_B1_BASE));
-//      } 
+      /** Preload data in case of Read mode */
+      I2C_int_0_callback(&i2c1);
+
+      I2C_STATE = I2C_Write_Mode;
+
       break;
     
     case I2C_Write_Mode:
@@ -107,7 +155,9 @@ static void _BSP_I2C_State_Machine(eI2CIntCond_t cond)
       } else if(cond == I2C_Stop)
       {
         /** Write data */
+        BSP_I2C_Disable(EUSCI_B1_BASE);
         I2C_int_1_callback(&i2c1);
+        BSP_I2C_Enable(EUSCI_B1_BASE);
         I2C_STATE = I2C_Idle;
       } else if( (cond == I2C_Nack) || (cond == I2C_Start) || (cond == I2C_Clock_Low_Timeout))
       {

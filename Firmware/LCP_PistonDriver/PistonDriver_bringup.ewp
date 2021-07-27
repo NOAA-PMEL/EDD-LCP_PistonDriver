@@ -61,7 +61,7 @@
                 </option>
                 <option>
                     <name>RTLibraryPath</name>
-                    <state>$TOOLKIT_DIR$\lib\dlib\dl430xsldn.r43</state>
+                    <state>$TOOLKIT_DIR$\lib\dlib\dl430xlldn.r43</state>
                 </option>
                 <option>
                     <name>Input variant</name>
@@ -2697,6 +2697,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\src\encoder.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\func_buf.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\src\func_buf.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\src\logging.c</name>

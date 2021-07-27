@@ -49,6 +49,7 @@ typedef struct sI2CCommand
 
 void BSP_I2C_Init(uint16_t baseAddr);
 void BSP_I2CCallback(uint16_t int_num, void function(volatile sI2Command_t *p));
-
+void BSP_I2C_Disable(uint16_t baseAddr);
+void BSP_I2C_Enable(uint16_t baseAddr);
 
 #endif // _BSP_I2C_H

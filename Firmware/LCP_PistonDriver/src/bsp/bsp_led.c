@@ -68,4 +68,14 @@ void BSP_LED_Clear(eLED_t led)
   }
   
 }
+
+void BSP_LED_Flash_Both(void)
+{
+  BSP_GPIO_Set(&g_BSP_GPIO_BLUE_LED);
+  BSP_GPIO_Set(&g_BSP_GPIO_BLUE_LED); 
+  _delay_ms(1000);
+  BSP_GPIO_Clear(&g_BSP_GPIO_BLUE_LED);
+  BSP_GPIO_Clear(&g_BSP_GPIO_BLUE_LED); 
+  _delay_ms(1000);
+}
 #endif

@@ -9,6 +9,7 @@
 #include "encoder.h"
 #include "memory.h"
 #include "control.h"
+#include "func_buf.h"
 
 int main( void )
 {
@@ -28,12 +29,16 @@ int main( void )
 //  uint8_t value[256];
 //  memset(value, 0xA0, 256);
 //  MEM_Write_RAM_Struct(MEM_RAM_2, 0x00, value, 256);
+  FBUF_buffer_empty(&f_buf);
+  FBUF_buffer_put(&f_buf, &BSP_LED_Flash_Both);
+  FBUF_buffer_put(&f_buf, &BSP_LED_Flash_Both);
+
   
-
-
+  FBUF_buffer_run(&f_buf);
   Log.Set(LOG_DEBUG);
   PIS_Reset_to_Zero();
-  Log.Set(LOG_NONE);
+  FBUF_buffer_run(&f_buf);
+  //  Log.Set(LOG_NONE);
   
   sShellImpl shell_impl = {
     .send_char = BSP_CNSL_putc,

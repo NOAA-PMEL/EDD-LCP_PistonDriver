@@ -23,6 +23,7 @@ void BSP_LED_Set(eLED_t led);
 
 void BSP_LED_Clear(eLED_t led);
 
+void BSP_LED_Flash_Both(void);
 #endif
 
 

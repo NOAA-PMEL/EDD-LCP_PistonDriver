@@ -227,6 +227,9 @@ void MEM_Write(void);
 
 const uint8_t* MEM_Get_Write_Addr(uint16_t offset);
 const uint8_t* MEM_Get_Read_Addr(uint16_t offset);
+const sRAM_t* MEM_Get_Write_Struct(void);
+const sRAM_t* MEM_Get_RAM_Struct(void);
+
 
 void MEM_Set_VOL_Setpoint(float value);
 void MEM_Set_LEN_Setpoint(float value);

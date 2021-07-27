@@ -230,7 +230,7 @@ void MEM_Write(void)
     }
     /** #1 - Stop Timing */
     /** #2 - Start Timing*/
-    cmpval = memcmp_volatile(temp_ram, temp_ram, 256); 
+    cmpval = memcmp_volatile(storage_ram, temp_ram, 256); 
     
     /** #2 - Stop Timing */
     if(cmpval != 0)
@@ -331,15 +331,24 @@ void MEM_Write(void)
 const uint8_t* MEM_Get_Write_Addr(volatile uint16_t offset)
 {
     assert(offset<256);
-    return preadram + offset;
+    return pwriteram + offset;
 }
 
 const uint8_t* MEM_Get_Read_Addr(volatile uint16_t offset)
 {
     assert(offset < 256);
-    return pwriteram + offset;
+    return preadram + offset;
 }
 
+const sRAM_t* MEM_Get_Write_Struct(void)
+{
+  return &CMDRAM;
+}
+
+const sRAM_t* MEM_Get_RAM_Struct(void)
+{
+  return &RAM;
+}
 
 void MEM_Set_f(eRamVars_f_t type, float value)
 {
@@ -541,13 +550,13 @@ void MEM_Set_Travel_Direction(volatile int8_t dir)
 void MEM_Set_Travel_Engage(volatile bool state)
 {    
     /** Set commanded state */
-    
+    *RAM.TRV_eng = state;
 }
 
 void MEM_Set_Serial_Number(volatile char *value)
 {
     /** Call the system serial number function */
-
+//    SYS_Set_SerialNumber(value);
     uint8_t len = strlen_volatile(value);
     if(len > 8) {
         len = 8;
