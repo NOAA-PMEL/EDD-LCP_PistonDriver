@@ -9,6 +9,8 @@
 #define FIRMWARE        ("v0.1")
 #define SYS_ID          ("LCPPST01")
 
+/** Volume Movement Settings */
+#define SYS_VOLUME_DIFF_MAX     ( 0.030 )
 
 /** Piston Settings */
 #define SYS_SMALL_PISTON_DIAMETER         ( 2.25f )

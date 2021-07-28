@@ -199,12 +199,22 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
       {
         PIS_Reset_to_Zero();
       } else {
-        float diff = (*pWrite->VOL_setpoint-*pWrite->VOL_total);
-        if(fabs(diff) > 0.03)
+        float v_current = PIS_Get_Volume();
+        float diff = (*pWrite->VOL_setpoint-v_current);
+        if(fabs(diff) > CTRL_VOLUME_DIFF_MAX)
         {
-          PIS_Run_to_volume(*pWrite->VOL_setpoint);
+          for(uint8_t i=0;i<10;i++)
+          {
+            v_current = PIS_Get_Volume();
+            diff = (*pWrite->VOL_setpoint-v_current);
+            if(fabs(diff) > CTRL_VOLUME_DIFF_MAX)
+            {
+              PIS_Run_to_volume(*pWrite->VOL_setpoint);
+            }
+          }
         } else {
-          Log.Debug("Setpoint within 0.03 of Current total");
+          sprintf(temp, "Setpoint within %.3f of Current total",CTRL_VOLUME_DIFF_MAX);
+          Log.Debug(temp);
           sprintf(temp,"Diff is %.3f", diff);
           Log.Debug(temp);
         }

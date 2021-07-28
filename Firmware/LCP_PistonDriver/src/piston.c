@@ -372,7 +372,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
     actuator.setpoint_flag = false;
     float diff = length - ENC_Get_Length();
     uint8_t speed;
-    if(diff > PISTON_SLOW_SPEED_LENGTH)
+    if(fabs(diff) > PISTON_SLOW_SPEED_LENGTH)
     {
       speed = 100;
     } else {
