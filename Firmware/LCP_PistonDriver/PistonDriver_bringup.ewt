@@ -2539,12 +2539,6 @@
             <name>$PROJ_DIR$\src\encoder.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\src\func_buf.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\src\func_buf.h</name>
-        </file>
-        <file>
             <name>$PROJ_DIR$\src\logging.c</name>
         </file>
         <file>

@@ -56,6 +56,7 @@ STATIC sRAM_t RAM = {
     .PST_enc_counts = (uint32_t*) &storage_ram[RAM_PST_ENC_COUNTS],
     .TRV_dir = (int8_t *) &storage_ram[RAM_TRV_DIR],
     .TRV_eng = (uint8_t*) &storage_ram[RAM_TRV_ENG],
+    .TRV_speed = (uint8_t*) &temp_ram[RAM_TRV_SPD],
     .USR_override = (uint8_t*) &storage_ram[RAM_USER_OVERRIDE],
     .TRV_zero = (uint8_t*) &storage_ram[RAM_TRV_ZERO],
     .TRV_full = (uint8_t*) &storage_ram[RAM_TRV_FULL],
@@ -77,6 +78,7 @@ STATIC sRAM_t RAM = {
     .SYS_ser_num = (char*) &storage_ram[RAM_SER_NUM],
     .SYS_id = (char*) &storage_ram[RAM_SYS_ID],
     .SYS_firm_build = (char*) &storage_ram[RAM_FIRM_BUILD],
+    .RESET = (char*) &storage_ram[RAM_SYS_RESET]
 };
 
 STATIC sRAM_t CMDRAM = {
@@ -99,6 +101,7 @@ STATIC sRAM_t CMDRAM = {
     .PST_enc_counts = (uint32_t*) &temp_ram[RAM_PST_ENC_COUNTS],
     .TRV_dir = (int8_t *) &temp_ram[RAM_TRV_DIR],
     .TRV_eng = (uint8_t*) &temp_ram[RAM_TRV_ENG],
+    .TRV_speed = (uint8_t*) &temp_ram[RAM_TRV_SPD],
     .USR_override = (uint8_t*) &temp_ram[RAM_USER_OVERRIDE],
     .TRV_zero = (uint8_t*) &temp_ram[RAM_TRV_ZERO],
     .TRV_full = (uint8_t*) &temp_ram[RAM_TRV_FULL],
@@ -120,6 +123,7 @@ STATIC sRAM_t CMDRAM = {
     .SYS_ser_num = (char*) &temp_ram[RAM_SER_NUM],
     .SYS_id = (char*) &temp_ram[RAM_SYS_ID],
     .SYS_firm_build = (char*) &temp_ram[RAM_FIRM_BUILD],
+    .RESET = (char*) &temp_ram[RAM_SYS_RESET]
 };
 
 
@@ -155,16 +159,16 @@ STATIC void memset_volatile(volatile void *s, uint8_t c, size_t n)
     *p++ = c;
   }
 }
-
-STATIC void memcpy_volatile(volatile void *s, volatile void *t, uint16_t n)
-{
-  volatile uint8_t *ps = s;
-  volatile uint8_t *pt = t;
-  while(n-->0)
-  {
-    *ps++ = *pt++;
-  }
-}
+//
+//STATIC void memcpy_volatile(volatile void *s, volatile void *t, uint16_t n)
+//{
+//  volatile uint8_t *ps = s;
+//  volatile uint8_t *pt = t;
+//  while(n-->0)
+//  {
+//    *ps++ = *pt++;
+//  }
+//}
 
 STATIC uint16_t strlen_volatile(volatile char* s)
 {

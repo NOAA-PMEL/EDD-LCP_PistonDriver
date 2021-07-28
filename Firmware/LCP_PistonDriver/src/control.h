@@ -4,5 +4,6 @@
 
 
 void CTRL_Init(void);
+void CTRL_Check_Write(void);
 
 #endif // CONTROL_H

@@ -7,6 +7,9 @@
 #include "piston.h"
 #include "encoder.h"
 #include <stdio.h>
+#include <assert.h>
+#include <math.h>
+#include <driverlib/pmm.h>
 
 uint8_t map[256];
 
@@ -22,8 +25,9 @@ static void CTRL_Read(volatile sI2Command_t *p)
     }
 }
 
-static void CTRL_Write(volatile sI2Command_t *p)
+static void CTRL_Write(void)
 {
+    sI2Command_t *p = BSP_I2C_GetI2C_struct();
     uint8_t data;
     uint8_t *writeAddr = (uint8_t*) MEM_Get_Write_Addr(p->addr_offset);
     uint8_t *readAddr = 0;
@@ -85,6 +89,7 @@ static void CTRL_Write(volatile sI2Command_t *p)
 //    MEM_Write();
     
     /** Update from MEM */
+//    BSP_
     
     
     
@@ -99,7 +104,7 @@ void CTRL_Init(void)
 
     /** Attach Callbacks*/
     BSP_I2CCallback(0, &CTRL_Read);
-    BSP_I2CCallback(1, &CTRL_Write);
+//    BSP_I2CCallback(1, &CTRL_Write);
 
 }
 
@@ -107,6 +112,11 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
 {
   char temp[32];
   
+  if( *pWrite->RESET == SYS_RESET_KEY)
+  {
+    Log.Debug("System Reset commanded");
+    PMM_trigPOR();
+  }
   /** Check for VAR Write legit */
   if( (*pLast->VAR_write == 0xA5) )
   {
@@ -147,18 +157,23 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
   }
   
   /** Position Min/Maxes */
-  if(*pWrite->PST_position_min != *pLast->PST_position_min)
+  if(*pWrite->PST_position_min != 0.0f)
   {
-    Log.Debug("Setting minimum position");
-    Log.Error("Min Position wants to be set! Not currently implemented");
+    if(*pWrite->PST_position_min != *pLast->PST_position_min)
+    {
+      Log.Debug("Setting minimum position");
+      Log.Error("Min Position wants to be set! Not currently implemented");
+    }
   }
   
-  if(*pWrite->PST_position_max!= *pLast->PST_position_max)
+  if(*pWrite->PST_position_max != 0.0f)
   {
-    Log.Debug("Setting maximum position");
-    Log.Error("Max Position wants to be set! Not currently implemented");
-  }
-  
+    if(*pWrite->PST_position_max!= *pLast->PST_position_max)
+    {
+      Log.Debug("Setting maximum position");
+      Log.Error("Max Position wants to be set! Not currently implemented");
+    }
+  }  
   
   /** Position Encoder Counts */
   if(*pWrite->PST_enc_counts != *pLast->PST_enc_counts)
@@ -173,8 +188,33 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
    MEM_Set_User_Override(*pWrite->USR_override);
   }
    
-  /** Travel Direction and Engaged */
+  
+  /** Volume of Length Setpoints */
+  if(*pWrite->VOL_setpoint != 0) {
+    if(*pWrite->VOL_setpoint != *pWrite->VOL_total)
+    {
+      sprintf(temp, "I2C - VOL_setpoint = %.3f", *pWrite->VOL_setpoint);
+      Log.Debug(temp);
+      if(*pWrite->VOL_setpoint <= 0.0f)
+      {
+        PIS_Reset_to_Zero();
+      } else {
+        float diff = (*pWrite->VOL_setpoint-*pWrite->VOL_total);
+        if(fabs(diff) > 0.03)
+        {
+          PIS_Run_to_volume(*pWrite->VOL_setpoint);
+        } else {
+          Log.Debug("Setpoint within 0.03 of Current total");
+          sprintf(temp,"Diff is %.3f", diff);
+          Log.Debug(temp);
+        }
+      }
+      return;
+    } 
+  }
+  
   if(MEM_Get_USR_Override()) {
+    /** Travel Direction and Engaged */
     if(*pWrite->TRV_dir != *pLast->TRV_dir)
     {
       MEM_Set_Travel_Direction(*pWrite->TRV_dir);
@@ -205,30 +245,35 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
     return;
   }
   
-  /** Volume of Length Setpoints */
-  if(*pWrite->VOL_setpoint != *pLast->VOL_setpoint)
-  {
-    sprintf(temp, "I2C - VOL_setpoint = %.3f", pWrite->VOL_setpoint);
-    Log.Debug(temp);
-    if(*pWrite->VOL_setpoint <= 0.0f)
-    {
-      PIS_Reset_to_Zero();
-    } else {
-      PIS_Run_to_volume(*pWrite->VOL_setpoint);
-    }
-  } else if (*pWrite->LEN_setpoint != *pLast->LEN_setpoint)
-  {
-    sprintf(temp, "I2C - LEN_setpoint = %.3f", pWrite->LEN_setpoint);
-    Log.Debug(temp);
-    
-    if(*pWrite->LEN_setpoint < 0.0f)
-    {
-      PIS_Reset_to_Zero();
-    } else {
-      PIS_Run_to_length(*pWrite->LEN_setpoint);
-    } 
-  }
   
+//  } else if (*pWrite->LEN_setpoint != *pLast->LEN_setpoint)
+//  {
+//    sprintf(temp, "I2C - LEN_setpoint = %.3f", *pWrite->LEN_setpoint);
+//    Log.Debug(temp);
+//    
+//    if(*pWrite->LEN_setpoint < 0.0f)
+//    {
+//      PIS_Reset_to_Zero();
+//    } else {
+//      PIS_Run_to_length(*pWrite->LEN_setpoint);
+//    } 
+//  }
+//  
   
   return;
+}
+
+
+void CTRL_Check_Write(void)
+{
+  sI2Command_t* p;
+  if(BSP_I2C_WriteReady()==true)
+  {
+    Log.Debug("Entering CTRL Commanded");
+    BSP_I2C_Disable(EUSCI_B1_BASE);
+    CTRL_Write();
+    BSP_I2C_Init(EUSCI_B1_BASE);
+    Log.Debug("Exiting CTRL Commanded\n\n");
+//    BSP_I2C_Enable(EUSCI_B1_BASE);
+  }
 }

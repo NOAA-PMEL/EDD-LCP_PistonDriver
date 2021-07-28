@@ -19,6 +19,7 @@ typedef enum eI2CState
     I2C_Idle,           /**< Waiting for comms to start */
     I2C_Rx_Offset,      /**< Wait for data offset address */
     I2C_Write_Mode,     /**< Write data to slave address */
+    I2C_Write_Pending,  /**< Ready for command to be completed */
     I2C_Read_Mode,      /**< Send data to master */
 
 }eI2CState_t;
@@ -51,5 +52,6 @@ void BSP_I2C_Init(uint16_t baseAddr);
 void BSP_I2CCallback(uint16_t int_num, void function(volatile sI2Command_t *p));
 void BSP_I2C_Disable(uint16_t baseAddr);
 void BSP_I2C_Enable(uint16_t baseAddr);
-
+bool BSP_I2C_WriteReady( void);
+sI2Command_t *BSP_I2C_GetI2C_struct(void);
 #endif // _BSP_I2C_H

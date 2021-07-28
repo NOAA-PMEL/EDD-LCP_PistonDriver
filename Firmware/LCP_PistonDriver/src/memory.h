@@ -74,6 +74,7 @@
 #define RAM_PST_ENC_COUNTS 0x50  
 #define RAM_TRV_DIR 0x60  
 #define RAM_TRV_ENG 0x61  
+#define RAM_TRV_SPD 0x62
 #define RAM_USER_OVERRIDE 0x63  
 #define RAM_TRV_ZERO 0x68  
 #define RAM_TRV_FULL 0x69  
@@ -95,6 +96,7 @@
 #define RAM_FIRM_MAJ 0xFA  
 #define RAM_FIRM_MIN 0xFC 
 #define RAM_FIRM_BUILD 0xFE 
+#define RAM_SYS_RESET 0x77
 
  
 /**********************************************************************************
@@ -120,6 +122,7 @@
 
 
 #define VAR_WRITE_KEY   (0xA5)
+#define SYS_RESET_KEY   (0xCA)
 #define PISTON_DIR_EXTEND       ( 1 )
 #define PISTON_DIR_RETRACT      ( -1 )
 
@@ -187,6 +190,7 @@ typedef struct sRAM {
     volatile float *PST_position;
     volatile uint32_t *PST_enc_counts;
     volatile int8_t *TRV_dir;
+    volatile uint8_t *TRV_speed;
     volatile uint8_t *TRV_eng;
     volatile uint8_t *USR_override;
     volatile uint8_t *TRV_zero;
@@ -209,6 +213,7 @@ typedef struct sRAM {
     volatile char *SYS_ser_num;
     volatile char *SYS_id;
     volatile char *SYS_firm_build;
+    volatile char *RESET;
 }sRAM_t;
 
 /**********************************************************************************

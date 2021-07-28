@@ -88,6 +88,8 @@ typedef struct _CircularBufferC_t
  */
 void BufferC_Clear(sCircularBufferC_t *buf);
 
+uint8_t BufferC_Get_Size(sCircularBufferC_t *buf);
+
 /** @brief Add char to buffer
  *
  *	Adds a single char to the buffer

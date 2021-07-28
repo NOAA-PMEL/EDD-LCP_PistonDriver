@@ -5,7 +5,7 @@
 
 
 volatile static eI2CState_t I2C_STATE;
-volatile static sI2Command_t i2c1;
+sI2Command_t i2c1;
 
 void (*I2C_int_0_callback)(volatile sI2Command_t *p);   /** Should flag transfer complete */
 void (*I2C_int_1_callback)(volatile sI2Command_t *p);
@@ -25,35 +25,35 @@ static void _BSP_clear_struct(volatile sI2Command_t *p);
  *
  *
  */
-struct CtrlNode {
-  sI2Command_t data;
-  struct CtrlNode* next;
-};
+//struct CtrlNode {
+//  sI2Command_t data;
+//  struct CtrlNode* next;
+//};
 
 
-__persistent static struct CtrlNode node[5] = {NULL, NULL};
+//__persistent static struct CtrlNode node[5] = {NULL, NULL};
 //__persistent static struct CtrlNode n1 = {NULL, NULL};
 //__persistent static struct CtrlNode n2 = {NULL, NULL};
 //__persistent static struct CtrlNode n3 = {NULL, NULL};
-
-static void _add_call_to_list(struct CtrlNode* head, sI2Command_t *p)
-{
-  struct CtrlNode* temp = head;
-  uint8_t idx = 0;
-  while(temp)
-  {
-    temp = temp->next;
-    idx++;
-  }
-  
-  if(idx == 6)
-  {
-    node[5].next = &node[0];
-  } else {
-    node[idx-1].next = &node[idx+1];
-  }
-  
-}
+//
+//static void _add_call_to_list(struct CtrlNode* head, sI2Command_t *p)
+//{
+//  struct CtrlNode* temp = head;
+//  uint8_t idx = 0;
+//  while(temp)
+//  {
+//    temp = temp->next;
+//    idx++;
+//  }
+//  
+//  if(idx == 6)
+//  {
+//    node[5].next = &node[0];
+//  } else {
+//    node[idx-1].next = &node[idx+1];
+//  }
+//  
+//}
 
 void BSP_I2C_Init(uint16_t baseAddr)
 {
@@ -67,28 +67,39 @@ void BSP_I2C_Init(uint16_t baseAddr)
   }
   
   _BSP_clear_struct(&i2c1);
+  I2C_STATE = I2C_Idle;
 }
 
 
 void BSP_I2C_Disable(uint16_t baseAddr)
 {
   EUSCI_B_I2C_disable(baseAddr);
-  EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, 0xFFFF);
+//  EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, 0xFFFF);
 }
 
 
 void BSP_I2C_Enable(uint16_t baseAddr)
 {
-  EUSCI_B_I2C_enable(baseAddr);
-  uint16_t interrupts =   EUSCI_B_I2C_TRANSMIT_INTERRUPT0 | 
-                          EUSCI_B_I2C_RECEIVE_INTERRUPT0 | 
-                          EUSCI_B_I2C_START_INTERRUPT | 
-                          EUSCI_B_I2C_STOP_INTERRUPT | 
-                          EUSCI_B_I2C_NAK_INTERRUPT |  
-                          EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT;
+  _BSP_clear_struct(&i2c1);
+  I2C_STATE = I2C_Idle;
+   EUSCI_B_I2C_clearInterrupt(EUSCI_B1_BASE,
+         EUSCI_B_I2C_TRANSMIT_INTERRUPT0 +
+         EUSCI_B_I2C_STOP_INTERRUPT + 
+         EUSCI_B_I2C_START_INTERRUPT +
+         EUSCI_B_I2C_NAK_INTERRUPT
+               );
 
-  EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, ~interrupts);
-  EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, interrupts);
+  BSP_I2C_Init(EUSCI_B1_BASE);
+//  EUSCI_B_I2C_enable(baseAddr);
+//  uint16_t interrupts =   EUSCI_B_I2C_TRANSMIT_INTERRUPT0 | 
+//                          EUSCI_B_I2C_RECEIVE_INTERRUPT0 | 
+//                          EUSCI_B_I2C_START_INTERRUPT | 
+//                          EUSCI_B_I2C_STOP_INTERRUPT | 
+//                          EUSCI_B_I2C_NAK_INTERRUPT |  
+//                          EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT;
+//
+//  EUSCI_B_I2C_disableInterrupt(EUSCI_B1_BASE, ~interrupts);
+//  EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE, interrupts);
 }
 
 // void BSP_I2C_puts(uint16_t baseAddr, const char *str, uint8_t length)
@@ -98,10 +109,6 @@ void BSP_I2C_Enable(uint16_t baseAddr)
 
 //   EUSCI_B_I2C_enable(EUSCI_B1_BASE);
 
-//   EUSCI_B_I2C_clearInterrupt(EUSCI_B1_BASE,
-//           EUSCI_B_I2C_TRANSMIT_INTERRUPT0 +
-//           EUSCI_B_I2C_STOP_INTERRUPT
-//               );
 
 //   EUSCI_B_I2C_enableInterrupt(EUSCI_B1_BASE,
 //           EUSCI_B_I2C_TRANSMIT_INTERRUPT0 +
@@ -123,6 +130,22 @@ void BSP_I2CCallback(uint16_t int_num, void function(volatile sI2Command_t *p))
 }
 
 
+bool BSP_I2C_WriteReady( void){
+  bool ready = false;
+ 
+  if(I2C_STATE == I2C_Write_Pending)
+  {
+    ready = true;
+  } 
+  return ready;
+}
+
+sI2Command_t *BSP_I2C_GetI2C_struct(void)
+{
+  return &i2c1;
+}
+
+
 static void _BSP_I2C_State_Machine(eI2CIntCond_t cond)
 {
   char data=0;
@@ -136,14 +159,19 @@ static void _BSP_I2C_State_Machine(eI2CIntCond_t cond)
       }
       break;
     case I2C_Rx_Offset:
-      BufferC_getc((sCircularBufferC_t*)&i2c1.rxBuf, &data);
-      i2c1.addr_offset = data;
+      if(BufferC_Get_Size(&i2c1.rxBuf) == 0)
+      {
+        /** This is a scan condition, reset to Idle */
+        I2C_STATE = I2C_Idle;
+      } else {
+        BufferC_getc((sCircularBufferC_t*)&i2c1.rxBuf, &data);
+        i2c1.addr_offset = data;
 
-      /** Preload data in case of Read mode */
-      I2C_int_0_callback(&i2c1);
+        /** Preload data in case of Read mode */
+        I2C_int_0_callback(&i2c1);
 
-      I2C_STATE = I2C_Write_Mode;
-
+        I2C_STATE = I2C_Write_Mode;
+      }
       break;
     
     case I2C_Write_Mode:
@@ -155,10 +183,11 @@ static void _BSP_I2C_State_Machine(eI2CIntCond_t cond)
       } else if(cond == I2C_Stop)
       {
         /** Write data */
-        BSP_I2C_Disable(EUSCI_B1_BASE);
-        I2C_int_1_callback(&i2c1);
-        BSP_I2C_Enable(EUSCI_B1_BASE);
-        I2C_STATE = I2C_Idle;
+        I2C_STATE = I2C_Write_Pending;
+//        BSP_I2C_Disable(EUSCI_B1_BASE);
+//        I2C_int_1_callback(&i2c1);
+//        BSP_I2C_Enable(EUSCI_B1_BASE);
+//        I2C_STATE = I2C_Idle;
       } else if( (cond == I2C_Nack) || (cond == I2C_Start) || (cond == I2C_Clock_Low_Timeout))
       {
         I2C_STATE = I2C_Idle;
@@ -214,6 +243,11 @@ __interrupt void USCI_B1_ISR(void)
             break;
         case USCI_I2C_UCSTPIFG:     // STOP condition detected (master & slave mode)
             _BSP_I2C_State_Machine(I2C_Stop);
+            if(I2C_STATE == I2C_Write_Pending)
+            {
+              BSP_I2C_Disable(EUSCI_B1_BASE);
+              __delay_cycles(5);
+            }
             break;
         case USCI_I2C_UCRXIFG3:     // RXIFG3
             break;

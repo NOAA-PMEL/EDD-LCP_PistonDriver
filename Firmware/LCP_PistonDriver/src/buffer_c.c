@@ -36,7 +36,10 @@ void BufferC_Clear(sCircularBufferC_t *buf)
 
 	return;
 }
-
+uint8_t BufferC_Get_Size(sCircularBufferC_t *buf)
+{
+  return buf->size;
+}
 
 eBufferCStatus_t BufferC_putc(sCircularBufferC_t *buf, char val){
 	eBufferCStatus_t result = BUFFER_C_ERROR;
