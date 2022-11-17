@@ -33,8 +33,9 @@ AR Path="/5EE2AB43/5EE8A2E1" Ref="J?"  Part="1"
 AR Path="/5EE7B956/5EE8A2E1" Ref="J17"  Part="1" 
 F 0 "J17" H 7530 3142 50  0000 L CNN
 F 1 "Conn_01x02" H 7530 3051 50  0000 L CNN
-F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0200_2x01_P3.00mm_Horizontal" H 7450 3150 50  0001 C CNN
+F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical" H 7450 3150 50  0001 C CNN
 F 3 "~" H 7450 3150 50  0001 C CNN
+F 4 "0430450213" H 7450 3150 50  0001 C CNN "MPN"
 	1    7450 3150
 	1    0    0    -1  
 $EndComp
@@ -52,6 +53,7 @@ F 0 "J18" H 7530 4042 50  0000 L CNN
 F 1 "Conn_01x04" H 7530 3951 50  0000 L CNN
 F 2 "Connector_Molex:Molex_Micro-Fit_3.0_43045-0400_2x02_P3.00mm_Horizontal" H 7450 4050 50  0001 C CNN
 F 3 "~" H 7450 4050 50  0001 C CNN
+F 4 "0430450413" H 7450 4050 50  0001 C CNN "MPN"
 	1    7450 4050
 	1    0    0    -1  
 $EndComp
