@@ -93,3 +93,37 @@ pkg/*
 # IAR Embedded Workbench Files
 *.dep
 *.eww
+
+# Debug files
+Firmware/LCP_PistonDriver/Debug/Obj/
+
+# Other Firmware
+Firmware/LCP_PistonDriver/build/
+Firmware/LCP_PistonDriver/settings/
+Firmware/LCP_PistonDriver/include.txt
+Firmware/LCP_PistonDriver/source.txt
+Firmware/LCP_PistonDriver/vendor/
+Firmware/LCP_PistonDriver/config.h
+Firmware/LCP_PistonDriver/path.txt
+
+Backup*.*
+
+
+# Archives
+archive/
+# Pressure Test Files
+Test/PressureVesselTest/
+
+
+# Python
+__pycache__/
+/*.egg_info/
+/*.egg_info
+*.egg-info/
+*.egg-info
+.venv/
+venv/
+.vscode/
+
+# Excel
+~*.xlsx
