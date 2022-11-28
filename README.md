@@ -22,11 +22,23 @@ or activity by the DOC or the United States Government.*
 Repository for LCP Piston Driver PCB design and firmware.
 
 This repository is home to the piston driver PCB design and firmware for the low-cost-profiler project (likely to be renamed).
+
+## GCC Build System
+master_gcc branch is compatible with gcc compiler for MSP430 MCU.
+Please follow the steps below:
+
+./run_script.sh
+source ~/.bashrc
+cd Firmware/LCP_PistonDriver/
+make
+make flash
+
 ## State of this project
-The electrical/embedded engineer has left this project and therefore the project is incomplete.  As of leaving, the piston does move to requested locations to within 0.008".  
+TODO
 
 ### Future work
 An RTOS should be added to this project to allow for i2c calls while movements are in progress.#
 
 ## Branch
 Develop has been merged with master until this project is picked back up
+
