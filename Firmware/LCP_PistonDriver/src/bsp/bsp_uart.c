@@ -1,8 +1,8 @@
 #include "bsp_uart.h"
 
 
-__interrupt void USCI_A0_ISR(void);
-__interrupt void USCI_A1_ISR(void);
+void USCI_A0_ISR(void);
+void USCI_A1_ISR(void);
 
 static sCircularBufferC_t g_uartA0;
 static sCircularBufferC_t g_uartA1;
@@ -60,8 +60,13 @@ void BSP_UART_getc(uint16_t baseAddr, char *c)
 /*
  *  ======== eUSCI_A0 Interrupt Service Routine ========
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=USCI_A0_VECTOR
-__interrupt void USCI_A0_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(USCI_A0_VECTOR)))
+#endif
+void USCI_A0_ISR(void)
 {
   switch(__even_in_range(UCA0IV,USCI_UART_UCTXCPTIFG))
   {
@@ -81,8 +86,13 @@ __interrupt void USCI_A0_ISR(void)
 /*
  *  ======== eUSCI_A1 Interrupt Service Routine ========
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=USCI_A1_VECTOR
-__interrupt void USCI_A1_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(USCI_A1_VECTOR)))
+#endif
+void USCI_A1_ISR(void)
 {
   switch(__even_in_range(UCA1IV,USCI_UART_UCTXCPTIFG))
   {

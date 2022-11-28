@@ -12,10 +12,8 @@
  *  Do not move these sections within this file or change the START and
  *  END comments in any way.
  */
-#include <driverlib/inc/hw_memmap.h>      
-#include <driverlib/pmm.h>
-#include <driverlib/gpio.h>
-#include <system/System.h>
+#include "driverlib.h"
+#include "System.h"
 
 /* USER CODE START (section: GPIO_init_c_prologue) */
 /* User defined includes, defines, global variables and functions */

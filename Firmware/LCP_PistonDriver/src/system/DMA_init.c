@@ -13,9 +13,8 @@
  *  END comments in any way.
  *
  */
-#include <driverlib/inc/hw_memmap.h>
-#include <driverlib/dma.h>
-#include <system/System.h>
+#include "driverlib.h"
+#include "System.h"
 #include <stdint.h>
 
 /* USER CODE START (section: DMA_init_c_prologue) */

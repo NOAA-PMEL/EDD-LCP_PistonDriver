@@ -3,6 +3,9 @@
  *  DO NOT MODIFY THIS FILE - CHANGES WILL BE OVERWRITTEN
  */
 
+#include <msp430.h>
+#include "System.h"
+
 /* external peripheral initialization functions */
 extern void Timer0_A3_Init(void);
 extern void Timer2_A2_Init(void);
@@ -19,9 +22,6 @@ extern void System_Init(void);
 extern void DMA_Init(void);
 extern void RTC_B_Init(void);
 extern void WDT_A_Init(void);
-
-#include <msp430.h>
-#include <system/System.h>
 
 /* verify that the MSP430 headers included support the code that's generated */
 #if defined(__TI_COMPILER_VERSION__)

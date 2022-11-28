@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <string.h>
 
 #define SHELL_FOR_EACH_COMMAND(command) \
     for (const sShellCommand *command =g_shell_commands; \

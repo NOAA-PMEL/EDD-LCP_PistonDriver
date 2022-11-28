@@ -1,7 +1,7 @@
 #include "bsp_adc12.h"
 
 
-//__interrupt void ADC12_ISR(void);
+//void ADC12_ISR(void);
 
 static uint16_t *adc;
 

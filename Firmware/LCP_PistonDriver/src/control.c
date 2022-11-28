@@ -1,15 +1,16 @@
+#include <stdio.h>
+#include <assert.h>
+#include <math.h>
 #include "control.h"
 #include "memory.h"
-#include "bsp/bsp_gpio.h"
-#include "bsp/bsp_i2c.h"
+#include "bsp_gpio.h"
+#include "bsp_i2c.h"
 #include "buffer_c.h"
 #include "logging.h"
 #include "piston.h"
 #include "encoder.h"
-#include <stdio.h>
-#include <assert.h>
-#include <math.h>
-#include <driverlib/pmm.h>
+#include "driverlib.h"
+#include "string.h"
 
 uint8_t map[256];
 
@@ -276,7 +277,7 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
 
 void CTRL_Check_Write(void)
 {
-  sI2Command_t* p;
+  //sI2Command_t* p;
   if(BSP_I2C_WriteReady()==true)
   {
     Log.Debug("Entering CTRL Commanded");

@@ -12,20 +12,18 @@
  *  Do not move these sections within this file or change the START and
  *  END comments in any way.
  */
-#include <system/System.h>
-#include <msp430fr5989.h>
+#include "System.h"
+#include "driverlib.h"
 
-   
-   
-__interrupt void Timer0_A0_ISR(void);
-__interrupt void Timer0_A1_ISR(void);
-__interrupt void TIMER2_A0_ISR(void);
-__interrupt void TIMER2_A1_ISR(void);
-__interrupt void TIMER3_A0_ISR(void);
-__interrupt void UNMI_ISR(void);
-__interrupt void RTC_ISR(void);
-__interrupt void USCI_B0_ISR(void);
-__interrupt void DMA_ISR(void);
+void Timer0_A0_ISR(void);
+void Timer0_A1_ISR(void);
+void TIMER2_A0_ISR(void);
+void TIMER2_A1_ISR(void);
+void TIMER3_A0_ISR(void);
+void UNMI_ISR(void);
+void RTC_ISR(void);
+void USCI_B0_ISR(void);
+void DMA_ISR(void);
 
 
 /* USER CODE START (section: InterruptVectors_init_c_prologue) */
@@ -42,8 +40,13 @@ void InterruptVectors_Init(void)
 /*
  *  ======== Timer0_A3 Interrupt Service Routine ======== 
  */
-#pragma vector = TIMER0_A0_VECTOR
-__interrupt void Timer0_A0_ISR(void)
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
+#pragma vector=TIMER0_A0_VECTOR
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(TIMER0_A0_VECTOR)))
+#endif
+void Timer0_A0_ISR(void)
 
 {
     /* USER CODE START (section: TIMER0_A0_ISR) */
@@ -54,8 +57,13 @@ __interrupt void Timer0_A0_ISR(void)
 /*
  *  ======== Timer0_A3 Interrupt Service Routine ======== 
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=TIMER0_A1_VECTOR
-__interrupt void Timer0_A1_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(TIMER0_A1_VECTOR)))
+#endif
+void Timer0_A1_ISR(void)
 {
     /* USER CODE START (section: TIMER0_A1_ISR) */
     /* replace this comment with your code */
@@ -66,8 +74,13 @@ __interrupt void Timer0_A1_ISR(void)
 /*
  *  ======== Timer2_A2 Interrupt Service Routine ======== 
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=TIMER2_A0_VECTOR
-__interrupt void TIMER2_A0_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(TIMER2_A0_VECTOR)))
+#endif
+void TIMER2_A0_ISR(void)
 {
     /* USER CODE START (section: TIMER2_A0_ISR) */
     /* replace this comment with your code */
@@ -77,8 +90,13 @@ __interrupt void TIMER2_A0_ISR(void)
 /*
  *  ======== Timer2_A2 Interrupt Service Routine ======== 
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=TIMER2_A1_VECTOR
-__interrupt void TIMER2_A1_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(TIMER2_A1_VECTOR)))
+#endif
+void TIMER2_A1_ISR(void)
 {
     /* USER CODE START (section: TIMER2_A1_ISR) */
 //    P3OUT ^= BIT7;
@@ -90,8 +108,13 @@ __interrupt void TIMER2_A1_ISR(void)
 /*
  *  ======== Timer3_A2 Interrupt Service Routine ======== 
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=TIMER3_A0_VECTOR
-__interrupt void TIMER3_A0_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(TIMER3_A0_VECTOR)))
+#endif
+void TIMER3_A0_ISR(void)
 {
     /* USER CODE START (section: TIMER3_A0_ISR) */
     /* replace this comment with your code */
@@ -124,8 +147,13 @@ __interrupt void TIMER3_A0_ISR(void)
  *    __bic_SR_register_on_exit(LPMx_bits);
  *
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=UNMI_VECTOR
-__interrupt void UNMI_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(UNMI_VECTOR)))
+#endif
+void UNMI_ISR(void)
 {
     /* USER CODE START (section: UNMI_ISR) */
     /* replace this comment with your code */
@@ -167,8 +195,13 @@ __interrupt void UNMI_ISR(void)
  *    __bic_SR_register_on_exit(LPMx_bits);
  *
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=RTC_VECTOR
-__interrupt void RTC_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(RTC_VECTOR)))
+#endif
+void RTC_ISR(void)
 {
     /* USER CODE START (section: RTC_ISR) */
     /* replace this comment with your code */
@@ -180,8 +213,13 @@ __interrupt void RTC_ISR(void)
 /*
  *  ======== eUSCI_B0 Interrupt Service Routine ========
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=USCI_B0_VECTOR
-__interrupt void USCI_B0_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(USCI_B0_VECTOR)))
+#endif
+void USCI_B0_ISR(void)
 {
     /* USER CODE START (section: USCI_B0_ISR) */
     /* replace this comment with your code */
@@ -191,8 +229,13 @@ __interrupt void USCI_B0_ISR(void)
 /*
  *  ======== DMA Interrupt Service Routine ========
  */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=DMA_VECTOR
-__interrupt void DMA_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(DMA_VECTOR)))
+#endif
+void DMA_ISR(void)
 {
     /* USER CODE START (section: DMA_ISR) */
     /* replace this comment with your code */

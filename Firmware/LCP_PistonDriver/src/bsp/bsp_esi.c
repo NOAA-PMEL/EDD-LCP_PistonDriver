@@ -39,7 +39,7 @@
 * this file contents.
 *******************************************************************************/
 
-
+#include "driverlib.h"
 #include "bsp_esi.h"
 
 
@@ -51,7 +51,7 @@ ESI_PSM_InitParams gPSMSettings;
 extern int16_t gRotationalCounter;
 extern uint8_t  gESIStatusFlag;
 
-__interrupt void ISR_ESCAN_IF(void);
+void ISR_ESCAN_IF(void);
 
 
 void (*int_0_callback)(void);
@@ -373,8 +373,13 @@ void esiUnregINTCallback(uint16_t int_num)
 	}
 }
 
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=ESCAN_IF_VECTOR
-__interrupt void ISR_ESCAN_IF(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(ESCAN_IF_VECTOR)))
+#endif
+void ISR_ESCAN_IF(void)
 {
 	switch (__even_in_range(ESIIV,ESIIV_ESIIFG2))
 	{

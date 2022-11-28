@@ -1,5 +1,4 @@
 #include "bsp_i2c.h"
-#include <driverlib/eusci_b_i2c.h>
 #include "buffer_c.h"
 #include <assert.h>
 
@@ -16,7 +15,7 @@ void (*I2C_int_0_callback)(volatile sI2Command_t *p) = NULL;
 void (*I2C_int_1_callback)(volatile sI2Command_t *p) = NULL;
 void (*I2C_int_2_callback)(volatile sI2Command_t *p) = NULL;
 
-__interrupt void USCI_B1_ISR(void);
+void USCI_B1_ISR(void);
 static void _BSP_I2C_State_Machine(eI2CIntCond_t cond);
 static void _BSP_clear_struct(volatile sI2Command_t *p);
 
@@ -124,7 +123,8 @@ void BSP_I2CCallback(uint16_t int_num, void function(volatile sI2Command_t *p))
     case 0: I2C_int_0_callback = function; break;
     case 1: I2C_int_1_callback = function; break;
     case 2: I2C_int_2_callback = function; break;
-    default: assert(False); break;
+    //default: assert(False); break;
+    default: assert(false); break;
   }
 
 }
@@ -224,9 +224,13 @@ static void _BSP_clear_struct(volatile sI2Command_t *p)
 }
 
 
-
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=USCI_B1_VECTOR
-__interrupt void USCI_B1_ISR(void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(USCI_B1_VECTOR)))
+#endif
+void USCI_B1_ISR(void)
 {
   volatile char data;
   switch(__even_in_range(UCB1IV, USCI_I2C_UCBIT9IFG))

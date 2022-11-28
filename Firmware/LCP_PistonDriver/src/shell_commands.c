@@ -341,7 +341,7 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
 
 bool cli_set(const char *key, const void *val, uint32_t len) {
   
-    char v_str[62];
+    char v_str[64];
     memset(v_str, 0, 64);
     if(Log.Get() == LOG_DEBUG)
     {

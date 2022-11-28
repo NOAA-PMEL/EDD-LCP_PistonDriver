@@ -17,9 +17,8 @@
  *  This file was generated from
  *      C:/ti//_2_20_02_32/packages/ti/mcu/msp430/csl2/system/templates/System_5xx_init.xdt
  */
-#include <driverlib/inc/hw_memmap.h>
-#include <driverlib/sfr.h>
-#include <system/System.h>
+#include "driverlib.h"
+#include "System.h"
 
 /* USER CODE START (section: System_init_c_prologue) */
 /* User defined includes, defines, global variables and functions */

@@ -2,12 +2,12 @@
 
 
 
-#if DEBUG && DEBUG_LED
+#if defined(DEBUG) && defined(DEBUG_LED)
 
 
 #endif
 
-#if DEBUG && DEBUG_LED
+#if defined(DEBUG) && defined(DEBUG_LED)
 
 void BSP_LED_Init(eLED_t led) {
   switch(led){

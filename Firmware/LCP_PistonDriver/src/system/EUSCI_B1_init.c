@@ -12,10 +12,9 @@
  *  Do not move these sections within this file or change the START and
  *  END comments in any way.
  */
+#include "driverlib.h"
+#include "System.h"
 #include <stdint.h>
-#include <driverlib/inc/hw_memmap.h>
-#include <driverlib/eusci_b_i2c.h>
-#include <system/System.h>
 
 /* USER CODE START (section: EUSCI_B1_init_c_prologue) */
 /* User defined includes, defines, global variables and functions */

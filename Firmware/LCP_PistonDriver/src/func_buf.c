@@ -84,6 +84,7 @@ int FBUF_buffer_get(sFuncBuf_t *buf, void(*func))
 //        func = (void*)buf->func[buf->tail];
 //        retreat_pointer(buf);
 //    }
+	return 0;
 }
 
 int FBUF_buffer_run(sFuncBuf_t *buf)

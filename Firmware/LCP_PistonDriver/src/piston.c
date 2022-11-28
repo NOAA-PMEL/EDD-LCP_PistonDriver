@@ -25,7 +25,26 @@
 /**
  * Defines the struct for the Small Diameter Piston
  */
-STATIC PERSISTENT sPistonVolume_t smallPiston = {
+//STATIC PERSISTENT sPistonVolume_t smallPiston = {
+//    ._volume = 0,
+//    ._length = 0,
+//    ._diameter = SMALL_PISTON_DIAMETER,
+//    ._max_length = SMALL_PISTON_MAX_LENGTH,
+//    ._max_volume = SMALL_PISTON_DIAMETER * PI *SMALL_PISTON_MAX_LENGTH
+//};
+//
+///**
+// * Define the struct for the Large Diameter PIston
+// */
+//STATIC PERSISTENT sPistonVolume_t largePiston = {
+//    ._volume = 0,
+//    ._length = 0,
+//    ._diameter = LARGE_PISTON_DIAMETER,
+//    ._max_length = LARGE_PISTON_MAX_LENGTH,
+//    ._max_volume = LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH
+//};
+
+STATIC sPistonVolume_t smallPiston = {
     ._volume = 0,
     ._length = 0,
     ._diameter = SMALL_PISTON_DIAMETER,
@@ -36,7 +55,7 @@ STATIC PERSISTENT sPistonVolume_t smallPiston = {
 /**
  * Define the struct for the Large Diameter PIston
  */
-STATIC PERSISTENT sPistonVolume_t largePiston = {
+STATIC sPistonVolume_t largePiston = {
     ._volume = 0,
     ._length = 0,
     ._diameter = LARGE_PISTON_DIAMETER,

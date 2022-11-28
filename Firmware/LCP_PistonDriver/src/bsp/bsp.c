@@ -6,7 +6,7 @@ static uint16_t adc2 = 0;
 void BSP_Init(void)
 {
   /* Stop watchdog timer from timing out during initial start-up. */
-  WDTCTL = WDTPW + WDTHOLD;
+  //WDTCTL = WDTPW + WDTHOLD;
     
   /** Initialize Timers */
   Timer0_A3_Init();
@@ -43,20 +43,20 @@ void BSP_Init(void)
   __bis_SR_register(GIE);
   
   /** Initialize the LEDS (if preprocessor flags set) */
-#if DEBUG && DEBUG_LED
+#if defined(DEBUG) && defined(DEBUG_LED)
   BSP_LED_Init(LED_BLUE);
   BSP_LED_Init(LED_GREEN);
 #endif
   
   /** Initializethe Debug UART (if preprocessor flags set) */
-#if DEBUG & DEBUG_UART
+#if defined(DEBUG) && defined(DEBUG_UART)
   BSP_GPIO_Init(&BSP_UART_DEBUG_RX);
   BSP_GPIO_Init(&BSP_UART_DEBUG_TX);
 #endif
   
   /** Initialize the Console (if preprocesor flag set) */
   /** Console */
-#if INCLUDE_CONSOLE
+#ifdef INCLUDE_CONSOLE
   BSP_GPIO_Init(&BSP_UART_CONSOLE_RX);
   BSP_GPIO_Init(&BSP_UART_CONSOLE_TX);
 #endif
@@ -119,7 +119,7 @@ void BSP_Init(void)
   __bis_SR_register(GIE);
 }
 
-#if DEBUG && DEBUG_UART
+#if defined(DEBUG) && defined(DEBUG_UART)
 void BSP_DBG_UART_Init(void)
 {
 
@@ -138,7 +138,7 @@ void BSP_DBG_putc(char c)
 }
 #endif 
 
-#if INCLUDE_CONSOLE
+#ifdef INCLUDE_CONSOLE
 void BSP_CNSL_UART_Init(void)
 {
 

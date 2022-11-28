@@ -13,10 +13,9 @@
  *  END comments in any way.
  *
  */
+#include "driverlib.h"
+#include "System.h"
 #include <stdint.h>
-#include <driverlib/inc/hw_memmap.h>
-#include <driverlib/eusci_a_uart.h>
-#include <system/System.h>
 
 /* USER CODE START (section: EUSCI_A1_init_c_prologue) */
 /* User defined includes, defines, global variables and functions */

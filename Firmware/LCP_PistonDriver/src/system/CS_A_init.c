@@ -13,9 +13,8 @@
  *  END comments in any way.
  *
  */
-#include <driverlib/inc/hw_memmap.h>
-#include <driverlib/cs.h>
-#include <system/System.h>
+#include "driverlib.h"
+#include "System.h"
 
 /* USER CODE START (section: CS_A_init_c_prologue) */
 /* User defined includes, defines, global variables and functions */

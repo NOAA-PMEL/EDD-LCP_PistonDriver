@@ -144,3 +144,4 @@ The following are the available test modes
 | 6 | Zero > Full > Zero, 1/2" increments |
 | 7 | Zero > Full > Zero, loop until keystroke |
 | 8 | Zero > Full > Zero, 1/2" increments, loop until keystroke |
+

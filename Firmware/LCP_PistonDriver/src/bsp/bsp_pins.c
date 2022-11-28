@@ -19,7 +19,7 @@
 #include "bsp_pins.h"
 
 
-#if DEBUG && DEBUG_LED
+#if defined(DEBUG) && defined(DEBUG_LED)
 const driverlib_gpio_cfg_t g_BSP_GPIO_GREEN_LED = {
   .port = BSP_GPIO_GREEN_LED_PORT,
   .pin = BSP_GPIO_GREEN_LED_PIN,
@@ -29,7 +29,7 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_GREEN_LED = {
 };
 #endif
 
-#if DEBUG && DEBUG_LED
+#if defined(DEBUG) && defined(DEBUG_LED)
 const driverlib_gpio_cfg_t g_BSP_GPIO_BLUE_LED = {
   .port = BSP_GPIO_BLUE_LED_PORT,
   .pin = BSP_GPIO_BLUE_LED_PIN,

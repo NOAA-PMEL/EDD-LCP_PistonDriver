@@ -1,21 +1,21 @@
 #include "encoder.h"
 #include "logging.h"
 #include "memory.h"
-#include "bsp/bsp_timer_a.h"
+#include "bsp_timer_a.h"
 #include <stdio.h>
 
-STATIC PERSISTENT volatile int32_t g_encoder_counter;
-STATIC PERSISTENT volatile int32_t *p_encoder_counter = &g_encoder_counter;
-STATIC PERSISTENT volatile int32_t g_encoder_direction;
+PERSISTENT volatile int32_t g_encoder_counter;
+PERSISTENT volatile int32_t *p_encoder_counter = &g_encoder_counter;
+PERSISTENT volatile int32_t g_encoder_direction;
 
-STATIC PERSISTENT sEncoderSettings_t encSettings = {
+PERSISTENT sEncoderSettings_t encSettings = {
     .min_count = ENCODER_MIN_COUNT_DEFAULT,
     .max_count = ENCODER_MAX_COUNT_DEFAULT,
     .distance = ENCODER_MAX_COUNT_DEFAULT - ENCODER_MIN_COUNT_DEFAULT,
     .length = ENCODER_LENGTH_DEFAULT,
  };
 
-STATIC PERSISTENT sEncoderSettings_t *pEncSettings = &encSettings;
+PERSISTENT sEncoderSettings_t *pEncSettings = &encSettings;
 
 //STATIC bool _set_min_count(int32_t val) {
 //    if( val < 0 ) 

@@ -15,6 +15,7 @@
  */
 
 #include "buffer_c.h"
+#include <string.h>
 
 /*******************************************************************************
 *					STATIC FUNCTIONS PROTOTYPES
@@ -90,7 +91,6 @@ eBufferCStatus_t BufferC_getc(sCircularBufferC_t *buf, char *value){
 	return result;
 }
 
-
 eBufferCStatus_t BufferC_Backspace(sCircularBufferC_t *buf){
 	eBufferCStatus_t result = BUFFER_C_ERROR;
 
@@ -105,9 +105,6 @@ eBufferCStatus_t BufferC_Backspace(sCircularBufferC_t *buf){
 
 	return result;
 }
-
-
-
 
 eBufferCStatus_t BufferC_puts(sCircularBufferC_t *buf, char *str, uint16_t len){
 	eBufferCStatus_t result = BUFFER_C_ERROR;
@@ -205,8 +202,7 @@ STATIC uint16_t BufferC_Scan(sCircularBufferC_t *buf,char val){
 	
 	return CountIdx;
 
- }
-
+}
 
 /** @brief Compute the buffer size
  *
@@ -225,7 +221,7 @@ STATIC void BufferC_Size(sCircularBufferC_t *buf){
 	} else {
 	  buf->size = BUFFER_C_SIZE - buf->read + buf->write + 1;
 	}
-  }
+}
   
 
 /** @brief Compute the next index
@@ -242,7 +238,7 @@ STATIC uint16_t BufferC_NextIndex(uint16_t idx){
 		idx= 0;
 	}
 	return idx;
-  }
+}
 
 /** @brief Compute the previous index
  *
@@ -260,3 +256,4 @@ STATIC uint16_t BufferC_PrevIndex(uint16_t idx){
 	}
 	return idx;
 }
+

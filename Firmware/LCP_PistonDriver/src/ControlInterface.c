@@ -6,6 +6,7 @@
 * Includes
 *********************************************************************************/
 #include "ControlInterface.h"
+#include <string.h>
 /**********************************************************************************
 * Preprocessor Constants
 *********************************************************************************/
@@ -72,7 +73,8 @@ sControlCmd_t incomingCmd = {
 */
 void CIF_FrameDecoder(uint8_t *block)
 {
-    #define MAX_FRAME_LEN (256+8)
+    //#define MAX_FRAME_LEN (256+8)
+    #define FRAME_LEN (256+8)
     uint8_t frame[FRAME_LEN];
     while(1)
     {

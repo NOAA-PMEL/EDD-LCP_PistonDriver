@@ -1,5 +1,5 @@
 #include "bsp_gpio.h"
-#include "msp430fr5989.h"
+#include "driverlib.h"
 
 volatile int32_t g_gpio_count_0 = 0lu;
 
@@ -23,11 +23,11 @@ void (*GPIO_int_6_callback)(void) = 0;
 void (*GPIO_int_7_callback)(void) = 0;
 int8_t (*GPIO_int_10_callback)(void) = 0;
 
-__interrupt void Port_1 (void);
-__interrupt void Port_2 (void);
-__interrupt void Port_3 (void);
-__interrupt void Port_4 (void);
-__interrupt void Port_9 (void);
+void Port_1 (void);
+void Port_2 (void);
+void Port_3 (void);
+void Port_4 (void);
+void Port_9 (void);
 
 
 volatile int32_t * BSP_GPIO_Init_Counter( uint8_t counter)
@@ -157,9 +157,13 @@ void BSP_GPIOCallback_i(uint16_t int_num, int8_t function(void))
 }
 
 
-
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=PORT1_VECTOR
-__interrupt void Port_1 (void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(PORT1_VECTOR)))
+#endif
+void Port_1 (void)
 {
   volatile static uint8_t fwd_state = 0;
   volatile static uint8_t rev_state = 0;
@@ -263,9 +267,13 @@ __interrupt void Port_1 (void)
   }
 }
 
-
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=PORT2_VECTOR
-__interrupt void Port_2 (void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(PORT2_VECTOR)))
+#endif
+void Port_2 (void)
 {
   switch (__even_in_range(P2IV,P2IV_P2IFG7))
   {
@@ -279,9 +287,13 @@ __interrupt void Port_2 (void)
 }
 
 
-
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=PORT3_VECTOR
-__interrupt void Port_3 (void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(PORT3_VECTOR)))
+#endif
+void Port_3 (void)
 {
   switch (__even_in_range(P3IV,P3IV_P3IFG7))
   {
@@ -294,9 +306,13 @@ __interrupt void Port_3 (void)
 }
 
 
-
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=PORT4_VECTOR
-__interrupt void Port_4 (void)
+__interrupt
+#elif defined(__GNUC__)
+__attribute__((interrupt(PORT4_VECTOR)))
+#endif
+void Port_4 (void)
 {
 
   switch (__even_in_range(P4IV,P4IV_P4IFG7))
@@ -314,9 +330,13 @@ __interrupt void Port_4 (void)
 
 
 
-
+//#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 //#pragma vector=PORT9_VECTOR
-//__interrupt void Port_9 (void)
+//__interrupt
+//#elif defined(__GNUC__)
+//__attribute__((interrupt(PORT9_VECTOR)))
+//#endif
+//interrupt void Port_9 (void)
 //{
 //
 //  switch (__even_in_range(P9IV,P9IV_P9IFG7))
