@@ -35,7 +35,7 @@ sleep 1
 echo "Updating the repositories ..."
 apt -qq update
 sleep 1
-apt install --no-install-recommends -y libusb-dev libusb-0.1-4 libudev-dev make build-essential g++ 
+apt install --no-install-recommends -y libusb-dev libusb-0.1-4 libudev-dev make build-essential g++ libreadline-dev libncursesw5
 sleep 1
 
 ## compile mspdebug (Flasher)
