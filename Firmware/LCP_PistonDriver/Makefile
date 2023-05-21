@@ -33,7 +33,7 @@ INCS := -I $(INC_DIR) \
 OBJECTS := $(SRCS:.c=.o)
 
 CFLAGS = -I $(GCC_INCLUDE) $(INCS) -D__$(DEVICE)__ -mmcu=$(DEVICE) -mlarge -mcode-region=either -mdata-region=either -Os -Wall -g0 -ffunction-sections -fdata-sections
-LFLAGS = -L $(GCC_INCLUDE) -D__$(DEVICE)__ -mmcu=$(DEVICE) -mlarge -mcode-region=either -mdata-region=either -Wl,-Map,$(MAP),--gc-sections
+LFLAGS = -L $(GCC_INCLUDE) -D__$(DEVICE)__ -mmcu=$(DEVICE) -mlarge -mcode-region=either -mdata-region=either -Wl,-Map,$(MAP),--gc-sections -u _printf_float
 
 all: ${OBJECTS}
 	$(CC) $(LFLAGS) $? -o $(TARGET)
