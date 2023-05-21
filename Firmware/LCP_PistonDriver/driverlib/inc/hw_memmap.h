@@ -36,11 +36,24 @@
 // Macros for hardware access
 //
 //*****************************************************************************
+
+
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #define HWREG32(x)                                                              \
         (*((volatile uint32_t *)((uint16_t)x)))
 #define HWREG16(x)                                                             \
         (*((volatile uint16_t *)((uint16_t)x)))
 #define HWREG8(x)                                                             \
         (*((volatile uint8_t *)((uint16_t)x)))
+
+#elif defined(__GNUC__)
+#include <stddef.h>
+#define HWREG32(x)                                                              \
+        (*((volatile uint32_t *)((size_t)x)))
+#define HWREG16(x)                                                             \
+        (*((volatile uint16_t *)((size_t)x)))
+#define HWREG8(x)                                                             \
+        (*((volatile uint8_t *)((size_t)x)))
+#endif
 
 #endif // #ifndef __HW_MEMMAP__
