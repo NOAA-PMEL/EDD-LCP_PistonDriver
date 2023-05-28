@@ -13,7 +13,7 @@
 #define DEBUG_UART
 #define DEBUG_LED
 #define INCLUDE_CONSOLE
-#define nTEST
+//#define TEST
 
 /** Volume Movement Settings */
 #define SYS_VOLUME_DIFF_MAX     ( 0.030 )
@@ -28,8 +28,18 @@
 
 /** Encoder Settings */
 #define SYS_ENCODER_MIN_COUNT_DEFAULT   ( 0 ) 
-#define SYS_ENCODER_MAX_COUNT_DEFAULT   ( 72609 )
+#define SYS_ENCODER_MAX_COUNT_DEFAULT   ( 141841 )
 #define SYS_ENCODER_LENGTH_DEFAULT      ( 11.6875 )
+
+#ifndef STATIC
+#define STATIC  static
+#endif
+
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
+#define PERSISTENT __persistent
+#elif defined(__GNUC__)
+#define PERSISTENT __attribute__((section (".persistent")))
+#endif
 
 /*******************************************************************************
  * Extended Scan Interface Settings

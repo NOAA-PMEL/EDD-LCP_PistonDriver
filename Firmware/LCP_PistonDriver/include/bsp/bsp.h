@@ -11,6 +11,8 @@
 #include "bsp_adc12.h"
 #include "bsp_dma.h"
 #include "bsp_esi.h"
+#include "bsp_i2c.h"
+#include "System.h"
 
 
 /** !brief Initialize System

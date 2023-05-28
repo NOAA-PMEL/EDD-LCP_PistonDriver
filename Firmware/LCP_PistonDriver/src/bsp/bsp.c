@@ -1,5 +1,6 @@
 #include "config.h"
 #include "bsp.h"
+#include "System.h"
 
 static uint16_t adc2 = 0;
 
@@ -35,8 +36,8 @@ void BSP_Init(void)
   
   /** Initialize the DMA */
   DMA_Init();
-  
 
+  BSP_I2C_Enable(EUSCI_B1_BASE);
   
   /** Initialize RTC C */
   RTC_C_Init();

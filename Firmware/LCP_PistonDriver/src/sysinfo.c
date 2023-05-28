@@ -1,6 +1,7 @@
 #include "sysinfo.h"
 #include "memory.h"
 #include <string.h>
+#include "config.h"
 
 
 STATIC volatile uint8_t storage_ram[256];
