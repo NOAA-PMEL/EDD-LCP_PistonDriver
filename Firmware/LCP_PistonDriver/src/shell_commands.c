@@ -206,6 +206,14 @@ bool cli_get(const char *key, const void *val, uint32_t len) {
       shell_put_line(t_str);
       return true;
     }
+
+    if(strncmp(key, "maxencode", 9) == 0)
+    {
+      Log.Debug("get maxencode called");
+      sprintf(t_str, "max encode= %li, min encode= %li", ENC_Get_max_count(), ENC_Get_min_count());
+      shell_put_line(t_str);
+      return true;
+    }
     
     if(strncmp(key, "mcurrent", 7) == 0)
     {
