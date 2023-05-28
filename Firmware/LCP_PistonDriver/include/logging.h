@@ -46,32 +46,6 @@
  *********************************************************************************/
 #define LOG_BUFFER_SIZE ( 256 )
 
-
-/**********************************************************************************
- * MACROS
- *********************************************************************************/
-/** Remove STATIC and PERSISTENT values if running TEST */
-/** Add the actual values if running release */
-#ifdef TEST
-#ifndef STATIC
-#define STATIC  
-#endif
-#ifndef PERSISTENT
-#define PERSISTENT
-#endif
-#else
-#ifndef STATIC
-#define STATIC  static
-#endif
-#ifndef PERSISTENT
-#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
-#define PERSISTENT __persistent 
-#elif defined(__GNUC__)
-#define PERSISTENT __attribute__((section (".persistent")))
-#endif
-#endif
-#endif
-
 /**********************************************************************************
  * Typdefs
  *********************************************************************************/

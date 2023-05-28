@@ -46,27 +46,27 @@
 * Configuration Constants
 *********************************************************************************/
 
-/**********************************************************************************
-* MACROS
-*********************************************************************************/
-/** Remove STATIC and PERSISTENT values if running TEST */
-/** Add the actual values if running release */
-#ifdef TEST
-#ifndef STATIC
-#define STATIC  
-#endif
-#ifndef PERSISTENT
-#define PERSISTENT
-#endif
-#else
-#ifndef STATIC
-#define STATIC  static
-#endif
-#ifndef PERSISTENT
-//#define PERSISTENT __persistent 
-#define PERSISTENT __attribute__((section (".persistent")))
-#endif
-#endif
+///**********************************************************************************
+//* MACROS
+//*********************************************************************************/
+///** Remove STATIC and PERSISTENT values if running TEST */
+///** Add the actual values if running release */
+//#ifdef TEST
+//#ifndef STATIC
+//#define STATIC
+//#endif
+//#ifndef PERSISTENT
+//#define PERSISTENT
+//#endif
+//#else
+//#ifndef STATIC
+//#define STATIC static
+//#endif
+//#ifndef PERSISTENT
+////#define PERSISTENT __persistent
+//#define PERSISTENT __attribute__((section (".persistent")))
+//#endif
+//#endif
 
 /**********************************************************************************
 * Typdefs
