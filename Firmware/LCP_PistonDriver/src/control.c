@@ -16,10 +16,10 @@ uint8_t map[256];
 
 void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast);
 
-
 static void CTRL_Read(volatile sI2Command_t *p)
 {
     uint8_t *readAddr = (uint8_t*)MEM_Get_Read_Addr(p->addr_offset);
+
     for(uint16_t i=p->addr_offset; i<256; i++)
     {
         BufferC_putc((sCircularBufferC_t*)&p->txBuf, *readAddr++);
@@ -33,10 +33,16 @@ static void CTRL_Write(void)
     uint8_t *writeAddr = (uint8_t*) MEM_Get_Write_Addr(p->addr_offset);
     uint8_t *readAddr = 0;
     uint16_t offset = p->addr_offset;
-//    char temp[32];
+    char temp[32];
+
+    sprintf(temp, "offset = 0x%02X", p->addr_offset);
+    Log.Debug(temp);
+
     while( (p->rxBuf.size > 0) && (offset < 256))
     {
         BufferC_getc((sCircularBufferC_t*)&p->rxBuf, (char*)&data);
+        sprintf(temp, "data = 0x%02X", data);
+        Log.Debug(temp);
         *writeAddr++ = data;
         offset++;
     }
@@ -66,7 +72,6 @@ static void CTRL_Write(void)
       }
     }
     
-    
     writeAddr = (uint8_t*) MEM_Get_Write_Addr(0);
     readAddr = (uint8_t*) MEM_Get_Read_Addr(0);
     for(uint16_t i=p->addr_offset; i<0x100; i++)
@@ -91,9 +96,7 @@ static void CTRL_Write(void)
     
     /** Update from MEM */
 //    BSP_
-    
-    
-    
+
 }
 
 void CTRL_Init(void)
@@ -105,13 +108,13 @@ void CTRL_Init(void)
 
     /** Attach Callbacks*/
     BSP_I2CCallback(0, &CTRL_Read);
-//    BSP_I2CCallback(1, &CTRL_Write);
+    //BSP_I2CCallback(1, &CTRL_Write);
 
 }
 
 void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
 {
-  char temp[32];
+  char temp[64];
   
   if( *pWrite->RESET == SYS_RESET_KEY)
   {
@@ -141,19 +144,19 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
   
   if(*pWrite->PID_coeff_i != *pLast->PID_coeff_i)
   {
-    sprintf(temp, "Setting PID.P to %.3f", *pWrite->PID_coeff_p);
+    sprintf(temp, "Setting PID.I to %.3f", *pWrite->PID_coeff_i);
     Log.Debug(temp);
   }
   
   if(*pWrite->PID_coeff_d != *pLast->PID_coeff_d)
   {
-    sprintf(temp, "Setting PID.P to %.3f", *pWrite->PID_coeff_p);
+    sprintf(temp, "Setting PID.D to %.3f", *pWrite->PID_coeff_d);
     Log.Debug(temp);
   }
   
   if(*pWrite->PID_used != *pLast->PID_used)
   {
-    sprintf(temp, "Setting PID.P to %.3f", *pWrite->PID_coeff_p);
+    sprintf(temp, "Setting PID_used to %i", *pWrite->PID_used);
     Log.Debug(temp);
   }
   
@@ -188,8 +191,14 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
   {
    MEM_Set_User_Override(*pWrite->USR_override);
   }
-   
-  
+
+  /** Piston Calibrate */
+  if (*pWrite->PST_calibration != *pLast->PST_calibration)
+  {
+    MEM_Set_PST_Calibration(*pWrite->PST_calibration);
+    PIS_Calibrate( (uint8_t) *pWrite->PST_calibration);
+  }
+
   /** Volume of Length Setpoints */
   if(*pWrite->VOL_setpoint != 0) {
     if(*pWrite->VOL_setpoint != *pWrite->VOL_total)
@@ -221,9 +230,9 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
         }
       }
       return;
-    } 
+    }
   }
-  
+
   if(MEM_Get_USR_Override()) {
     /** Travel Direction and Engaged */
     if(*pWrite->TRV_dir != *pLast->TRV_dir)
@@ -257,23 +266,21 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
   }
   
   
-//  } else if (*pWrite->LEN_setpoint != *pLast->LEN_setpoint)
-//  {
-//    sprintf(temp, "I2C - LEN_setpoint = %.3f", *pWrite->LEN_setpoint);
-//    Log.Debug(temp);
-//    
-//    if(*pWrite->LEN_setpoint < 0.0f)
-//    {
-//      PIS_Reset_to_Zero();
-//    } else {
-//      PIS_Run_to_length(*pWrite->LEN_setpoint);
-//    } 
-//  }
-//  
-  
+  else if (*pWrite->LEN_setpoint != *pLast->LEN_setpoint)
+  {
+    sprintf(temp, "I2C - LEN_setpoint = %.3f", *pWrite->LEN_setpoint);
+    Log.Debug(temp);
+
+    if(*pWrite->LEN_setpoint < 0.0f)
+    {
+      PIS_Reset_to_Zero();
+    } else {
+      PIS_Run_to_length(*pWrite->LEN_setpoint);
+    }
+  }
+
   return;
 }
-
 
 void CTRL_Check_Write(void)
 {
@@ -283,8 +290,8 @@ void CTRL_Check_Write(void)
     Log.Debug("Entering CTRL Commanded");
     BSP_I2C_Disable(EUSCI_B1_BASE);
     CTRL_Write();
-    BSP_I2C_Init(EUSCI_B1_BASE);
+    //BSP_I2C_Init(EUSCI_B1_BASE);
     Log.Debug("Exiting CTRL Commanded\n\n");
-//    BSP_I2C_Enable(EUSCI_B1_BASE);
+    BSP_I2C_Enable(EUSCI_B1_BASE);
   }
 }
