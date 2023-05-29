@@ -3,19 +3,20 @@
 #include "memory.h"
 #include "bsp_timer_a.h"
 #include <stdio.h>
+#include "config.h"
 
-PERSISTENT volatile int32_t g_encoder_counter;
-PERSISTENT volatile int32_t *p_encoder_counter = &g_encoder_counter;
-PERSISTENT volatile int32_t g_encoder_direction;
+STATIC PERSISTENT volatile int32_t g_encoder_counter;
+STATIC PERSISTENT volatile int32_t *p_encoder_counter = &g_encoder_counter;
+STATIC PERSISTENT volatile int32_t g_encoder_direction;
 
-PERSISTENT sEncoderSettings_t encSettings = {
+STATIC PERSISTENT sEncoderSettings_t encSettings = {
     .min_count = ENCODER_MIN_COUNT_DEFAULT,
     .max_count = ENCODER_MAX_COUNT_DEFAULT,
     .distance = ENCODER_MAX_COUNT_DEFAULT - ENCODER_MIN_COUNT_DEFAULT,
     .length = ENCODER_LENGTH_DEFAULT,
  };
 
-PERSISTENT sEncoderSettings_t *pEncSettings = &encSettings;
+STATIC PERSISTENT sEncoderSettings_t *pEncSettings = &encSettings;
 
 //STATIC bool _set_min_count(int32_t val) {
 //    if( val < 0 ) 
@@ -55,7 +56,6 @@ STATIC double _calculate_length(void)
     int32_t temp_u = ENC_Get_count() - encSettings.min_count;
     double temp_f = (double) temp_u;
     temp_f /= encSettings.max_count;
-    
 //    temp_f *= encSettings.conversion_factor;
     return temp_f * encSettings.length;
 }
@@ -78,6 +78,8 @@ void ENC_Set_count(int32_t val)
   sprintf(temp, "Setting encoder to %li", val);
   Log.Debug(temp);
   *p_encoder_counter = val;
+  // set in the memory map too
+  MEM_Set_PST_Encoder_Counts(*p_encoder_counter);
   sprintf(temp, "Encoder set to %li", *p_encoder_counter);
   Log.Debug(temp);
 }
@@ -89,6 +91,9 @@ void ENC_Set_max_count(int32_t val)
   sprintf(temp, "Setting encoder max to %li", val);
   Log.Debug(temp);
   pEncSettings->max_count = val;
+  // set in the memory map too
+  MEM_Set_PST_Encoder_Counts_Max(pEncSettings->max_count);
+
   sprintf(temp, "Encoder max set to %li", pEncSettings->max_count);
   Log.Debug(temp);
 }

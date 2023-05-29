@@ -10,25 +10,28 @@
 
 /** Remove STATIC and PERSISTENT values if running TEST */
 /** Add the actual values if running release */
-#ifdef TEST
-#ifndef STATIC
-#define STATIC  
-#endif
-#ifndef PERSISTENT
-#define PERSISTENT
-#endif
-#else
-#ifndef STATIC
-#define STATIC  static
-#endif
-#ifndef PERSISTENT
-#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
-#define PERSISTENT __persistent 
-#elif defined(__GNUC__)
-#define PERSISTENT __attribute__((section (".persistent")))
-#endif
-#endif
-#endif
+//#ifdef TEST
+//#ifndef STATIC
+//#define STATIC
+//#endif
+//#ifndef PERSISTENT
+//#define PERSISTENT
+//#endif
+//#else
+
+//#ifndef STATIC
+//#define STATIC  static
+//#endif
+//
+////#ifndef PERSISTENT
+//#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
+//#define PERSISTENT __persistent
+//#elif defined(__GNUC__)
+//#define PERSISTENT __attribute__((section (".persistent")))
+//#endif
+
+//#endif
+//#endif
 
 #define ENCODER_MIN_COUNT_DEFAULT   SYS_ENCODER_MIN_COUNT_DEFAULT
 #define ENCODER_MAX_COUNT_DEFAULT   SYS_ENCODER_MAX_COUNT_DEFAULT
@@ -63,10 +66,6 @@ typedef struct EncoderSettings {
     // (void*) (function)(void);
 }sEncoderSettings_t;
 
-
-extern sEncoderSettings_t encSettings;
-extern sEncoderSettings_t *pEncSettings;
-
 void ENC_Init(void);
 void ENC_FactoryReset(void);
 double ENC_Get_Length(void);
@@ -81,12 +80,11 @@ int32_t ENC_Get_max_count(void);
 void ENC_SetDir(ePistonDir_t dir);
 int8_t ENC_GetDir(void);
 
-extern volatile int32_t g_encoder_direction;
-
 #ifdef TEST
+extern sEncoderSettings_t encSettings;
+extern sEncoderSettings_t *pEncSettings;
+extern volatile int32_t g_encoder_direction;
 extern volatile int32_t g_encoder_counter;
-
-
 #endif
 
 #ifdef TEST
