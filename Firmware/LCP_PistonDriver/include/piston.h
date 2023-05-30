@@ -41,6 +41,15 @@
 #include "encoder.h"
 #include "DRV8874.h"
 
+#ifndef STATIC
+#define STATIC  static
+#endif
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
+#define PERSISTENT __persistent
+#elif defined(__GNUC__)
+#define PERSISTENT __attribute__((section (".persistent")))
+#endif
+
 /**********************************************************************************
  * Configuration Constants
  *********************************************************************************/

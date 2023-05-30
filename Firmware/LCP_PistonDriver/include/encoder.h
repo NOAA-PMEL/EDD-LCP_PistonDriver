@@ -7,31 +7,16 @@
 #include "bsp/bsp_esi.h"
 #include "config.h"
 
+#ifndef STATIC
+#define STATIC  static
+#endif
 
-/** Remove STATIC and PERSISTENT values if running TEST */
-/** Add the actual values if running release */
-//#ifdef TEST
-//#ifndef STATIC
-//#define STATIC
-//#endif
-//#ifndef PERSISTENT
-//#define PERSISTENT
-//#endif
-//#else
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
+#define PERSISTENT __persistent
+#elif defined(__GNUC__)
+#define PERSISTENT __attribute__((section (".persistent")))
+#endif
 
-//#ifndef STATIC
-//#define STATIC  static
-//#endif
-//
-////#ifndef PERSISTENT
-//#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
-//#define PERSISTENT __persistent
-//#elif defined(__GNUC__)
-//#define PERSISTENT __attribute__((section (".persistent")))
-//#endif
-
-//#endif
-//#endif
 
 #define ENCODER_MIN_COUNT_DEFAULT   SYS_ENCODER_MIN_COUNT_DEFAULT
 #define ENCODER_MAX_COUNT_DEFAULT   SYS_ENCODER_MAX_COUNT_DEFAULT
