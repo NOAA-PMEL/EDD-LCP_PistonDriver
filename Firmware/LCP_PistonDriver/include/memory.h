@@ -71,11 +71,13 @@
 #define RAM_PST_POSITION_MAX 0x44  
 #define RAM_PST_RATE 0x48  
 #define RAM_PST_POSITION_IN 0x5C
-#define RAM_PST_ENC_COUNTS 0x50  
+#define RAM_PST_ENC_COUNTS 0x50
+#define RAM_PST_ENC_COUNTS_MAX 0x54
 #define RAM_TRV_DIR 0x60  
 #define RAM_TRV_ENG 0x61  
 #define RAM_TRV_SPD 0x62
-#define RAM_USER_OVERRIDE 0x63  
+#define RAM_USER_OVERRIDE 0x63
+#define RAM_PST_CAL 0x67
 #define RAM_TRV_ZERO 0x68  
 #define RAM_TRV_FULL 0x69  
 #define RAM_TRV_MIN 0x6A  
@@ -97,33 +99,6 @@
 #define RAM_FIRM_MIN 0xFC 
 #define RAM_FIRM_BUILD 0xFE 
 #define RAM_SYS_RESET 0x77
-
- 
-/**********************************************************************************
-* MACROS
-*********************************************************************************/
-/** Remove STATIC and PERSISTENT values if running TEST */
-/** Add the actual values if running release */
-#ifdef TEST
-#ifndef STATIC
-#define STATIC  
-#endif
-#ifndef PERSISTENT
-#define PERSISTENT
-#endif
-#else
-#ifndef STATIC
-#define STATIC  static
-#endif
-#ifndef PERSISTENT
-#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
-#define PERSISTENT __persistent 
-#elif defined(__GNUC__)
-#define PERSISTENT __attribute__((section (".persistent")))
-#endif
-#endif
-#endif
-
 
 #define VAR_WRITE_KEY   (0xA5)
 #define SYS_RESET_KEY   (0xCA)
@@ -193,10 +168,12 @@ typedef struct sRAM {
     volatile float *PST_rate;
     volatile float *PST_position;
     volatile uint32_t *PST_enc_counts;
+    volatile uint32_t *PST_enc_counts_max;
     volatile int8_t *TRV_dir;
     volatile uint8_t *TRV_speed;
     volatile uint8_t *TRV_eng;
     volatile uint8_t *USR_override;
+    volatile uint8_t *PST_calibration;
     volatile uint8_t *TRV_zero;
     volatile uint8_t *TRV_full;
     volatile uint8_t *TRV_min;
@@ -250,6 +227,7 @@ void MEM_Set_PID_Coeff_D(float value);
 void MEM_Set_PID_Used(bool used);
 void MEM_Set_Var_Write(uint8_t value);
 void MEM_Set_User_Override(bool value);
+void MEM_Set_PST_Calibration(bool value);
 void MEM_Set_Travel_Direction(int8_t dir);
 void MEM_Set_Travel_Engage(bool state);
 void MEM_Set_Serial_Number(volatile char *value);
@@ -257,9 +235,12 @@ void MEM_Set_f(eRamVars_f_t type, float value);
 void MEM_Set_u8(eRamVars_u8_t type, uint8_t value);
 void MEM_Set_i8(eRamVars_i8_t type, int8_t value);
 void MEM_Set_YearBuilt(volatile uint16_t year);
+void MEM_Set_PST_Encoder_Counts(int32_t counts);
+void MEM_Set_PST_Encoder_Counts_Max(int32_t counts_max);
 
 uint8_t MEM_Get_VAR_Write(void);
 bool MEM_Get_USR_Override(void);
+bool MEM_Get_PST_Calibration(void);
 
 float MEM_Get_VOL_Setpoint(void);
 float MEM_Get_VOL_Total(void);
@@ -277,7 +258,8 @@ float MEM_Get_AREA_Large_Piston(void);
 
 float MEM_Get_PST_Position_Min(void);
 float MEM_Get_PST_Position_Max(void);
-uint32_t MEM_Get_PST_Encoder_Counts(void);
+int32_t MEM_Get_PST_Encoder_Counts(void);
+int32_t MEM_Get_PST_Encoder_Counts_Max(void);
 float MEM_Get_PST_Rate(void);
 float MEM_Get_PST_Position(void);
 

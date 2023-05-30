@@ -54,10 +54,12 @@ STATIC sRAM_t RAM = {
     .PST_rate = (float*) &storage_ram[RAM_PST_RATE],
     .PST_position = (float*) &storage_ram[RAM_PST_POSITION_IN],
     .PST_enc_counts = (uint32_t*) &storage_ram[RAM_PST_ENC_COUNTS],
+    .PST_enc_counts_max = (uint32_t*) &storage_ram[RAM_PST_ENC_COUNTS_MAX],
     .TRV_dir = (int8_t *) &storage_ram[RAM_TRV_DIR],
     .TRV_eng = (uint8_t*) &storage_ram[RAM_TRV_ENG],
     .TRV_speed = (uint8_t*) &temp_ram[RAM_TRV_SPD],
     .USR_override = (uint8_t*) &storage_ram[RAM_USER_OVERRIDE],
+    .PST_calibration = (uint8_t*) &storage_ram[RAM_PST_CAL],
     .TRV_zero = (uint8_t*) &storage_ram[RAM_TRV_ZERO],
     .TRV_full = (uint8_t*) &storage_ram[RAM_TRV_FULL],
     .TRV_min = (uint8_t*) &storage_ram[RAM_TRV_MIN],
@@ -99,10 +101,12 @@ STATIC sRAM_t CMDRAM = {
     .PST_rate = (float*) &temp_ram[RAM_PST_RATE],
     .PST_position = (float*) &temp_ram[RAM_PST_POSITION_IN],
     .PST_enc_counts = (uint32_t*) &temp_ram[RAM_PST_ENC_COUNTS],
+    .PST_enc_counts_max = (uint32_t*) &temp_ram[RAM_PST_ENC_COUNTS_MAX],
     .TRV_dir = (int8_t *) &temp_ram[RAM_TRV_DIR],
     .TRV_eng = (uint8_t*) &temp_ram[RAM_TRV_ENG],
     .TRV_speed = (uint8_t*) &temp_ram[RAM_TRV_SPD],
     .USR_override = (uint8_t*) &temp_ram[RAM_USER_OVERRIDE],
+    .PST_calibration = (uint8_t*) &temp_ram[RAM_PST_CAL],
     .TRV_zero = (uint8_t*) &temp_ram[RAM_TRV_ZERO],
     .TRV_full = (uint8_t*) &temp_ram[RAM_TRV_FULL],
     .TRV_min = (uint8_t*) &temp_ram[RAM_TRV_MIN],
@@ -172,7 +176,7 @@ STATIC void memset_volatile(volatile void *s, uint8_t c, size_t n)
 
 STATIC uint16_t strlen_volatile(volatile char* s)
 {
-  uint16_t cnt;
+  uint16_t cnt = 0;
   for(uint16_t i=0; i<0xFFFF; i++)
   {
     if(s[i]==0x00u)
@@ -356,7 +360,7 @@ const sRAM_t* MEM_Get_RAM_Struct(void)
 
 void MEM_Set_f(eRamVars_f_t type, float value)
 {
-  char temp[32];
+  char temp[64];
   switch(type)
   {
   case VOL_setpoint:
@@ -401,7 +405,7 @@ void MEM_Set_f(eRamVars_f_t type, float value)
 
 void MEM_Set_u8(eRamVars_u8_t type, uint8_t value)
 {
-  char temp[32];
+  char temp[64];
   switch(type)
   {
   case TRV_eng:
@@ -424,7 +428,7 @@ void MEM_Set_u8(eRamVars_u8_t type, uint8_t value)
 
 void MEM_Set_i8(eRamVars_i8_t type, int8_t value)
 {
-  char temp[32];
+  char temp[64];
   switch(type)
   {
   case TRV_dir:
@@ -445,8 +449,13 @@ void MEM_Set_i8(eRamVars_i8_t type, int8_t value)
 
 void MEM_Set_VOL_Setpoint(volatile float value)
 {
+    char temp[128];
+    sprintf(temp, "MEM_Set_VOL_Setpoint invoked total volume = %f, value= %f", MINIMUM_TOTAL_VOLUME, value);
+    Log.Debug(temp);
     if( (MINIMUM_TOTAL_VOLUME <= value) )
     {
+        sprintf(temp, "MEM_Set_VOL_Setpoint = %f", value);
+        Log.Debug(temp);
         /** Update the RAM */
 //        *RAM.VOL_setpoint = value;
       memcpy((float*)RAM.VOL_setpoint, (float*)&value, sizeof(float));
@@ -557,6 +566,24 @@ void MEM_Set_Travel_Engage(volatile bool state)
     *RAM.TRV_eng = state;
 }
 
+void MEM_Set_PST_Calibration(volatile bool cal)
+{
+    /** calibrate the piston, get max encoder value */
+    *RAM.PST_calibration = cal;
+}
+
+void MEM_Set_PST_Encoder_Counts(volatile int32_t counts)
+{
+    /** put in the memory map for current encoder counts */
+    *RAM.PST_enc_counts = counts;
+}
+
+void MEM_Set_PST_Encoder_Counts_Max(volatile int32_t counts_max)
+{
+    /** put in the memory map for max encoder counts after calibration */
+    *RAM.PST_enc_counts_max = counts_max;
+}
+
 void MEM_Set_Serial_Number(volatile char *value)
 {
     /** Call the system serial number function */
@@ -568,31 +595,29 @@ void MEM_Set_Serial_Number(volatile char *value)
     strncpy_volatile(RAM.SYS_ser_num, value, len);
 }
 
-
 void MEM_Set_YearBuilt(volatile uint16_t year)
 {
   assert(year > 2020);
   *RAM.SYS_year_built = year;
 }
 
-
-
 uint8_t MEM_Get_VAR_Write(void)             { return *RAM.VAR_write; }
-bool MEM_Get_USR_Override(void)             { return (bool) *RAM.USR_override; }
+bool MEM_Get_USR_Override(void)             { return (bool) *RAM.USR_override;}
 float MEM_Get_VOL_Setpoint(void)            {return *RAM.VOL_setpoint; }
 float MEM_Get_VOL_Total(void)               { return  *RAM.VOL_total; }
-float MEM_Get_VOL_Housing(void)             { return  *RAM.VOL_housing;} 
-float MEM_Get_VOL_Small_Piston(void)        { return  *RAM.VOL_small_piston;} 
-float MEM_Get_VOL_Large_Piston(void)        { return  *RAM.VOL_large_piston;} 
-float MEM_Get_LEN_Setpoint(void)            { return  *RAM.LEN_setpoint;} 
+float MEM_Get_VOL_Housing(void)             { return  *RAM.VOL_housing;}
+float MEM_Get_VOL_Small_Piston(void)        { return  *RAM.VOL_small_piston;}
+float MEM_Get_VOL_Large_Piston(void)        { return  *RAM.VOL_large_piston;}
+float MEM_Get_LEN_Setpoint(void)            { return  *RAM.LEN_setpoint;}
 float MEM_Get_LEN_Total(void)               { return *RAM.PST_enc_counts;}
-float MEM_Get_LEN_Small_Piston(void)        { return  *RAM.LEN_small_piston;} 
-float MEM_Get_LEN_Large_Piston(void)        { return  *RAM.LEN_large_piston;} 
-float MEM_Get_AREA_Small_Piston(void)       { return  *RAM.ARE_small_piston;} 
-float MEM_Get_AREA_Large_Piston(void)       { return  *RAM.ARE_large_piston;} 
-float MEM_Get_PST_Position_Min(void)        { return  *RAM.PST_position_min;} 
-float MEM_Get_PST_Position_Max(void)        { return  *RAM.PST_position_max;} 
-uint32_t MEM_Get_PST_Encoder_Counts(void)   { return  *RAM.PST_enc_counts;} 
+float MEM_Get_LEN_Small_Piston(void)        { return  *RAM.LEN_small_piston;}
+float MEM_Get_LEN_Large_Piston(void)        { return  *RAM.LEN_large_piston;}
+float MEM_Get_AREA_Small_Piston(void)       { return  *RAM.ARE_small_piston;}
+float MEM_Get_AREA_Large_Piston(void)       { return  *RAM.ARE_large_piston;}
+float MEM_Get_PST_Position_Min(void)        { return  *RAM.PST_position_min;}
+float MEM_Get_PST_Position_Max(void)        { return  *RAM.PST_position_max;}
+int32_t MEM_Get_PST_Encoder_Counts(void)   { return  *RAM.PST_enc_counts;}
+int32_t MEM_Get_PST_Encoder_Counts_Max(void)   { return  *RAM.PST_enc_counts_max;}
 float MEM_Get_PST_Rate(void)                { return  *RAM.PST_rate;} 
 float MEM_Get_PST_Position(void)            { return  *RAM.PST_position;} 
 int8_t MEM_Get_TRV_Direction(void)          { return  *RAM.TRV_dir;} 
@@ -616,3 +641,5 @@ float MEM_Get_PID_Coeff_I(void)             { return  *RAM.PID_coeff_i;}
 float MEM_Get_PID_Coeff_D(void)             { return  *RAM.PID_coeff_d;} 
 float MEM_Get_PID_Used(void)                { return  *RAM.PID_used;} 
 void MEM_Get_SYS_Serial_Number(char* value) { strncpy_volatile(value, RAM.SYS_ser_num, 8);};
+bool MEM_Get_PST_Calibration(void)          { return (bool) *RAM.PST_calibration;}
+
