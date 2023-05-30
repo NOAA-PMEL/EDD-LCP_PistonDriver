@@ -33,6 +33,10 @@
 *							MACROS
 ************************************************************************/
 
+#ifndef STATIC
+#define STATIC  static
+#endif
+
 #define BUFFER_C_SIZE				(256)
 #define ACTUAL_BUFFER_C_SIZE		(BUFFER_C_SIZE + 1)
 

@@ -6,7 +6,11 @@
 //#define MD_CONFIG_MODE_PHEN
 #define MD_CONFIG_MODE_PWM
 
-#define FIRMWARE        ("v0.1")
+#define FIRMWARE_MAJ    0
+#define FIRMWARE_MIN    1
+#define FIRMWARE_STR(X) #X
+#define STR(X)          FIRMWARE_STR(X)
+#define FIRMWARE        "v"STR(FIRMWARE_MAJ)"."STR(FIRMWARE_MIN)
 #define SYS_ID          ("LCPPST01")
 
 #define DEBUG
@@ -30,16 +34,6 @@
 #define SYS_ENCODER_MIN_COUNT_DEFAULT   ( 0 ) 
 #define SYS_ENCODER_MAX_COUNT_DEFAULT   ( 141841 )
 #define SYS_ENCODER_LENGTH_DEFAULT      ( 11.6875 )
-
-#ifndef STATIC
-#define STATIC  static
-#endif
-
-#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
-#define PERSISTENT __persistent
-#elif defined(__GNUC__)
-#define PERSISTENT __attribute__((section (".persistent")))
-#endif
 
 /*******************************************************************************
  * Extended Scan Interface Settings

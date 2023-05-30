@@ -59,14 +59,16 @@
 //#define PERSISTENT
 //#endif
 //#else
-//#ifndef STATIC
-//#define STATIC static
-//#endif
-//#ifndef PERSISTENT
-////#define PERSISTENT __persistent
-//#define PERSISTENT __attribute__((section (".persistent")))
-//#endif
-//#endif
+
+#ifndef STATIC
+#define STATIC static
+#endif
+
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
+#define PERSISTENT __persistent
+#elif defined(__GNUC__)
+#define PERSISTENT __attribute__((section (".persistent")))
+#endif
 
 /**********************************************************************************
 * Typdefs
