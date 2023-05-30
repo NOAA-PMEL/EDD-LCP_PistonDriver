@@ -1,6 +1,5 @@
 #include <msp430.h>
 #include <stdio.h>
-#include "System.h"
 #include "bsp.h"
 #include "logging.h"
 #include "shell.h"
@@ -17,37 +16,37 @@ disable_watchdog (void)
 
 int main( void )
 {
-	// Initialize the system  
-	BSP_Init();
-	LOG_Init();
-	MEM_Init();
-	CTRL_Init();
-	
-	BSP_LED_Clear(LED_GREEN); 
-	BSP_LED_Clear(LED_BLUE);
+    // Initialize the system
+    BSP_Init();
+    LOG_Init();
+    MEM_Init();
+    CTRL_Init();
 
-	PIS_Init();
-	__bis_SR_register(GIE);
+    BSP_LED_Clear(LED_GREEN);
+    BSP_LED_Clear(LED_BLUE);
+    //Log.Set(LOG_NONE);
+    Log.Set(LOG_DEBUG);
 
-	Log.Set(LOG_DEBUG);
-	PIS_Reset_to_Zero();
-	//  Log.Set(LOG_NONE);
+    PIS_Init();
+    PIS_Reset_to_Zero();
 
-	sShellImpl shell_impl = {
-		.send_char = BSP_CNSL_putc,
-	};
-	shell_boot(&shell_impl);
+    __bis_SR_register(GIE);
+    //__bis_SR_register(LPM4_bits + GIE);
+    __no_operation();
 
-	char c;
 
-	while(1){
+    sShellImpl shell_impl = {
+        .send_char = BSP_CNSL_putc,
+    };
+    shell_boot(&shell_impl);
 
-		CTRL_Check_Write();
-		c = BSP_CNSL_getc();
-		shell_receive_char(c);
+    char c;
 
-	}
-
-	return 0;
+    while(1)
+    {
+        //CTRL_Check_Write();
+        c = BSP_CNSL_getc();
+        shell_receive_char(c);
+    }
 }
 
