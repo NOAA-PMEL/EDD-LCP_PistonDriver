@@ -80,16 +80,13 @@ static void CTRL_Write(void)
       {
         writeAddr[i] = readAddr[i];
       } 
-      
     }
-    
+
     const sRAM_t *pWrite = MEM_Get_Write_Struct();
     const sRAM_t *pLast = MEM_Get_RAM_Struct();
-    
     Log.Debug("*** I2C CTRL ***");
     _CTRL_Run_Commands(pWrite, pLast);
     Log.Debug("*** I2C CTRL Complete\n");
-    
     
     /** Convert to Control Struct */
 //    MEM_Write();
@@ -193,10 +190,10 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
   }
 
   /** Piston Calibrate */
-  if (*pWrite->PST_calibration != *pLast->PST_calibration)
+  if (*pWrite->PST_calibration != 0)
   {
-    MEM_Set_PST_Calibration(*pWrite->PST_calibration);
     PIS_Calibrate( (uint8_t) *pWrite->PST_calibration);
+    MEM_Set_PST_Calibration(*pWrite->PST_calibration);
   }
 
   /** Volume of Length Setpoints */

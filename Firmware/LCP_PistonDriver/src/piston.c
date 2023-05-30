@@ -10,6 +10,7 @@
 #include "memory.h"
 #include <math.h>
 #include <stdio.h>
+
 /**********************************************************************************
  * Preprocessor Constants
  *********************************************************************************/
@@ -25,26 +26,7 @@
 /**
  * Defines the struct for the Small Diameter Piston
  */
-//STATIC PERSISTENT sPistonVolume_t smallPiston = {
-//    ._volume = 0,
-//    ._length = 0,
-//    ._diameter = SMALL_PISTON_DIAMETER,
-//    ._max_length = SMALL_PISTON_MAX_LENGTH,
-//    ._max_volume = SMALL_PISTON_DIAMETER * PI *SMALL_PISTON_MAX_LENGTH
-//};
-//
-///**
-// * Define the struct for the Large Diameter PIston
-// */
-//STATIC PERSISTENT sPistonVolume_t largePiston = {
-//    ._volume = 0,
-//    ._length = 0,
-//    ._diameter = LARGE_PISTON_DIAMETER,
-//    ._max_length = LARGE_PISTON_MAX_LENGTH,
-//    ._max_volume = LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH
-//};
-
-STATIC sPistonVolume_t smallPiston = {
+STATIC PERSISTENT sPistonVolume_t smallPiston = {
     ._volume = 0,
     ._length = 0,
     ._diameter = SMALL_PISTON_DIAMETER,
@@ -55,7 +37,7 @@ STATIC sPistonVolume_t smallPiston = {
 /**
  * Define the struct for the Large Diameter PIston
  */
-STATIC sPistonVolume_t largePiston = {
+STATIC PERSISTENT sPistonVolume_t largePiston = {
     ._volume = 0,
     ._length = 0,
     ._diameter = LARGE_PISTON_DIAMETER,
@@ -96,6 +78,7 @@ STATIC sActuator_t actuator = {
 //    .housing = &housing
 //};
 
+STATIC PERSISTENT uint8_t _calibration = 0;
 
 /**********************************************************************************
  * Function Prototypes
@@ -163,6 +146,10 @@ void PIS_Init(void) {
     Log.Debug("Initializing Piston Functions");
     DRV8874_init();
     ENC_Init();
+
+    /* check calibration */
+    uint8_t cali = _calibration;
+    MEM_Set_PST_Calibration((bool) cali);
 }
 
 /**********************************************************************************
@@ -621,7 +608,7 @@ void PIS_Reset_to_Zero(void)
 {
   char temp[32];
   Log.Debug("PIS_Reset_to_Zero called");
-  int32_t count = ENC_Get_count();
+  //int32_t count = ENC_Get_count();
   PIS_Retract(true, 100);
   _delay_ms(500);
   
@@ -629,13 +616,12 @@ void PIS_Reset_to_Zero(void)
 //        (count != ENC_Get_count()) )
   while(_check_is_at_zero() == false)
   {
-    sprintf(temp, "Resetting to zero: pos = %0.4f", ENC_Get_Length());
-    Log.Debug(temp);
-
+    //sprintf(temp, "Resetting to zero: pos = %0.4f", ENC_Get_Length());
+    //Log.Debug(temp);
     _delay_ms(1000);
   }
-  Log.Debug("Move Complete");
-  Log.Debug("Resetting encoder");
+  //Log.Debug("Move Complete");
+  //Log.Debug("Resetting encoder");
   ENC_Set_count(0);
 }       
 
@@ -650,36 +636,40 @@ void PIS_Run_to_Full(void)
   while( (fabs(PIS_Read_current()) > 0.000001f) && 
           (count != ENC_Get_count()) )
   {
-    sprintf(temp, "Running to full: pos = %0.4f", ENC_Get_Length());
-      Log.Debug(temp);
-      _delay_ms(1000);
+    //sprintf(temp, "Running to full: pos = %0.4f", ENC_Get_Length());
+    //Log.Debug(temp);
+    _delay_ms(1000);
   }
-  Log.Debug("Move Complete");
-  Log.Debug("Resetting encoder");
+  //_delay_ms(1000);
+  //Log.Debug("Move Complete");
+  //Log.Debug("Resetting encoder");
 }
 
 void PIS_Calibrate(uint8_t cal)
 {   
-    Log.Debug("PIS_Calibrate called");
-    Log.Debug("System will Zero, than run to full");
-    Log.Debug("This will take a few minutes");
-
-    PIS_Reset_to_Zero();
-    
-    PIS_Run_to_Full();
-    
-    Log.Debug("Settng max encoder count");
-    ENC_Set_max_count(ENC_Get_count());
     
     if(cal == 1)
     {
-      PIS_Reset_to_Zero();
+        Log.Debug("PIS_Calibrate called");
+        Log.Debug("System will Zero, than run to full");
+        Log.Debug("This will take a few minutes");
+
+        PIS_Reset_to_Zero();
+        PIS_Run_to_Full();
+
+        Log.Debug("Settng max encoder count");
+        ENC_Set_max_count(ENC_Get_count());
+
+        PIS_Reset_to_Zero();
+        _calibration = 1;
+        MEM_Set_PST_Calibration((bool) _calibration);
+        Log.Debug("*** Calibration Complete ***");
     }
-    Log.Debug("*** Calibration Complete ***");
-
-
+    else
+    {
+        Log.Debug("*** Calibration variable is false ***");
+    }
 }
-
 
 /**********************************************************************************
  * Function: PIS_is_at_zero()
