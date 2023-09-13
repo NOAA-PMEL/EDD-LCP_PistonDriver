@@ -75,6 +75,13 @@ void BSP_12V_On(void);
  */
 void BSP_12V_Off(void);
 
+/** !brief 12V Power Status
+ *
+ * get status On or OFF
+ *
+ */
+bool BSP_12V_Status(void);
+
 void _delay_ms(uint32_t seconds);
 
 void BSP_MD_ADC_Init(void);

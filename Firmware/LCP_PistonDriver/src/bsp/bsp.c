@@ -165,7 +165,10 @@ char BSP_CNSL_getc(void)
 }
 #endif 
 
-
+bool BSP_12V_Status(void)
+{
+    return BSP_GPIO_Read(&g_BSP_GPIO_12V_ENABLE);
+}
 
 void BSP_12V_On(void)
 {
