@@ -10,12 +10,14 @@
 #include <assert.h>
 #include <stdint.h>
 #include "piston.h"
+#include "config.h"
+#include "sysinfo.h"
 
 /**********************************************************************************
 * Preprocessor Constants
 *********************************************************************************/
 //#define HOUSING_VOLUME      ( 10.0f )
-#define MINIMUM_TOTAL_VOLUME      ( HOUSING_VOLUME )
+#define MINIMUM_TOTAL_VOLUME        ( HOUSING_VOLUME )
 #define MAXIMUM_SMALL_VOLUME        ( 20f )
 #define MAXIMUM_LARGE_VOLUME        ( 50f )
 #define MAXIMUM_TOTAL_VOLUME        ( HOUSING_VOLUME + MAXIMUM_SMALL_VOLUME + MAXIMUM_LARGE_VOLUME)
@@ -26,6 +28,13 @@
 /**********************************************************************************
 * Preprocessor Macros
 *********************************************************************************/
+
+/**********************************************************************************
+*  Static Function Declaration
+*********************************************************************************/
+STATIC void _params_init(void);
+STATIC void MEM_Set_Firmware(uint8_t maj, uint8_t min, uint16_t build);
+STATIC void MEM_Set_System_ID(char *id);
 
 /**********************************************************************************
 * Module Variable Definitions
@@ -139,6 +148,21 @@ const uint8_t* pwriteram = (uint8_t*) &temp_ram[0];
 /**********************************************************************************
 *  Static Function Definitions
 *********************************************************************************/
+STATIC void _params_init(void)
+{
+    // set Firmware version
+    MEM_Set_Firmware(FIRMWARE_MAJ, FIRMWARE_MIN, FIRMWARE_BUILD);
+    MEM_Set_System_ID(SYS_ID);
+    SYS_Set_YearBuilt(2023);
+
+    // set housing volume
+    MEM_Set_f(VOL_housing, HOUSING_VOLUME);
+
+    // set piston TRV_eng and TRV_dir
+    MEM_Set_u8(TRV_eng, false);
+    MEM_Set_i8(TRV_dir, 0);
+}
+
 STATIC int16_t memcmp_volatile(volatile void *s, volatile void *t, size_t n)
 {
   volatile uint8_t *ps = s;
@@ -210,6 +234,8 @@ void MEM_Init(void)
     
     *RAM.PST_position_max = 12.0f;
     *RAM.PST_position_min = 0.0f;
+
+    _params_init();
 }
 
 void MEM_clear_temp(void)
@@ -370,7 +396,7 @@ void MEM_Set_f(eRamVars_f_t type, float value)
      memcpy((float*)RAM.VOL_total, (float*)&value, sizeof(float));
     break;
   case VOL_housing:
-    
+     memcpy((float*)RAM.VOL_housing, (float*)&value, sizeof(float));
     break;
   case VOL_small_piston:
      memcpy((float*)RAM.VOL_small_piston, (float*)&value, sizeof(float));
@@ -409,7 +435,7 @@ void MEM_Set_u8(eRamVars_u8_t type, uint8_t value)
   switch(type)
   {
   case TRV_eng:
-    *RAM.TRV_eng = value;
+    //*RAM.TRV_eng = value;
     memcpy((uint8_t*)RAM.TRV_eng, (uint8_t*)&value, sizeof(uint8_t));
     break;
   case TRV_zero:
@@ -599,6 +625,26 @@ void MEM_Set_YearBuilt(volatile uint16_t year)
 {
   assert(year > 2020);
   *RAM.SYS_year_built = year;
+}
+
+STATIC void MEM_Set_Firmware(uint8_t maj, uint8_t min, uint16_t build)
+{
+    assert(maj > 0 && maj < 256);
+    assert(min > 0 && min < 256);
+    assert(build > 0 && build < 65535);
+
+    *RAM.SYS_firm_maj = maj;
+    *RAM.SYS_firm_min = min;
+    *RAM.SYS_firm_build = build;
+}
+
+STATIC void MEM_Set_System_ID(char *id)
+{
+    uint8_t len = strlen_volatile(id);
+    if(len > 8) {
+        len = 8;
+    }
+    strncpy_volatile(RAM.SYS_id, id, len);
 }
 
 uint8_t MEM_Get_VAR_Write(void)             { return *RAM.VAR_write; }

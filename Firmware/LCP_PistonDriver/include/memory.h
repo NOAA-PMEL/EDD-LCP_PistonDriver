@@ -92,18 +92,18 @@
 #define RAM_BAT_CURRENT 0xB8  
 #define RAM_BAT_TTE 0xC8  
 #define RAM_BAT_STATUS 0xD8  
-#define RAM_YEAR_BUILT 0xEF  
 #define RAM_SER_NUM 0xF0  
 #define RAM_SYS_ID 0xE8 
-#define RAM_FIRM_MAJ 0xFA  
-#define RAM_FIRM_MIN 0xFC 
-#define RAM_FIRM_BUILD 0xFE 
+#define RAM_YEAR_BUILT 0xF8
+#define RAM_FIRM_MAJ 0xFA
+#define RAM_FIRM_MIN 0xFB
+#define RAM_FIRM_BUILD 0xFC
 #define RAM_SYS_RESET 0x77
 
 #define VAR_WRITE_KEY   (0xA5)
 #define SYS_RESET_KEY   (0xCA)
 #define PISTON_DIR_EXTEND       ( 1 )
-#define PISTON_DIR_RETRACT      ( -1 )
+#define PISTON_DIR_RETRACT      (-1 )
 
 /**********************************************************************************
 * Typdefs
