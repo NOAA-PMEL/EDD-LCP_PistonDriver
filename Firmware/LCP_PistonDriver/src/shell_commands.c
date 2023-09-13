@@ -360,7 +360,9 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
     {
       Log.Debug("set vset called");
       Log.Debug(v_str);
+      PIS_Enable();
       PIS_Run_to_volume(atof(val));
+      PIS_Disable();
       return true;
     }
 
@@ -368,7 +370,9 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
     {
       Log.Debug("set lset called");
       Log.Debug(v_str);
+      PIS_Enable();
       PIS_Run_to_length(atof(val));
+      PIS_Disable();
       return true;
     }
 
@@ -480,18 +484,22 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
       if(strncmp(key, "cal", 3) == 0)
       {
         Log.Debug("set cal called");
+        PIS_Enable();
         PIS_Calibrate((uint8_t) atoi(val));
+        PIS_Disable();
         return true;
       }
       
       if(strncmp(key, "fwd", 3) == 0)
       {
+        PIS_Enable();
         PIS_Extend(true, (uint8_t) atoi(val));
         return true;
       }
       
       if(strncmp(key, "rev", 3) == 0)
       {
+        PIS_Enable();
         PIS_Retract(true, (uint8_t) atoi(val));
         return true;
       }
@@ -499,14 +507,18 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
       if(strncmp(key, "zero", 4) == 0)
       {
         Log.Debug("set zero called");
+        PIS_Enable();
         PIS_Reset_to_Zero();
+        PIS_Disable();
         return true;
       }
       
       if(strncmp(key, "full", 4) == 0)
       {
         Log.Debug("set full called");
+        PIS_Enable();
         PIS_Run_to_Full();
+        PIS_Disable();
         return true;
       }
       
@@ -546,10 +558,7 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
     sprintf(v_str, "Invalid set function %s called", key);
     Log.Error(v_str);
     return false;
-    
-    
 }
-
 
 bool led_set_state( const char *key, const void *val, uint32_t len) {
   eLED_t led;
@@ -575,8 +584,17 @@ bool led_set_state( const char *key, const void *val, uint32_t len) {
 
 
 int cli_cmd_get_id(int argc, char *argv[]){
-  shell_put_line(SYS_ID);
-  return 1;
+
+    //shell_put_line(SYS_ID);
+    char id[8];
+    MEM_Get_SYS_Id(id);
+
+    for (uint8_t i=0; i<8; i++)
+    {
+        shell_put_char( id[i] );
+    }
+    shell_put_char( '\n' );
+    return 1;
 }
 
 int cli_cmd_get_firmware(int argc, char *argv[]){
@@ -680,6 +698,7 @@ int cli_cmd_debug(int argc, char *argv[]){
 
 int cli_cmd_rev(int argc, char *argv[]) {
   Log.Debug("rev command");
+  PIS_Enable();
   PIS_Retract(true, 100);
   
 //  MEM_Set_Travel_Direction(-1);
@@ -689,6 +708,7 @@ int cli_cmd_rev(int argc, char *argv[]) {
 }
 
 int cli_cmd_fwd(int argc, char *argv[]) {
+  PIS_Enable();
   Log.Debug("fwd command");
   PIS_Extend(true, 100);
 //  MEM_Set_Travel_Direction(1);
@@ -698,7 +718,9 @@ int cli_cmd_fwd(int argc, char *argv[]) {
 
 int cli_cmd_stop(int argc, char *argv[]) {
   Log.Debug("stop command");
+  PIS_Enable();
   PIS_Stop();
+  PIS_Disable();
 //  MEM_Set_Travel_Engage(false);  
   return 0;
 }
