@@ -19,7 +19,6 @@ void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast);
 static void CTRL_Read(volatile sI2Command_t *p)
 {
     uint8_t *readAddr = (uint8_t*)MEM_Get_Read_Addr(p->addr_offset);
-
     for(uint16_t i=p->addr_offset; i<256; i++)
     {
         BufferC_putc((sCircularBufferC_t*)&p->txBuf, *readAddr++);
@@ -54,32 +53,34 @@ static void CTRL_Write(void)
     offset = p->addr_offset;
     while(offset < 256)
     {
-      if( (*writeAddr++ - *readAddr++) != 0)
-      {
-        map[offset] = 1;
-      } else {
-        map[offset] = 0;
-      }
-      offset++;
+        if( (*writeAddr++ - *readAddr++) != 0)
+        {
+            map[offset] = 1;
+        }
+        else
+        {
+            map[offset] = 0;
+        }
+        offset++;
     }
-    
+
     /** Mask non-writeable */
     for(uint16_t i=0x00; i< 0x0100; i+=0x10)
     {
-      for(uint16_t j=0x08; j<0x10; j++)
-      {
-        map[i|j] = 0x00;
-      }
+        for(uint16_t j=0x08; j<0x10; j++)
+        {
+            map[i|j] = 0x00;
+        }
     }
-    
+
     writeAddr = (uint8_t*) MEM_Get_Write_Addr(0);
     readAddr = (uint8_t*) MEM_Get_Read_Addr(0);
     for(uint16_t i=p->addr_offset; i<0x100; i++)
     {
-      if(map[i]==0)
-      {
-        writeAddr[i] = readAddr[i];
-      } 
+        if(map[i]==0)
+        {
+            writeAddr[i] = readAddr[i];
+        }
     }
 
     const sRAM_t *pWrite = MEM_Get_Write_Struct();
@@ -87,13 +88,11 @@ static void CTRL_Write(void)
     Log.Debug("*** I2C CTRL ***");
     _CTRL_Run_Commands(pWrite, pLast);
     Log.Debug("*** I2C CTRL Complete\n");
-    
-    /** Convert to Control Struct */
-//    MEM_Write();
-    
-    /** Update from MEM */
-//    BSP_
 
+    /** Convert to Control Struct */
+    //MEM_Write();
+    /** Update from MEM */
+    //BSP_
 }
 
 void CTRL_Init(void)
@@ -106,189 +105,201 @@ void CTRL_Init(void)
     /** Attach Callbacks*/
     BSP_I2CCallback(0, &CTRL_Read);
     //BSP_I2CCallback(1, &CTRL_Write);
-
 }
 
 void _CTRL_Run_Commands(const sRAM_t *pWrite, const sRAM_t *pLast)
 {
-  char temp[64];
-  
-  if( *pWrite->RESET == SYS_RESET_KEY)
-  {
-    Log.Debug("System Reset commanded");
-    PMM_trigPOR();
-  }
-  /** Check for VAR Write legit */
-  if( (*pLast->VAR_write == 0xA5) )
-  {
-    Log.Debug("Already in write mode");
-  } else if(*pWrite->VAR_write == 0xA5)
-  {
-    MEM_Set_Var_Write(*pWrite->VAR_write);
-    Log.Debug("Entering write mode");
-  } else 
-  {
-    Log.Error("VAR_write needs to be 0xA5 to enter write mode");
-    return;
-  }
-  
-  /** PID Functions */
-  if(*pWrite->PID_coeff_p != *pLast->PID_coeff_p)
-  {
-    sprintf(temp, "Setting PID.P to %.3f", *pWrite->PID_coeff_p);
-    Log.Debug(temp);
-  }
-  
-  if(*pWrite->PID_coeff_i != *pLast->PID_coeff_i)
-  {
-    sprintf(temp, "Setting PID.I to %.3f", *pWrite->PID_coeff_i);
-    Log.Debug(temp);
-  }
-  
-  if(*pWrite->PID_coeff_d != *pLast->PID_coeff_d)
-  {
-    sprintf(temp, "Setting PID.D to %.3f", *pWrite->PID_coeff_d);
-    Log.Debug(temp);
-  }
-  
-  if(*pWrite->PID_used != *pLast->PID_used)
-  {
-    sprintf(temp, "Setting PID_used to %i", *pWrite->PID_used);
-    Log.Debug(temp);
-  }
-  
-  /** Position Min/Maxes */
-  if(*pWrite->PST_position_min != 0.0f)
-  {
-    if(*pWrite->PST_position_min != *pLast->PST_position_min)
-    {
-      Log.Debug("Setting minimum position");
-      Log.Error("Min Position wants to be set! Not currently implemented");
-    }
-  }
-  
-  if(*pWrite->PST_position_max != 0.0f)
-  {
-    if(*pWrite->PST_position_max!= *pLast->PST_position_max)
-    {
-      Log.Debug("Setting maximum position");
-      Log.Error("Max Position wants to be set! Not currently implemented");
-    }
-  }  
-  
-  /** Position Encoder Counts */
-  if(*pWrite->PST_enc_counts != *pLast->PST_enc_counts)
-  {
-    ENC_Set_count(*pWrite->PST_enc_counts);
-  }
-  
-  
-  /** User Override */
-  if(*pWrite->USR_override != *pLast->USR_override)
-  {
-   MEM_Set_User_Override(*pWrite->USR_override);
-  }
+    char temp[64];
 
-  /** Piston Calibrate */
-  if (*pWrite->PST_calibration != 0)
-  {
-    PIS_Calibrate( (uint8_t) *pWrite->PST_calibration);
-    MEM_Set_PST_Calibration(*pWrite->PST_calibration);
-  }
-
-  /** Volume of Length Setpoints */
-  if(*pWrite->VOL_setpoint != 0) {
-    if(*pWrite->VOL_setpoint != *pWrite->VOL_total)
+    if( *pWrite->RESET == SYS_RESET_KEY)
     {
-      sprintf(temp, "I2C - VOL_setpoint = %.3f", *pWrite->VOL_setpoint);
-      Log.Debug(temp);
-      if(*pWrite->VOL_setpoint <= 0.0f)
-      {
-        PIS_Reset_to_Zero();
-      } else {
-        float v_current = PIS_Get_Volume();
-        float diff = (*pWrite->VOL_setpoint-v_current);
-        if(fabs(diff) > CTRL_VOLUME_DIFF_MAX)
+        Log.Debug("System Reset commanded");
+        PMM_trigPOR();
+    }
+    /** Check for VAR Write legit */
+    if( (*pLast->VAR_write == 0xA5) )
+    {
+        Log.Debug("Already in write mode");
+    }
+    else if(*pWrite->VAR_write == 0xA5)
+    {
+        MEM_Set_Var_Write(*pWrite->VAR_write);
+        Log.Debug("Entering write mode");
+    }
+    else
+    {
+        Log.Error("VAR_write needs to be 0xA5 to enter write mode");
+        return;
+    }
+
+    /** PID Functions */
+    if(*pWrite->PID_coeff_p != *pLast->PID_coeff_p)
+    {
+        sprintf(temp, "Setting PID.P to %.3f", *pWrite->PID_coeff_p);
+        Log.Debug(temp);
+    }
+    if(*pWrite->PID_coeff_i != *pLast->PID_coeff_i)
+    {
+        sprintf(temp, "Setting PID.I to %.3f", *pWrite->PID_coeff_i);
+        Log.Debug(temp);
+    }
+    if(*pWrite->PID_coeff_d != *pLast->PID_coeff_d)
+    {
+        sprintf(temp, "Setting PID.D to %.3f", *pWrite->PID_coeff_d);
+        Log.Debug(temp);
+    }
+    if(*pWrite->PID_used != *pLast->PID_used)
+    {
+        sprintf(temp, "Setting PID_used to %i", *pWrite->PID_used);
+        Log.Debug(temp);
+    }
+
+    /** Position Min/Maxes */
+    if(*pWrite->PST_position_min != 0.0f)
+    {
+        if(*pWrite->PST_position_min != *pLast->PST_position_min)
         {
-          for(uint8_t i=0;i<10;i++)
-          {
-            v_current = PIS_Get_Volume();
-            diff = (*pWrite->VOL_setpoint-v_current);
-            if(fabs(diff) > CTRL_VOLUME_DIFF_MAX)
-            {
-              PIS_Run_to_volume(*pWrite->VOL_setpoint);
-            }
-          }
-        } else {
-          sprintf(temp, "Setpoint within %.3f of Current total",CTRL_VOLUME_DIFF_MAX);
-          Log.Debug(temp);
-          sprintf(temp,"Diff is %.3f", diff);
-          Log.Debug(temp);
+            Log.Debug("Setting minimum position");
+            Log.Error("Min Position wants to be set! Not currently implemented");
         }
-      }
-      return;
     }
-  }
+    if(*pWrite->PST_position_max != 0.0f)
+    {
+        if(*pWrite->PST_position_max!= *pLast->PST_position_max)
+        {
+            Log.Debug("Setting maximum position");
+            Log.Error("Max Position wants to be set! Not currently implemented");
+        }
+    }
 
-  if(MEM_Get_USR_Override()) {
-    /** Travel Direction and Engaged */
-    if(*pWrite->TRV_dir != *pLast->TRV_dir)
+    /** Position Encoder Counts */
+    if(*pWrite->PST_enc_counts != *pLast->PST_enc_counts)
     {
-      MEM_Set_Travel_Direction(*pWrite->TRV_dir);
+        ENC_Set_count(*pWrite->PST_enc_counts);
     }
-    
-    MEM_Set_Travel_Engage(*pWrite->TRV_eng);
-    
-    if(MEM_Get_TRV_Engaged())
+
+    /** User Override */
+    if(*pWrite->USR_override != *pLast->USR_override)
     {
-      Log.Debug("I2C - User TRV is engaged");
-      if(MEM_Get_TRV_Direction() == -1)
-      {
-         
-        Log.Debug("Retract Called");
-        PIS_Retract(true, 100);
-      } else if(MEM_Get_TRV_Direction() == 1)
-      {
-        Log.Debug("I2C - Extend Called");
-        PIS_Extend(true, 100);
-      } else {
-        Log.Debug("I2C - Stop Called (dir=0)");
-        PIS_Stop();
-      }
-    } else {
-      Log.Debug("I2C - Stop Called");
-      PIS_Stop();
+        MEM_Set_User_Override(*pWrite->USR_override);
     }
+
+    /** Piston Calibrate */
+    if (*pWrite->PST_calibration != 0)
+    {
+        PIS_Calibrate( (uint8_t) *pWrite->PST_calibration);
+        MEM_Set_PST_Calibration(*pWrite->PST_calibration);
+    }
+
+    /** Volume of Length Setpoints */
+    if(*pWrite->VOL_setpoint != 0)
+    {
+        if(*pWrite->VOL_setpoint != *pWrite->VOL_total)
+        {
+            BSP_I2C_Enable(EUSCI_B1_BASE);
+            sprintf(temp, "I2C - VOL_setpoint = %.3f", *pWrite->VOL_setpoint);
+            Log.Debug(temp);
+            if(*pWrite->VOL_setpoint <= 0.0f)
+            {
+                PIS_Reset_to_Zero();
+            }
+            else
+            {
+                float v_current = PIS_Get_Volume();
+                float diff = (*pWrite->VOL_setpoint-v_current);
+                if(fabs(diff) > CTRL_VOLUME_DIFF_MAX)
+                {
+                    for(uint8_t i=0;i<10;i++)
+                    {
+                        v_current = PIS_Get_Volume();
+                        diff = (*pWrite->VOL_setpoint-v_current);
+                        if(fabs(diff) > CTRL_VOLUME_DIFF_MAX)
+                        {
+                            PIS_Run_to_volume(*pWrite->VOL_setpoint);
+                        }
+                    }
+                }
+                else
+                {
+                    sprintf(temp, "Setpoint within %.3f of Current total",CTRL_VOLUME_DIFF_MAX);
+                    Log.Debug(temp);
+                    sprintf(temp,"Diff is %.3f", diff);
+                    Log.Debug(temp);
+                }
+            }
+            return;
+        }
+    }
+
+    if(MEM_Get_USR_Override())
+    {
+        /** Travel Direction and Engaged */
+        if(*pWrite->TRV_dir != *pLast->TRV_dir)
+        {
+            MEM_Set_Travel_Direction(*pWrite->TRV_dir);
+        }
+
+        MEM_Set_Travel_Engage(*pWrite->TRV_eng);
+
+        if(MEM_Get_TRV_Engaged())
+        {
+            Log.Debug("I2C - User TRV is engaged");
+            if(MEM_Get_TRV_Direction() == -1)
+            {
+                Log.Debug("Retract Called");
+                PIS_Retract(true, 100);
+            }
+            else if(MEM_Get_TRV_Direction() == 1)
+            {
+                Log.Debug("I2C - Extend Called");
+                PIS_Extend(true, 100);
+            }
+            else
+            {
+                Log.Debug("I2C - Stop Called (dir=0)");
+                PIS_Stop();
+            }
+        }
+        else
+        {
+            Log.Debug("I2C - Stop Called");
+            PIS_Stop();
+        }
+        return;
+    }
+
+    //if (*pWrite->LEN_setpoint != *pLast->LEN_setpoint)
+    if (*pWrite->LEN_setpoint != 0)
+    {
+        BSP_I2C_Enable(EUSCI_B1_BASE);
+        sprintf(temp, "I2C - LEN_setpoint = %.3f", *pWrite->LEN_setpoint);
+        Log.Debug(temp);
+
+        if(*pWrite->LEN_setpoint < 0.0f)
+        {
+            PIS_Reset_to_Zero();
+        }
+        else
+        {
+            PIS_Run_to_length(*pWrite->LEN_setpoint);
+        }
+    }
+
     return;
-  }
-  
-  
-  else if (*pWrite->LEN_setpoint != *pLast->LEN_setpoint)
-  {
-    sprintf(temp, "I2C - LEN_setpoint = %.3f", *pWrite->LEN_setpoint);
-    Log.Debug(temp);
-
-    if(*pWrite->LEN_setpoint < 0.0f)
-    {
-      PIS_Reset_to_Zero();
-    } else {
-      PIS_Run_to_length(*pWrite->LEN_setpoint);
-    }
-  }
-
-  return;
 }
 
 void CTRL_Check_Write(void)
 {
-  //sI2Command_t* p;
-  if(BSP_I2C_WriteReady()==true)
-  {
-    Log.Debug("Entering CTRL Commanded");
-    BSP_I2C_Disable(EUSCI_B1_BASE);
-    CTRL_Write();
-    //BSP_I2C_Init(EUSCI_B1_BASE);
-    Log.Debug("Exiting CTRL Commanded\n\n");
-    BSP_I2C_Enable(EUSCI_B1_BASE);
-  }
+    //sI2Command_t* p;
+    if(BSP_I2C_WriteReady()==true)
+    {
+        PIS_Enable();
+        Log.Debug("Entering CTRL Commanded");
+        BSP_I2C_Disable(EUSCI_B1_BASE);
+        CTRL_Write();
+        //BSP_I2C_Init(EUSCI_B1_BASE);
+        Log.Debug("Exiting CTRL Commanded\n\n");
+        BSP_I2C_Enable(EUSCI_B1_BASE);
+        PIS_Disable();
+    }
 }
