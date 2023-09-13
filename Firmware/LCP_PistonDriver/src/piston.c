@@ -31,7 +31,8 @@ STATIC PERSISTENT sPistonVolume_t smallPiston = {
     ._length = 0,
     ._diameter = SMALL_PISTON_DIAMETER,
     ._max_length = SMALL_PISTON_MAX_LENGTH,
-    ._max_volume = SMALL_PISTON_DIAMETER * PI *SMALL_PISTON_MAX_LENGTH
+    //._max_volume = SMALL_PISTON_DIAMETER * PI *SMALL_PISTON_MAX_LENGTH
+    ._max_volume = SMALL_PISTON_MAX_VOLUME
 };
 
 /**
@@ -42,18 +43,21 @@ STATIC PERSISTENT sPistonVolume_t largePiston = {
     ._length = 0,
     ._diameter = LARGE_PISTON_DIAMETER,
     ._max_length = LARGE_PISTON_MAX_LENGTH,
-    ._max_volume = LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH
+    //._max_volume = LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH
+    ._max_volume = LARGE_PISTON_MAX_VOLUME
 };
 
 /**
  * Defines the struct for the Housing
  */
 STATIC const sPistonVolume_t housing = {
-    ._volume = HOUSING_LENGTH * HOUSING_DIAMETER * PI,
+    //._volume = HOUSING_LENGTH * HOUSING_DIAMETER * PI,
+    ._volume = HOUSING_VOLUME,
     ._length = HOUSING_LENGTH,
     ._diameter = HOUSING_DIAMETER,
     ._max_length = HOUSING_LENGTH,
-    ._max_volume = HOUSING_DIAMETER * PI * HOUSING_LENGTH
+    //._max_volume = HOUSING_DIAMETER * PI * HOUSING_LENGTH
+    ._max_volume = HOUSING_VOLUME
 };
 
 /**
@@ -110,6 +114,7 @@ STATIC double _PIS_calculate_volume_from_length(
      );
 
 STATIC bool _check_is_at_zero(void);
+STATIC float _PIS_PID_Controller(float setpoint, float input);
 
 /**********************************************************************************
  * Function Definitions
@@ -146,6 +151,7 @@ void PIS_Init(void) {
     Log.Debug("Initializing Piston Functions");
     DRV8874_init();
     ENC_Init();
+    PIS_Enable();
 
     /* check calibration */
     uint8_t cali = _calibration;
@@ -358,6 +364,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
     assert(length <= SYSTEM_MAX_LENGTH);
     assert(length >= SYSTEM_MIN_LENGTH);
     #endif
+
     MEM_Set_f(LEN_setpoint, length);
     
     double volume = _PIS_calculate_volume_from_length( 
@@ -382,7 +389,8 @@ ePistonRunError_t PIS_Run_to_length(float length)
     {
       speed = 100;
     } else {
-      speed = 80;
+      //speed = 80;
+      speed = 60;
     }
     
     if(diff > 0)
@@ -401,42 +409,43 @@ ePistonRunError_t PIS_Run_to_length(float length)
     float current = 0.0f;
     bool current_stop = false;
     bool slow_speed_flag = false;
-    do{
 
-        
+    do
+    {
         float current_length = PIS_Read_length();
         sprintf(temp, "Current length = %.4f", current_length);
         Log.Debug(temp);
-        
         float diff = current_length - length;
-        
+
         if(fabs(diff) < 0.01)
         {
-          DRV8874_stop();
-          actuator.setpoint_flag = true;
+            DRV8874_stop();
+            actuator.setpoint_flag = true;
         } 
 
-        
-      if(!slow_speed_flag)
-      {
-        if(fabs(diff) <= PISTON_SLOW_SPEED_LENGTH)
+        if(!slow_speed_flag)
         {
-          slow_speed_flag = true;
-          if(actuator.move_dir == PISRunFwd)
-          {
-            PIS_Extend(false, PISTON_SLOW_SPEED);
-          } else {
-            PIS_Retract(false, PISTON_SLOW_SPEED);
-          }
+            if(fabs(diff) <= PISTON_SLOW_SPEED_LENGTH)
+            {
+                slow_speed_flag = true;
+                if(actuator.move_dir == PISRunFwd)
+                {
+                    PIS_Extend(false, PISTON_SLOW_SPEED);
+                }
+                else
+                {
+                    PIS_Retract(false, PISTON_SLOW_SPEED);
+                }
+            }
         }
-      }
-      current = DRV8874_read_current();
-      current_stop = (current >= 0.005f);
-    }while(!actuator.setpoint_flag && current_stop);
-    
+        current = DRV8874_read_current();
+        current_stop = (current >= 0.005f);
+
+    } while(!actuator.setpoint_flag && current_stop);
+
     Log.Debug("Exited do/while loop");
     PIS_Stop();
-    
+
     if(current_stop == false)
     {
       sprintf(temp, "Current at stop condition = %.4f", current);
@@ -449,17 +458,16 @@ ePistonRunError_t PIS_Run_to_length(float length)
     }
     _delay_ms(1000);
     sprintf(temp, "Position at stop = %.4f", ENC_Get_Length());
+    /* update the length in memory map*/
+    PIS_Read_length();
     Log.Debug(temp);
     
     diff = ENC_Get_Length() - length;
     sprintf(temp, "Diff = %0.4f", diff);
     Log.Debug(temp);
     
-    
-
     if((actuator.setpoint_flag == true) && (current <= 0.1))
     {
-        
         error = PISErrorStalled;
         /** Log Error Stalled */
         Log.Error("Piston stalled");
@@ -558,96 +566,112 @@ ePistonRunError_t PIS_Run_to_volume(float volume)
 
 void PIS_Extend(bool startup, uint8_t speed)
 {
-  MEM_Set_u8(TRV_zero, false);
-  MEM_Set_u8(TRV_full, false);
-  Log.Debug("PIS_Extend called");
-  if(ENC_GetDir() == DIR_RETRACT)
-  {
-    Log.Debug("Stopping movement before Extending");
-    PIS_Stop();
-  }
-  ENC_SetDir(DIR_EXTEND);
-  DRV8874_reverse(speed);
-  MEM_Set_Travel_Direction(1);
-  MEM_Set_Travel_Engage(true);
-  MEM_Set_u8(TRV_eng, true);
-  actuator.speed = speed;
-  actuator.move_dir = PISRunFwd;
+    MEM_Set_u8(TRV_zero, false);
+    MEM_Set_u8(TRV_full, false);
+    Log.Debug("PIS_Extend called");
+    if(ENC_GetDir() == DIR_RETRACT)
+    {
+        Log.Debug("Stopping movement before Extending");
+        PIS_Stop();
+    }
+
+    ENC_SetDir(DIR_EXTEND);
+    DRV8874_reverse(speed);
+    MEM_Set_Travel_Direction(1);
+    MEM_Set_Travel_Engage(true);
+    MEM_Set_u8(TRV_eng, true);
+    actuator.speed = speed;
+    actuator.move_dir = PISRunFwd;
 }
 
 void PIS_Retract(bool startup, uint8_t speed)
 {
-  MEM_Set_u8(TRV_zero, false);
-  MEM_Set_u8(TRV_full, false);
-  Log.Debug("PIS_Retract called");
-  if(ENC_GetDir() == DIR_EXTEND)
-  {
-    Log.Debug("Stopping movement before Retracting");
-    PIS_Stop();
-  }
-  ENC_SetDir(DIR_RETRACT);
-  DRV8874_forward(speed);
-  MEM_Set_Travel_Direction(-1);
-  MEM_Set_Travel_Engage(true);
-  MEM_Set_u8(TRV_eng, true);
-  actuator.speed = speed;
-  actuator.move_dir = PISRunRev;
-  _check_is_at_zero();
+    MEM_Set_u8(TRV_zero, false);
+    MEM_Set_u8(TRV_full, false);
+    Log.Debug("PIS_Retract called");
+    if(ENC_GetDir() == DIR_EXTEND)
+    {
+        Log.Debug("Stopping movement before Retracting");
+        PIS_Stop();
+    }
+
+    ENC_SetDir(DIR_RETRACT);
+    DRV8874_forward(speed);
+    MEM_Set_Travel_Direction(-1);
+    MEM_Set_Travel_Engage(true);
+    MEM_Set_u8(TRV_eng, true);
+    actuator.speed = speed;
+    actuator.move_dir = PISRunRev;
+    _check_is_at_zero();
 }
 
 void PIS_Stop(void)
 {
-  Log.Debug("PIS_Stop called");
-  DRV8874_stop();
-  MEM_Set_u8(TRV_eng, false);
-  actuator.move_dir = PISRunStop;
-  MEM_Set_Travel_Engage(false);
+    Log.Debug("PIS_Stop called");
+    DRV8874_stop();
+    MEM_Set_u8(TRV_eng, false);
+    MEM_Set_i8(TRV_dir, PISRunStop);
+    actuator.move_dir = PISRunStop;
+    MEM_Set_Travel_Engage(false);
 }
 
 void PIS_Reset_to_Zero(void)
 {
-  char temp[32];
-  Log.Debug("PIS_Reset_to_Zero called");
-  //int32_t count = ENC_Get_count();
-  PIS_Retract(true, 100);
-  _delay_ms(500);
-  
-//  while( (fabs(PIS_Read_current()) > 0.05f) && 
-//        (count != ENC_Get_count()) )
-  while(_check_is_at_zero() == false)
-  {
-    //sprintf(temp, "Resetting to zero: pos = %0.4f", ENC_Get_Length());
-    //Log.Debug(temp);
-    _delay_ms(1000);
-  }
-  //Log.Debug("Move Complete");
-  //Log.Debug("Resetting encoder");
-  ENC_Set_count(0);
-}       
+    char temp[32];
+    Log.Debug("PIS_Reset_to_Zero called");
+    //int32_t count = ENC_Get_count();
+    PIS_Retract(true, 100);
+    _delay_ms(500);
+
+    //while( (fabs(PIS_Read_current()) > 0.05f) &&
+    //(count != ENC_Get_count()) )
+    while(_check_is_at_zero() == false)
+    {
+        //sprintf(temp, "Resetting to zero: pos = %0.4f", ENC_Get_Length());
+        //Log.Debug(temp);
+        _delay_ms(1000);
+    }
+    //Log.Debug("Move Complete");
+    //Log.Debug("Resetting encoder");
+    ENC_Set_count(0);
+    MEM_Set_u8(TRV_zero, true);
+    MEM_Set_i8(TRV_dir, PISRunStop);
+    MEM_Set_u8(TRV_eng, false);
+}
 
 void PIS_Run_to_Full(void)
 {
-  char temp[32];
-  int32_t count = ENC_Get_count();  
-  Log.Debug("PIS_Run_to_Full called");
-  PIS_Extend(true, 100);
-   _delay_ms(1000);
-  
-  while( (fabs(PIS_Read_current()) > 0.000001f) && 
-          (count != ENC_Get_count()) )
-  {
-    //sprintf(temp, "Running to full: pos = %0.4f", ENC_Get_Length());
-    //Log.Debug(temp);
+    char temp[64];
+    //int32_t count = ENC_Get_count();
+    int32_t count = ENC_Get_max_count();
+    Log.Debug("PIS_Run_to_Full called");
+    PIS_Extend(true, 100);
     _delay_ms(1000);
-  }
-  //_delay_ms(1000);
-  //Log.Debug("Move Complete");
-  //Log.Debug("Resetting encoder");
+
+    //sprintf(temp, "Running to full: count = %li", count);
+    //Log.Debug(temp);
+
+    while(  (fabs(PIS_Read_current()) > 0.001f) &&
+            (count != ENC_Get_count()) )
+    //while(  (fabs(PIS_Read_current()) > 0.000001f) &&
+    //        (count != ENC_Get_count()) )
+    {
+        //sprintf(temp, "Running to full: pos = %0.4f, count=%li, current=%.8f",
+        //                  ENC_Get_Length(), ENC_Get_count(), PIS_Read_current());
+        //Log.Debug(temp);
+        _delay_ms(1000);
+    }
+    _delay_ms(1000);
+    Log.Debug("Move Complete");
+    Log.Debug("Resetting encoder");
+
+    MEM_Set_u8(TRV_full, true);
+    MEM_Set_i8(TRV_dir, PISRunStop);
+    MEM_Set_u8(TRV_eng, false);
 }
 
 void PIS_Calibrate(uint8_t cal)
 {   
-    
     if(cal == 1)
     {
         Log.Debug("PIS_Calibrate called");
@@ -697,53 +721,53 @@ void PIS_Calibrate(uint8_t cal)
  */
 float PIS_Get_Length(float *small, float *large)
 {
-  float length;
-  length = PIS_Read_length();
-  *small = smallPiston._length;
-  *large = largePiston._length;
-  return length;
+    float length;
+    length = PIS_Read_length();
+    *small = smallPiston._length;
+    *large = largePiston._length;
+    return length;
 }
+
 float PIS_Get_Volume(void)
 {
-  return PIS_Read_volume();
-  
+    return PIS_Read_volume();
 }
 
 float PIS_Get_vset(void)
 {
-  return MEM_Get_VOL_Setpoint(); 
+    return MEM_Get_VOL_Setpoint();
 }
 
 float PIS_Get_volume_small(void)
 {
-  PIS_Read_volume();
-  return smallPiston._volume;
+    PIS_Read_volume();
+    return smallPiston._volume;
 }
 
 float PIS_Get_volume_large(void)
 {
-  PIS_Read_volume();
-  return largePiston._volume;
+    PIS_Read_volume();
+    return largePiston._volume;
 }
 
 float PIS_Get_area_small(void)
 {
-  return smallPiston._area;
+    return smallPiston._area;
 }
 
 float PIS_Get_area_large(void)
 {
-  return largePiston._area;
+    return largePiston._area;
 }
 
 float PIS_Get_lset(void)
 {
-  return MEM_Get_LEN_Setpoint();
+    return MEM_Get_LEN_Setpoint();
 }
 
 int8_t PIS_Get_direction(void)
 {
-  return actuator.move_dir;
+    return actuator.move_dir;
 }
 
 
@@ -773,8 +797,7 @@ int8_t PIS_Get_direction(void)
  */
 bool PIS_is_at_zero(void)
 {
-
-  return actuator.at_zero;
+    return actuator.at_zero;
 }
 
 /**********************************************************************************
@@ -803,7 +826,7 @@ bool PIS_is_at_zero(void)
  */
 bool PIS_is_at_full(void)
 {
-  return actuator.at_full;
+    return actuator.at_full;
 }
 
 
@@ -831,7 +854,7 @@ bool PIS_is_at_full(void)
  */
 int32_t PIS_Get_encoder_count(void)
 {
-  return ENC_Get_count();
+    return ENC_Get_count();
 }
 
 
@@ -856,22 +879,22 @@ int32_t PIS_Get_encoder_count(void)
  */
 float PIS_Get_motor_current(void)
 {
-  return DRV8874_read_current();
+    return DRV8874_read_current();
 }
-
 
 bool PIS_is_moving(void)
 {
-  if(  fabs(DRV8874_read_current() > 0.05) && 
+    if( fabs(DRV8874_read_current() > 0.05) &&
         actuator.move_dir != PISRunStop)
-  {
-    MEM_Set_u8(TRV_zero, false);
-    MEM_Set_u8(TRV_full, false);
-    return true;
-  } else
-  {
-    return false;
-  }
+    {
+        MEM_Set_u8(TRV_zero, false);
+        MEM_Set_u8(TRV_full, false);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 
@@ -1011,15 +1034,26 @@ STATIC double PIS_Read_length(void) {
         largePiston._length = 0.0f;
     }
     
-    smallPiston._volume = smallPiston._length * smallPiston._diameter * PI;
-    largePiston._volume = largePiston._length * largePiston._diameter * PI;
+    smallPiston._volume = smallPiston._length * SMALL_PISTON_RADIUS_SQR * PI;
+    largePiston._volume = largePiston._length * LARGE_PISTON_RADIUS_SQR * PI;
+    //smallPiston._volume = smallPiston._length * smallPiston._diameter * PI;
+    //largePiston._volume = largePiston._length * largePiston._diameter * PI;
     float total = housing._volume + smallPiston._volume + largePiston._volume;
     
     MEM_Set_f(VOL_small_piston, smallPiston._volume);
     MEM_Set_f(VOL_large_piston, largePiston._volume);
     MEM_Set_f(VOL_total, total);
     
-//    MEM_Set_LEN_Setpoint(length);
+    //// Basharat
+    //MEM_Set_LEN_Setpoint(length);
+    //double volume = _PIS_calculate_volume_from_length(
+    //                length,
+    //                &smallPiston,
+    //                &largePiston,
+    //                &housing);
+    //MEM_Set_f(VOL_setpoint, volume);
+    //// Basharat
+
     MEM_Set_f(LEN_small_piston, smallPiston._length);
     MEM_Set_f(LEN_large_piston, largePiston._length);
     MEM_Set_f(LEN_total, length);
@@ -1057,17 +1091,24 @@ STATIC double PIS_Read_length(void) {
  * @see PIS_Read
  * @see PIS_Write
  */
-STATIC double PIS_Read_volume(void) { 
+STATIC double PIS_Read_volume(void)
+{
     PIS_Read_length();
-//    smallPiston._volume = smallPiston._length * smallPiston._diameter * PI;
-//    largePiston._volume = largePiston._length * largePiston._diameter * PI;
-    float total = housing._volume + smallPiston._volume + largePiston._volume;
-    
-//    MEM_Set_f(VOL_small_piston, smallPiston._volume);
-//    MEM_Set_f(VOL_large_piston, largePiston._volume);
-//    MEM_Set_f(VOL_total, total);
+    //smallPiston._volume = smallPiston._length * smallPiston._diameter * PI;
+    //largePiston._volume = largePiston._length * largePiston._diameter * PI;
+    //float total = housing._volume + smallPiston._volume + largePiston._volume;
+
+    ////char temp[64] = {0};
+    ////sprintf(temp, "H=%.4f, L=%.4f, S=%.4f, T=%.4f", housing._volume, largePiston._volume, smallPiston._volume, total);
+    ////Log.Debug(temp);
+
+    //MEM_Set_f(VOL_small_piston, smallPiston._volume);
+    //MEM_Set_f(VOL_large_piston, largePiston._volume);
+    //MEM_Set_f(VOL_housing, housing._volume);
+    //MEM_Set_f(VOL_total, total);
+
     return MEM_Get_VOL_Total();
-//    return total;
+    //return total;
 }
 
 /**********************************************************************************
@@ -1161,12 +1202,14 @@ STATIC double _PIS_estimate_length_from_volume(
     else if (volume <= (housing->_max_volume + small->_max_volume))
     {
         volume -= housing->_max_volume;
-        length = volume / (small->_diameter * PI);
+        //length = volume / (small->_diameter * PI);
+        length = volume / (SMALL_PISTON_RADIUS_SQR * PI);
     }
     else if (volume <= (housing->_max_volume + small->_max_volume + large->_max_volume + 0.1))
     {
         volume -= (housing->_max_volume + small->_max_volume);
-        length = (volume / (large->_diameter*PI)) + small->_max_length;
+        //length = (volume / (large->_diameter*PI)) + small->_max_length;
+        length = (volume / (LARGE_PISTON_RADIUS_SQR*PI)) + small->_max_length;
     } else {
         length =  -1.0f;
     }
@@ -1205,12 +1248,14 @@ STATIC double _PIS_calculate_volume_from_length(
     }
     else if((length <= small->_max_length) && (length > 0.0f))
     {
-        volume = housing->_max_volume + (small->_diameter * PI * length);
+        //volume = housing->_max_volume + (small->_diameter * PI * length);
+        volume = housing->_max_volume + (SMALL_PISTON_RADIUS_SQR * PI * length);
     }
     else if( (length <= (small->_max_length + large->_max_length)) && (length > 0))
     {
         length -= small->_max_length;
-        volume = housing->_max_volume + small->_max_volume + (large->_diameter * PI * length);
+        //volume = housing->_max_volume + small->_max_volume + (large->_diameter * PI * length);
+        volume = housing->_max_volume + small->_max_volume + (LARGE_PISTON_RADIUS_SQR * PI * length);
     } else {
         length = -1.0f;
     }

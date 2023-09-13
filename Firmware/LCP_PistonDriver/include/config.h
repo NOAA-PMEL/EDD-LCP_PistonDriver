@@ -8,6 +8,7 @@
 
 #define FIRMWARE_MAJ    0
 #define FIRMWARE_MIN    1
+#define FIRMWARE_BUILD  0
 #define FIRMWARE_STR(X) #X
 #define STR(X)          FIRMWARE_STR(X)
 #define FIRMWARE        "v"STR(FIRMWARE_MAJ)"."STR(FIRMWARE_MIN)
@@ -19,16 +20,24 @@
 #define INCLUDE_CONSOLE
 //#define TEST
 
-/** Volume Movement Settings */
-#define SYS_VOLUME_DIFF_MAX     ( 0.030 )
+/** Volume Movement Settings in Inches */
+#define SYS_VOLUME_DIFF_MAX             ( 0.030 )
 
 /** Piston Settings */
-#define SYS_SMALL_PISTON_DIAMETER         ( 2.25f )
-#define SYS_SMALL_PISTON_MAX_LENGTH       ( 6.00f )
-#define SYS_LARGE_PISTON_DIAMETER         ( 4.50f ) 
-#define SYS_LARGE_PISTON_MAX_LENGTH       ( 6.0f )
-#define SYS_HOUSING_DIAMETER                ( 4.88f )
-#define SYS_HOUSING_LENGTH                  ( 35.0f )
+#define SYS_SMALL_PISTON_DIAMETER       ( 2.25f )
+#define SYS_SMALL_PISTON_RADIUS         ( SYS_SMALL_PISTON_DIAMETER / 2.0f )
+#define SYS_SMALL_PISTON_RADIUS_SQR     ( SYS_SMALL_PISTON_RADIUS * SYS_SMALL_PISTON_RADIUS )
+#define SYS_SMALL_PISTON_MAX_LENGTH     ( 6.00f )
+
+#define SYS_LARGE_PISTON_DIAMETER       ( 4.50f )
+#define SYS_LARGE_PISTON_RADIUS         ( SYS_LARGE_PISTON_DIAMETER / 2.0f )
+#define SYS_LARGE_PISTON_RADIUS_SQR     ( SYS_LARGE_PISTON_RADIUS * SYS_LARGE_PISTON_RADIUS )
+#define SYS_LARGE_PISTON_MAX_LENGTH     ( 6.0f )
+
+#define SYS_HOUSING_DIAMETER            ( 4.88f )
+#define SYS_HOUSING_RADIUS              ( SYS_HOUSING_DIAMETER / 2.0f )
+#define SYS_HOUSING_RADIUS_SQR          ( SYS_HOUSING_RADIUS * SYS_HOUSING_RADIUS )
+#define SYS_HOUSING_LENGTH              ( 35.0f )
 
 /** Encoder Settings */
 #define SYS_ENCODER_MIN_COUNT_DEFAULT   ( 0 ) 

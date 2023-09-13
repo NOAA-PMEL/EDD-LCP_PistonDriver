@@ -53,27 +53,32 @@
 /**********************************************************************************
  * Configuration Constants
  *********************************************************************************/
-#define PI                      ( 3.14159265359)
+#define PI                          ( 3.14159265359 )
 
-#define SMALL_PISTON_DIAMETER     (SYS_SMALL_PISTON_DIAMETER)
-#define SMALL_PISTON_MAX_LENGTH   (SYS_SMALL_PISTON_MAX_LENGTH)
-#define SMALL_PISTON_MAX_VOLUME   (SMALL_PISTON_DIAMETER * PI * SMALL_PISTON_MAX_LENGTH)
-#define LARGE_PISTON_DIAMETER     (SYS_LARGE_PISTON_DIAMETER)
-#define LARGE_PISTON_MAX_LENGTH   (SYS_LARGE_PISTON_MAX_LENGTH)
-#define LARGE_PISTON_MAX_VOLUME   (LARGE_PISTON_DIAMETER * PI * LARGE_PISTON_MAX_LENGTH)
-#define HOUSING_DIAMETER          (SYS_HOUSING_DIAMETER)
-#define HOUSING_LENGTH            (SYS_HOUSING_LENGTH)
-#define HOUSING_VOLUME            (HOUSING_DIAMETER * PI * HOUSING_LENGTH)
-#define SYSTEM_MAX_VOLUME         (HOUSING_VOLUME + SMALL_PISTON_MAX_VOLUME + LARGE_PISTON_MAX_VOLUME + 0.01)
-#define SYSTEM_MIN_VOLUME         (HOUSING_VOLUME - 0.01)
-#define SYSTEM_MIN_LENGTH         (0.0f)
-#define SYSTEM_MAX_LENGTH         (SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH)
+#define SMALL_PISTON_DIAMETER       ( SYS_SMALL_PISTON_DIAMETER )
+#define SMALL_PISTON_RADIUS_SQR     ( SYS_SMALL_PISTON_RADIUS_SQR )
+#define SMALL_PISTON_MAX_LENGTH     ( SYS_SMALL_PISTON_MAX_LENGTH )
+#define SMALL_PISTON_MAX_VOLUME     ( PI * SMALL_PISTON_RADIUS_SQR * SMALL_PISTON_MAX_LENGTH )
 
-   
-#define ACTUATOR_SPEED            ( 30 )
+#define LARGE_PISTON_DIAMETER       ( SYS_LARGE_PISTON_DIAMETER )
+#define LARGE_PISTON_RADIUS_SQR     ( SYS_LARGE_PISTON_RADIUS_SQR )
+#define LARGE_PISTON_MAX_LENGTH     ( SYS_LARGE_PISTON_MAX_LENGTH )
+#define LARGE_PISTON_MAX_VOLUME     ( PI * LARGE_PISTON_RADIUS_SQR * LARGE_PISTON_MAX_LENGTH )
 
-#define PISTON_SLOW_SPEED_LENGTH    (0.1)
-#define PISTON_SLOW_SPEED           ( 90 )
+#define HOUSING_DIAMETER            ( SYS_HOUSING_DIAMETER )
+#define HOUSING_RADIUS_SQR          ( SYS_HOUSING_RADIUS_SQR )
+#define HOUSING_LENGTH              ( SYS_HOUSING_LENGTH )
+#define HOUSING_VOLUME              ( PI * HOUSING_RADIUS_SQR * HOUSING_LENGTH )
+
+#define SYSTEM_MIN_VOLUME           ( HOUSING_VOLUME - 0.01f )
+#define SYSTEM_MAX_VOLUME           ( HOUSING_VOLUME + SMALL_PISTON_MAX_VOLUME + LARGE_PISTON_MAX_VOLUME + 0.01 )
+#define SYSTEM_MIN_LENGTH           ( 0.0f )
+#define SYSTEM_MAX_LENGTH           ( HOUSING_LENGTH + SMALL_PISTON_MAX_LENGTH + LARGE_PISTON_MAX_LENGTH )
+
+#define ACTUATOR_SPEED              ( 30 )
+
+#define PISTON_SLOW_SPEED_LENGTH    ( 0.1 )
+#define PISTON_SLOW_SPEED           ( 60 )
 
 /**********************************************************************************
  * Typdefs
@@ -99,9 +104,9 @@ typedef enum ePistonWrite {
  * Piston Run Direction
  */
 typedef enum ePistonRunDir {
-    PISRunFwd,  /**< Piston Forward */  
-    PISRunRev,  /**< Piston Reverse */
-    PISRunStop  /**< Piston Stop */
+    PISRunRev   = -1,   /**< Piston Reverse */
+    PISRunStop  =  0,   /**< Piston Stop */
+    PISRunFwd   =  1    /**< Piston Forward */
 }ePistonRunDir_t;
 
 /** 

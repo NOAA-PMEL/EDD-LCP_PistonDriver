@@ -27,7 +27,7 @@ void DRV8874_init(void) {
 #endif
  
  
- DRV8874_enable();
+ //DRV8874_enable();
  // PWM Settings 
  // EN = TB0.3
  // PH = TB0.5
