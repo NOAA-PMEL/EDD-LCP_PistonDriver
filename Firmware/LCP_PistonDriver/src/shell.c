@@ -25,7 +25,8 @@ static void prv_send_char( char c ) {
 
 
 static void prv_echo( char c ) {
-    if( '\n' == c ) {
+    //if( '\n' == c ) {
+    if( '\r' == c ) {
         prv_send_char('\r');
         prv_send_char('\n');
     } else if ('\b' == c) {
@@ -70,7 +71,8 @@ static const sShellCommand *prv_find_command( const char *name ) {
 }
 
 static void prv_process(void) {
-  if (prv_last_char() != '\n' && !prv_is_rx_buffer_full()) {
+  //if (prv_last_char() != '\n' && !prv_is_rx_buffer_full()) {
+  if (prv_last_char() != '\r' && !prv_is_rx_buffer_full()) {
     return;
   }
 
@@ -118,7 +120,8 @@ void shell_boot( const sShellImpl *impl ) {
 }
 
 void shell_receive_char( char c ) {
-    if( c == '\r' || prv_is_rx_buffer_full() || !prv_booted() ) {
+    //if( c == '\r' || prv_is_rx_buffer_full() || !prv_booted() ) {
+    if( prv_is_rx_buffer_full() || !prv_booted() ) {
         return;
     }
     

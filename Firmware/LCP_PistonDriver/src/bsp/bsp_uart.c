@@ -1,11 +1,12 @@
 #include "bsp_uart.h"
-
+#include "shell.h"
 
 void USCI_A0_ISR(void);
 void USCI_A1_ISR(void);
 
 static sCircularBufferC_t g_uartA0;
 static sCircularBufferC_t g_uartA1;
+static volatile uint8_t rxData;
 
 void BSP_UART_Init(uint16_t baseAddr)
 {
@@ -71,8 +72,11 @@ void USCI_A0_ISR(void)
   switch(__even_in_range(UCA0IV,USCI_UART_UCTXCPTIFG))
   {
     case USCI_NONE: break;
-    case USCI_UART_UCRXIFG:     
-      BufferC_putc(&g_uartA0, UCA0RXBUF);
+    case USCI_UART_UCRXIFG:
+      rxData = UCA0RXBUF;
+      //BufferC_putc(&g_uartA0, UCA0RXBUF);
+      BufferC_putc(&g_uartA0, (char)rxData);
+      shell_receive_char((char)rxData);
       break;
     case USCI_UART_UCTXIFG: 
       /** Clear the Tx Flag */

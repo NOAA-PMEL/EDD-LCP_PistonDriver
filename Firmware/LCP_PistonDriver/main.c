@@ -29,24 +29,25 @@ int main( void )
 
     PIS_Init();
     PIS_Reset_to_Zero();
+    PIS_Disable();
 
-    __bis_SR_register(GIE);
-    //__bis_SR_register(LPM4_bits + GIE);
-    __no_operation();
-
-
+    /* Shell activation and user interactive mode*/
     sShellImpl shell_impl = {
-        .send_char = BSP_CNSL_putc,
+        .send_char = BSP_CNSL_putc
     };
     shell_boot(&shell_impl);
+    __bis_SR_register(LPM0_bits + GIE);
 
-    char c;
+    /* for low power consumption, uncomment these two lines */
+    //__bis_SR_register(LPM4_bits + GIE);
+    //__no_operation();
 
-    while(1)
-    {
-        //CTRL_Check_Write();
-        c = BSP_CNSL_getc();
-        shell_receive_char(c);
-    }
+    //char c;
+    //while(1)
+    //{
+    //    //CTRL_Check_Write();
+    //    c = BSP_CNSL_getc();
+    //    shell_receive_char(c);
+    //}
 }
 
