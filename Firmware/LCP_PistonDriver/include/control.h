@@ -1,6 +1,5 @@
 #ifndef CONTROL_H
 #define CONTROL_H
-//void CTRL_Write(
 
 #include "config.h"
 
