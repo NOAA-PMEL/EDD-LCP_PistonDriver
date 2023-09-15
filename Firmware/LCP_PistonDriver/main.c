@@ -29,14 +29,15 @@ int main( void )
 
     PIS_Init();
     PIS_Reset_to_Zero();
-    PIS_Disable();
+    //PIS_Disable();
 
     /* Shell activation and user interactive mode*/
     sShellImpl shell_impl = {
         .send_char = BSP_CNSL_putc
     };
     shell_boot(&shell_impl);
-    __bis_SR_register(LPM0_bits + GIE);
+    __bis_SR_register(GIE);
+    //__bis_SR_register(LPM0_bits + GIE);
 
     /* for low power consumption, uncomment these two lines */
     //__bis_SR_register(LPM4_bits + GIE);
