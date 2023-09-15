@@ -1044,16 +1044,6 @@ STATIC double PIS_Read_length(void) {
     MEM_Set_f(VOL_large_piston, largePiston._volume);
     MEM_Set_f(VOL_total, total);
     
-    //// Basharat
-    //MEM_Set_LEN_Setpoint(length);
-    //double volume = _PIS_calculate_volume_from_length(
-    //                length,
-    //                &smallPiston,
-    //                &largePiston,
-    //                &housing);
-    //MEM_Set_f(VOL_setpoint, volume);
-    //// Basharat
-
     MEM_Set_f(LEN_small_piston, smallPiston._length);
     MEM_Set_f(LEN_large_piston, largePiston._length);
     MEM_Set_f(LEN_total, length);

@@ -139,9 +139,6 @@ STATIC sRAM_t CMDRAM = {
     .RESET = (char*) &temp_ram[RAM_SYS_RESET]
 };
 
-
-
-
 const uint8_t* preadram = (uint8_t*) &storage_ram[0];
 const uint8_t* pwriteram = (uint8_t*) &temp_ram[0];
 
