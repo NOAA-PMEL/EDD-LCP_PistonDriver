@@ -122,16 +122,16 @@ bool BSP_GPIO_Read(const driverlib_gpio_cfg_t *p)
 
 void BSP_GPIO_SetInterrupt(const driverlib_gpio_cfg_t *p)
 {
-    GPIO_enableInterrupt(p->port, p->pin); 
-    __bis_SR_register(GIE);
-  
-}
-void BSP_GPIO_ClearInterrupt(const driverlib_gpio_cfg_t *p)
-{
-    GPIO_disableInterrupt(p->port, p->pin);
+    GPIO_enableInterrupt(p->port, p->pin);
     __bis_SR_register(GIE);
 }
 
+void BSP_GPIO_ClearInterrupt(const driverlib_gpio_cfg_t *p)
+{
+    //GPIO_disableInterrupt(p->port, p->pin);
+    GPIO_clearInterrupt(p->port, p->pin);
+    //__bis_SR_register(GIE);
+}
 
 void BSP_GPIOCallback(uint16_t int_num, void function(void))
 {
@@ -327,8 +327,6 @@ void Port_4 (void)
       break;
   }
 }
-
-
 
 //#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 //#pragma vector=PORT9_VECTOR

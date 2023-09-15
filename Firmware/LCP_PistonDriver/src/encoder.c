@@ -116,6 +116,9 @@ void ENC_Init(void) {
   /** Configure the toggle pins no matter what */
   BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_A);
   BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_B);
+  BSP_GPIO_Init(&g_BSP_GPIO_ENCODER_PULLUP);
+  BSP_GPIO_Set(&g_BSP_GPIO_ENCODER_PULLUP);
+
   /** Use for GPIO based encoder interrupts (works, but not the best)*/
 
 //      
@@ -146,19 +149,25 @@ void ENC_Init(void) {
 
 void ENC_SetDir(ePistonDir_t dir)
 {
+  Log.Debug ("ENC_SetDir");
   assert( (dir == DIR_EXTEND) || (dir == DIR_RETRACT) );
   g_encoder_direction = (int32_t)dir;
   MEM_Set_i8(TRV_dir, dir);
 //  if(dir == DIR_EXTEND)
 //  {
+    Log.Debug ("BSP_GPIO clearing interrupts");
     BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
+    Log.Debug ("BSP_GPIO clearing interrupts 0");
     BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);
-    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
-    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+    //Log.Debug ("BSP_GPIO clearing interrupts 1");
+    //BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
+    //Log.Debug ("BSP_GPIO clearing interrupts 2");
+    //BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
 //  } else {
 //    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
 //    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
 //  }
+    Log.Debug ("BSP_GPIO clearing interrupts, done");
 }
 
 int8_t ENC_GetDir(void)
