@@ -208,3 +208,12 @@ const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_B = {
   .pullups = 0,
 //  .function = TERNARY_MODULE_FUNCTION
 };
+
+const driverlib_gpio_cfg_t g_BSP_GPIO_ENCODER_PULLUP = {
+  .port = BSP_GPIO_ENCODER_PORT,
+  .pin = BSP_GPIO_ENCODER_PIN_PULLUP,
+  .mode = GPIO_SET_AS_OUTPUT,
+  .pullups = 0,
+  .function = DEFAULT_MODULE_FUNCTION,
+  .inverted = false
+};
