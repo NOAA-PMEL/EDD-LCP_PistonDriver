@@ -629,6 +629,7 @@ void PIS_Reset_to_Zero(void)
     {
         //sprintf(temp, "Resetting to zero: pos = %0.4f", ENC_Get_Length());
         //Log.Debug(temp);
+        PIS_Read_length();
         _delay_ms(1000);
     }
     //Log.Debug("Move Complete");
@@ -659,6 +660,7 @@ void PIS_Run_to_Full(void)
         //sprintf(temp, "Running to full: pos = %0.4f, count=%li, current=%.8f",
         //                  ENC_Get_Length(), ENC_Get_count(), PIS_Read_current());
         //Log.Debug(temp);
+        PIS_Read_length();
         _delay_ms(1000);
     }
     _delay_ms(1000);

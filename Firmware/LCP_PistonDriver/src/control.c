@@ -284,6 +284,28 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
             MEM_Set_PST_Calibration(*pWrite->PST_calibration);
         }
     }
+    else if (offset == RAM_MOV_FULL)
+    {
+        BSP_I2C_Enable(EUSCI_B1_BASE);
+        if (*pWrite->MOV_Full != 0)
+        {
+            /** piston move to full */
+            MEM_Set_MOV_Full(*pWrite->MOV_Full);
+            MEM_Set_MOV_Zero(!*pWrite->MOV_Full);
+            PIS_Run_to_Full();
+        }
+    }
+    else if (offset == RAM_MOV_ZERO)
+    {
+        BSP_I2C_Enable(EUSCI_B1_BASE);
+        if (*pWrite->MOV_Zero != 0)
+        {
+            /** piston move to zero */
+            MEM_Set_MOV_Zero(*pWrite->MOV_Zero);
+            MEM_Set_MOV_Full(!*pWrite->MOV_Zero);
+            PIS_Reset_to_Zero();
+        }
+    }
     else if (offset == RAM_USER_OVERRIDE)
     {
         /** User Override */

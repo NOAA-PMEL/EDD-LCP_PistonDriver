@@ -68,6 +68,8 @@ STATIC sRAM_t RAM = {
     .TRV_eng = (uint8_t*) &storage_ram[RAM_TRV_ENG],
     .TRV_speed = (uint8_t*) &temp_ram[RAM_TRV_SPD],
     .USR_override = (uint8_t*) &storage_ram[RAM_USER_OVERRIDE],
+    .MOV_Zero = (uint8_t*) &storage_ram[RAM_MOV_ZERO],
+    .MOV_Full = (uint8_t*) &storage_ram[RAM_MOV_FULL],
     .PST_calibration = (uint8_t*) &storage_ram[RAM_PST_CAL],
     .TRV_zero = (uint8_t*) &storage_ram[RAM_TRV_ZERO],
     .TRV_full = (uint8_t*) &storage_ram[RAM_TRV_FULL],
@@ -115,6 +117,8 @@ STATIC sRAM_t CMDRAM = {
     .TRV_eng = (uint8_t*) &temp_ram[RAM_TRV_ENG],
     .TRV_speed = (uint8_t*) &temp_ram[RAM_TRV_SPD],
     .USR_override = (uint8_t*) &temp_ram[RAM_USER_OVERRIDE],
+    .MOV_Zero = (uint8_t*) &temp_ram[RAM_MOV_ZERO],
+    .MOV_Full = (uint8_t*) &temp_ram[RAM_MOV_FULL],
     .PST_calibration = (uint8_t*) &temp_ram[RAM_PST_CAL],
     .TRV_zero = (uint8_t*) &temp_ram[RAM_TRV_ZERO],
     .TRV_full = (uint8_t*) &temp_ram[RAM_TRV_FULL],
@@ -571,6 +575,16 @@ void MEM_Set_Var_Write(volatile uint8_t value)
 void MEM_Set_User_Override(volatile bool value)
 {
     *RAM.USR_override = value;
+}
+
+void MEM_Set_MOV_Full(volatile bool value)
+{
+    *RAM.MOV_Full = value;
+}
+
+void MEM_Set_MOV_Zero(volatile bool value)
+{
+    *RAM.MOV_Zero = value;
 }
 
 void MEM_Set_Travel_Direction(volatile int8_t dir)

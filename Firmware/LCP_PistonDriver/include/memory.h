@@ -77,6 +77,8 @@
 #define RAM_TRV_ENG 0x61  
 #define RAM_TRV_SPD 0x62
 #define RAM_USER_OVERRIDE 0x63
+#define RAM_MOV_ZERO 0x64
+#define RAM_MOV_FULL 0x65
 #define RAM_PST_CAL 0x67
 #define RAM_TRV_ZERO 0x68  
 #define RAM_TRV_FULL 0x69  
@@ -173,6 +175,8 @@ typedef struct sRAM {
     volatile uint8_t *TRV_speed;
     volatile uint8_t *TRV_eng;
     volatile uint8_t *USR_override;
+    volatile uint8_t *MOV_Zero;
+    volatile uint8_t *MOV_Full;
     volatile uint8_t *PST_calibration;
     volatile uint8_t *TRV_zero;
     volatile uint8_t *TRV_full;
@@ -227,6 +231,8 @@ void MEM_Set_PID_Coeff_D(float value);
 void MEM_Set_PID_Used(bool used);
 void MEM_Set_Var_Write(uint8_t value);
 void MEM_Set_User_Override(bool value);
+void MEM_Set_MOV_Full(bool value);
+void MEM_Set_MOV_Zero(bool value);
 void MEM_Set_PST_Calibration(bool value);
 void MEM_Set_Travel_Direction(int8_t dir);
 void MEM_Set_Travel_Engage(bool state);
