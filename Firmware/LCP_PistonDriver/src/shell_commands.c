@@ -426,6 +426,7 @@ bool cli_set(const char *key, const void *val, uint32_t len) {
       Log.Debug("set reset called");
       Log.Debug(v_str);
       /** @todo Reset the board */
+      PMM_trigPOR();
       return true;
     }
     if(strncmp(key, "user", 4) == 0)
