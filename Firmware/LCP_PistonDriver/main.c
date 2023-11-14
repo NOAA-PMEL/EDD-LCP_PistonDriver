@@ -28,7 +28,7 @@ int main( void )
     Log.Set(LOG_DEBUG);
 
     PIS_Init();
-    PIS_Reset_to_Zero();
+    //PIS_Reset_to_Zero();
     //PIS_Disable();
 
     /* Shell activation and user interactive mode*/
