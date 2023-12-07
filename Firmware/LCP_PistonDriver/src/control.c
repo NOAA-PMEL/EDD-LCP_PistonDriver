@@ -281,7 +281,7 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
         if (*pWrite->PST_calibration != 0)
         {
             PIS_Calibrate( (uint8_t) *pWrite->PST_calibration);
-            MEM_Set_PST_Calibration(*pWrite->PST_calibration);
+            //MEM_Set_PST_Calibration(*pWrite->PST_calibration);
         }
     }
     else if (offset == RAM_MOV_FULL)
