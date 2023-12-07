@@ -617,7 +617,7 @@ void PIS_Stop(void)
 
 void PIS_Reset_to_Zero(void)
 {
-    char temp[32];
+    //char temp[32];
     Log.Debug("PIS_Reset_to_Zero called");
     //int32_t count = ENC_Get_count();
     PIS_Retract(true, 100);
@@ -652,14 +652,14 @@ void PIS_Run_to_Full(void)
     //sprintf(temp, "Running to full: count = %li", count);
     //Log.Debug(temp);
 
-    while(  (fabs(PIS_Read_current()) > 0.001f) &&
+    while(  (fabs(PIS_Read_current()) > 0.008f) &&
             (count != ENC_Get_count()) )
     //while(  (fabs(PIS_Read_current()) > 0.000001f) &&
     //        (count != ENC_Get_count()) )
     {
-        //sprintf(temp, "Running to full: pos = %0.4f, count=%li, current=%.8f",
-        //                  ENC_Get_Length(), ENC_Get_count(), PIS_Read_current());
-        //Log.Debug(temp);
+        sprintf(temp, "Running to full: pos = %0.4f, count=%li, current=%.8f",
+                          ENC_Get_Length(), ENC_Get_count(), PIS_Read_current());
+        Log.Debug(temp);
         PIS_Read_length();
         _delay_ms(1000);
     }
@@ -694,6 +694,20 @@ void PIS_Calibrate(uint8_t cal)
     else
     {
         Log.Debug("*** Calibration variable is false ***");
+    }
+}
+
+void PIS_Calibration_check(void)
+{
+    if (_calibration == 1)
+    {
+        Log.Debug("Piston is already Calibrated");
+    }
+    else
+    {
+        /* calibrate the actuator */
+        Log.Debug("\n\n<< Calibration is in progress >>\n\n");
+        PIS_Calibrate(1);
     }
 }
 
@@ -1027,10 +1041,14 @@ STATIC double PIS_Read_length(void) {
     {
         smallPiston._length = length;
         largePiston._length = 0.0f;
-    } else if( (length > 0.0f) && (length <= (smallPiston._max_length + largePiston._max_length)))
+    } else if( (length > 0.0f) && (length < (smallPiston._max_length + largePiston._max_length)))
     {
         smallPiston._length = smallPiston._max_length;
         largePiston._length = length - smallPiston._max_length;
+    } else if( (length > 0.0f) && (length <= (smallPiston._max_length + largePiston._max_length)))
+    {
+        smallPiston._length = smallPiston._max_length;
+        largePiston._length = smallPiston._max_length;
     } else if( length == 0) {
         smallPiston._length = 0.0f;
         largePiston._length = 0.0f;
