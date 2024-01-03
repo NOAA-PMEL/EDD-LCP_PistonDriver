@@ -652,7 +652,7 @@ void PIS_Run_to_Full(void)
     //sprintf(temp, "Running to full: count = %li", count);
     //Log.Debug(temp);
 
-    while(  (fabs(PIS_Read_current()) > 0.008f) &&
+    while(  (fabs(PIS_Read_current()) > 0.005f) &&
             (count != ENC_Get_count()) )
     //while(  (fabs(PIS_Read_current()) > 0.000001f) &&
     //        (count != ENC_Get_count()) )
