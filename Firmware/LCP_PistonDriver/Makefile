@@ -51,5 +51,8 @@ clean:
 flash:
 	$(FLASH) tilib "prog $(TARGET)"
 
+erase:
+	$(FLASH) tilib erase
+
 debug: all
 	$(GDB) $(TARGET)
