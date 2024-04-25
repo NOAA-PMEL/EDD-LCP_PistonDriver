@@ -248,11 +248,11 @@ void USCI_B1_ISR(void)
             _BSP_I2C_State_Machine(I2C_Nack);
             break;
         case USCI_I2C_UCSTTIFG:     // START condition detected with own address (slave mode only)
-            __delay_cycles(5000);
+            __delay_cycles(1000);
             _BSP_I2C_State_Machine(I2C_Start);
             break;
         case USCI_I2C_UCSTPIFG:     // STOP condition detected (master & slave mode)
-            __delay_cycles(5000);
+            __delay_cycles(1000);
             _BSP_I2C_State_Machine(I2C_Stop);
             break;
         case USCI_I2C_UCRXIFG3:     // RXIFG3
@@ -268,7 +268,7 @@ void USCI_B1_ISR(void)
         case USCI_I2C_UCTXIFG1:     // TXIFG1
             break;
         case USCI_I2C_UCRXIFG0:     // RXIFG0
-            __delay_cycles(5000);
+            __delay_cycles(1000);
             BufferC_putc((sCircularBufferC_t*)&i2c1.rxBuf, (char)EUSCI_B_I2C_slaveGetData(EUSCI_B1_BASE));
             _BSP_I2C_State_Machine(I2C_Rx);
             //__delay_cycles(5000);
@@ -276,7 +276,7 @@ void USCI_B1_ISR(void)
         case USCI_I2C_UCTXIFG0:     // TXIFG0
             BufferC_getc((sCircularBufferC_t*)&i2c1.txBuf, (char*)&data);
             EUSCI_B_I2C_slavePutData(EUSCI_B1_BASE, data);
-            __delay_cycles(5000);
+            __delay_cycles(1000);
             break;
         case USCI_I2C_UCBCNTIFG:    // Byte count limit reached (UCBxTBCNT)
             break;
