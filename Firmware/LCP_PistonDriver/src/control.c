@@ -139,6 +139,10 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
         if( *pWrite->RESET == SYS_RESET_KEY)
         {
             Log.Debug("System Reset commanded");
+            Log.Debug("\n\n\nDEBUG: *****************************");
+            Log.Debug("<< System Reset commanded >>");
+            Log.Debug("*****************************\n\n\n");
+
             PMM_trigPOR();
         }
     }
@@ -150,7 +154,6 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
             //if(*pWrite->VOL_setpoint != *pWrite->VOL_total)
             if(*pWrite->VOL_setpoint != *pLast->VOL_setpoint)
             {
-                //PIS_Enable();
                 BSP_I2C_Enable(EUSCI_B1_BASE);
                 sprintf(temp, "I2C - VOL_setpoint = %.3f", *pWrite->VOL_setpoint);
                 Log.Debug(temp);
@@ -182,32 +185,24 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
                         Log.Debug(temp);
                     }
                 }
-                //PIS_Disable();
             }
         }
     }
     else if (offset == RAM_LEN_SETPOINT_IN)
     {
-        //if (*pWrite->LEN_setpoint != *pLast->LEN_setpoint)
-        if (*pWrite->LEN_setpoint != 0)
+        if(*pWrite->LEN_setpoint != *pLast->LEN_setpoint)
         {
-            //if(*pWrite->LEN_setpoint != *pWrite->LEN_total)
-            if(*pWrite->LEN_setpoint != *pLast->LEN_setpoint)
-            {
-                //PIS_Enable();
-                BSP_I2C_Enable(EUSCI_B1_BASE);
-                sprintf(temp, "I2C - LEN_setpoint = %.3f", *pWrite->LEN_setpoint);
-                Log.Debug(temp);
+            BSP_I2C_Enable(EUSCI_B1_BASE);
+            sprintf(temp, "I2C - LEN_setpoint = %.3f", *pWrite->LEN_setpoint);
+            Log.Debug(temp);
 
-                if(*pWrite->LEN_setpoint < 0.0f)
-                {
-                    PIS_Reset_to_Zero();
-                }
-                else
-                {
-                    PIS_Run_to_length(*pWrite->LEN_setpoint);
-                }
-                //PIS_Disable();
+            if(*pWrite->LEN_setpoint <= 0.0f)
+            {
+                PIS_Reset_to_Zero();
+            }
+            else
+            {
+                PIS_Run_to_length(*pWrite->LEN_setpoint);
             }
         }
     }
@@ -286,7 +281,6 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
     }
     else if (offset == RAM_MOV_FULL)
     {
-        BSP_I2C_Enable(EUSCI_B1_BASE);
         if (*pWrite->MOV_Full != 0)
         {
             /** piston move to full */
@@ -297,7 +291,6 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
     }
     else if (offset == RAM_MOV_ZERO)
     {
-        BSP_I2C_Enable(EUSCI_B1_BASE);
         if (*pWrite->MOV_Zero != 0)
         {
             /** piston move to zero */
@@ -322,7 +315,6 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
     /* User override*/
     if(MEM_Get_USR_Override())
     {
-        //PIS_Enable();
         BSP_I2C_Enable(EUSCI_B1_BASE);
         /** Travel Direction and Engaged */
         if(*pWrite->TRV_dir != *pLast->TRV_dir)
@@ -355,7 +347,6 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
             Log.Debug("I2C - Stop Called");
             PIS_Stop();
         }
-        //PIS_Disable();
     }
     return;
 }
@@ -369,7 +360,7 @@ void CTRL_Check_Write(void)
         BSP_I2C_Disable(EUSCI_B1_BASE);
         CTRL_Write();
         //BSP_I2C_Init(EUSCI_B1_BASE);
-        Log.Debug("Exiting CTRL Commanded\n\n");
         BSP_I2C_Enable(EUSCI_B1_BASE);
+        Log.Debug("Exiting CTRL Commanded\n\n");
     }
 }
