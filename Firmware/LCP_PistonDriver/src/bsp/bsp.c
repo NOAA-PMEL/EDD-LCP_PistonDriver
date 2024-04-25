@@ -10,8 +10,8 @@ void BSP_Init(void)
   //WDTCTL = WDTPW + WDTHOLD;
     
   /** Initialize Timers */
-  Timer0_A3_Init();
-  Timer3_A2_Init();
+  //Timer0_A3_Init();
+  //Timer3_A2_Init();
   
   /** Initialize FRAM Control */
   FRCTL_Init();
@@ -28,11 +28,11 @@ void BSP_Init(void)
   /** Initialzie EUSCI Modules */
   EUSCI_A0_Init();
   EUSCI_A1_Init();
-  EUSCI_B0_Init();
+  //EUSCI_B0_Init();
   EUSCI_B1_Init();
   
-  /** Initialize the Interrupt Vectors */
-  InterruptVectors_Init();
+  ///** Initialize the Interrupt Vectors */
+  //InterruptVectors_Init();
   
   /** Initialize the DMA */
   DMA_Init();
@@ -40,8 +40,8 @@ void BSP_Init(void)
   BSP_I2C_Enable(EUSCI_B1_BASE);
   
   /** Initialize RTC C */
-  RTC_C_Init();
-  __bis_SR_register(GIE);
+  //RTC_C_Init();
+  //__bis_SR_register(GIE);
   
   /** Initialize the LEDS (if preprocessor flags set) */
 #if defined(DEBUG) && defined(DEBUG_LED)
@@ -117,7 +117,7 @@ void BSP_Init(void)
   /** Initialze the Extended Scan Interface (encoder) */
 //  esiConfig();
   
-  __bis_SR_register(GIE);
+  //__bis_SR_register(GIE);
 }
 
 #if defined(DEBUG) && defined(DEBUG_UART)
