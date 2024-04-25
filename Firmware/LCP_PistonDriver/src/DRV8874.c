@@ -5,14 +5,12 @@
 float _read_adc12_volts(void) ;
 uint16_t _calculate_pwm(uint8_t percent);
 
-
 static uint16_t speed_fwd = 0;
 static uint16_t speed_rev =0;
 
 void DRV8874_init(void) {
 
  BSP_GPIO_Init(&g_BSP_GPIO_MD_SLEEP);
- 
  BSP_GPIO_Init(&g_BSP_GPIO_MD_FAULT);
  BSP_GPIO_Init(&g_BSP_GPIO_MD_PMODE);
  BSP_GPIO_Init(&g_BSP_GPIO_MD_IPROPI);
@@ -26,37 +24,38 @@ void DRV8874_init(void) {
  BSP_GPIO_Set(&g_BSP_GPIO_MD_PMODE);
 #endif
  
- 
- DRV8874_enable();
+ BSP_GPIO_Clear(&g_BSP_GPIO_MD_SLEEP);
+ DRV8874_disable();
+ //DRV8874_enable();
  // PWM Settings 
  // EN = TB0.3
  // PH = TB0.5
 }
 
-
-
 void DRV8874_enable( void ) 
 {
   Log.Debug("Enabling DRV8874");
+  BSP_GPIO_Clear(&g_BSP_GPIO_ENCODER_PULLUP);
   BSP_12V_On();
 }
-
 
 void DRV8874_disable( void ) 
 {
   Log.Debug("Disabling DRV8874");
+  BSP_GPIO_Set(&g_BSP_GPIO_ENCODER_PULLUP);
   BSP_12V_Off();
 }
 
 void DRV8874_forward( uint8_t percent )
 {
+  DRV8874_enable();
   Log.Debug("DRV8874_forward entered");
   char temp[80];
   speed_rev = 0;
   BSP_GPIO_Set(&g_BSP_GPIO_MD_SLEEP);
-  _delay_ms(100);
+  _delay_ms(10);
 
-  Log.Debug("DRV8874_forward After sleep 1ms cycles");
+  Log.Debug("DRV8874_forward After sleep 10ms cycles");
 
 #ifdef DRV8874_NO_PWM
   BSP_GPIO_Set(&g_BSP_GPIO_MD_ENABLE);
@@ -80,32 +79,36 @@ void DRV8874_forward( uint8_t percent )
   
   sprintf(temp, "Setting DRV8874 FORWARD at %u%%, pwm = %u", percent, target);
   Log.Debug(temp);
-  do {
-    BPS_PWM_SetPWM(1, speed_fwd);  
-    __delay_cycles(1000);
-    speed_fwd += inc;
-  } while (target != speed_fwd);
-  
-  
+
+  speed_fwd = target;
+  BPS_PWM_SetPWM(1, speed_fwd);
+
+  //do {
+  //  BPS_PWM_SetPWM(1, speed_fwd);
+  //  __delay_cycles(1000);
+  //  speed_fwd += inc;
+  //} while (target != speed_fwd);
+
 #endif
 
 }
 
-
-
 void DRV8874_reverse( uint8_t percent ) 
- {
+{
+  DRV8874_enable();
   Log.Debug("DRV8874_reverse entered");
   char temp[80];
   speed_fwd = 0;
   BSP_GPIO_Set(&g_BSP_GPIO_MD_SLEEP);
-  _delay_ms(100);
-  Log.Debug("DRV8874_reverse After sleep 1ms");
+  _delay_ms(10);
+  Log.Debug("DRV8874_reverse After sleep 10ms");
 #ifdef DRV8874_NO_PWM
   BSP_GPIO_Set(&g_BSP_GPIO_MD_ENABLE);
   BSP_GPIO_Set(&g_BSP_GPIO_MD_PH);
 #else
    BPS_PWM_SetPWM(1,0);
+   Log.Debug("reverse pwm 1,0 out");
+
   uint16_t target = _calculate_pwm(percent);
   int16_t inc = 0;
  
@@ -122,23 +125,25 @@ void DRV8874_reverse( uint8_t percent )
   }
  sprintf(temp, "Setting DRV8874 REVERSED at %u%%, pwm = %u", percent, target);
  Log.Debug(temp);
-  do {
-    BPS_PWM_SetPWM(0, speed_rev);  
-    __delay_cycles(1000);
-    speed_rev += inc;
-  } while (target != speed_rev);
 
-#endif 
+ speed_rev = target;
+ BPS_PWM_SetPWM(0, speed_rev);
+
+  //do {
+  //  BPS_PWM_SetPWM(0, speed_rev);
+  //  __delay_cycles(1000);
+  //  speed_rev += inc;
+  //} while (target != speed_rev);
+
+#endif
 
 }
 
-
-
-
-void DRV8874_stop( void ) {
+void DRV8874_stop( void )
+{
   BSP_GPIO_Clear(&g_BSP_GPIO_MD_SLEEP);
   _delay_ms(10);
-  Log.Debug("DRV8874_stop After sleep 1ms cycles");
+  Log.Debug("DRV8874_stop After sleep 10ms cycles");
 
 #ifdef DRV8874_NO_PWM
   BSP_GPIO_Clear(&g_BSP_GPIO_MD_PH);
@@ -146,11 +151,14 @@ void DRV8874_stop( void ) {
 #else
   BPS_PWM_SetPWM(0,0);
   BPS_PWM_SetPWM(1,0);
-#endif  
-  
+#endif
+
+  BPS_PWM_StopPWM();
+
   speed_fwd = 0;
   speed_rev = 0;
   Log.Debug("DRV8874 Stopped");
+  DRV8874_disable();
 }
 
 float DRV8874_read_current( void )
