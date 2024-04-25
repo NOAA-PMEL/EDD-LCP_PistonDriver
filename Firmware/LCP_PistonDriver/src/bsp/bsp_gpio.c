@@ -123,12 +123,11 @@ bool BSP_GPIO_Read(const driverlib_gpio_cfg_t *p)
 void BSP_GPIO_SetInterrupt(const driverlib_gpio_cfg_t *p)
 {
     GPIO_enableInterrupt(p->port, p->pin);
-    __bis_SR_register(GIE);
+    //__bis_SR_register(GIE);
 }
 
 void BSP_GPIO_ClearInterrupt(const driverlib_gpio_cfg_t *p)
 {
-    //GPIO_disableInterrupt(p->port, p->pin);
     GPIO_clearInterrupt(p->port, p->pin);
     //__bis_SR_register(GIE);
 }
@@ -229,7 +228,7 @@ void Port_1 (void)
 //      GPIO_int_1_callback();
 //      rev_state = 0;
 //    }
-    
+
     /** Falling Edge States */
     dir = GPIO_int_10_callback();
     if(dir == -1)
@@ -246,8 +245,7 @@ void Port_1 (void)
         GPIO_int_1_callback();
         rev_state = 0;
       }
-    }      
-
+    }
       //      g_gpio_count_0--;
 //      if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN3))
 //      {

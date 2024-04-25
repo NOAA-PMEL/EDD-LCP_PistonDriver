@@ -66,7 +66,7 @@ void Timer_A_Start(void) {
   Timer_A_startCounter( TIMER_A1_BASE,
     		TIMER_A_CONTINUOUS_MODE
                 );
-  __bis_SR_register(GIE);
+  //__bis_SR_register(GIE);
 }
 
 //#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
