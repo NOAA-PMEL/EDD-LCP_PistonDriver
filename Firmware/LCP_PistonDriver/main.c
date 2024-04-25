@@ -30,18 +30,20 @@ int main( void )
     PIS_Init();
     //PIS_Reset_to_Zero();
     //PIS_Disable();
+    //PIS_Calibration_check();
 
     /* Shell activation and user interactive mode*/
     sShellImpl shell_impl = {
         .send_char = BSP_CNSL_putc
     };
     shell_boot(&shell_impl);
-    __bis_SR_register(GIE);
-    //__bis_SR_register(LPM0_bits + GIE);
 
-    /* for low power consumption, uncomment these two lines */
+    /* for low power consumption, uncomment lines below */
+    __no_operation();
+    __enable_interrupt();
     //__bis_SR_register(LPM4_bits + GIE);
-    //__no_operation();
+    __no_operation();
+    __no_operation();
 
     //char c;
     //while(1)
