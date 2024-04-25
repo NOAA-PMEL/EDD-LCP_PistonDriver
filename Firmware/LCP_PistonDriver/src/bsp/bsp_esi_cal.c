@@ -513,7 +513,7 @@ static void FindDAC(findDACParams *params)
 	{
 
 		// Wait for the ESISTOP flag
-		__bis_SR_register(LPM3_bits+GIE);
+		//__bis_SR_register(LPM3_bits+GIE);
 
 		// right shift one bit
 		currentDACBit >>= 1;
@@ -615,7 +615,7 @@ static void FindDAC_Fast_Successive(fastParams *params)
 
 	for(i = 0; i<params->range; i++){			// test "rangeNum" times as 12 bit DAC
 
-		__bis_SR_register(LPM3_bits+GIE);   	//	 wait for the ESISTOP flag
+		//__bis_SR_register(LPM3_bits+GIE);   	//	 wait for the ESISTOP flag
 
 
 		/**
@@ -733,7 +733,7 @@ static void FindDAC_Fast_Range(fastParams *params)
 
 
 			//	 wait for the ESISTOP flag
-			__bis_SR_register(LPM3_bits+GIE);
+			//__bis_SR_register(LPM3_bits+GIE);
 
 			if(params->channel0Enabled ==true){
 				if(!(rangeStatus&CH0_COMPLETE)){
