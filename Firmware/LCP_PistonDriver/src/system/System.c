@@ -88,7 +88,7 @@ void SYS_init(void)
     InterruptVectors_Init();
 
     /* initialize Config for the MSP430 System Registers */
-    __bis_SR_register(GIE);
+    //__bis_SR_register(GIE);
 
     /* initialize Config for the MSP430 Direct Memory Access (DMA) */
     DMA_Init();

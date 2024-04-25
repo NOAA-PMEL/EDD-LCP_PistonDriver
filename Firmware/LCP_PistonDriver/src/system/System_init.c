@@ -45,7 +45,7 @@ void System_Init(void)
      * 
      * Note: ~<BIT> indicates that <BIT> has value zero
      */
-    __bis_SR_register(GIE);
+    //__bis_SR_register(GIE);
 
     /* USER CODE START (section: System_Init_epilogue) */
     /* User code */
