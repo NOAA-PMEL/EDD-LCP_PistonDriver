@@ -78,7 +78,7 @@
 #define ACTUATOR_SPEED              ( 30 )
 
 #define PISTON_SLOW_SPEED_LENGTH    ( 0.1 )
-#define PISTON_SLOW_SPEED           ( 60 )
+#define PISTON_SLOW_SPEED           ( 80 )
 
 /**********************************************************************************
  * Typdefs

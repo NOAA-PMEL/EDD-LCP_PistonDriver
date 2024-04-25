@@ -156,6 +156,7 @@ void PIS_Init(void) {
     /* check calibration */
     uint8_t cali = _calibration;
     MEM_Set_PST_Calibration((bool) cali);
+    PIS_Disable();
 }
 
 /**********************************************************************************
@@ -360,6 +361,7 @@ double PIS_Read(ePistonRead_t read)
  */
 ePistonRunError_t PIS_Run_to_length(float length)
 {
+
     #ifndef TEST
     assert(length <= SYSTEM_MAX_LENGTH);
     assert(length >= SYSTEM_MIN_LENGTH);
@@ -389,8 +391,8 @@ ePistonRunError_t PIS_Run_to_length(float length)
     {
       speed = 100;
     } else {
-      //speed = 80;
-      speed = 60;
+      speed = 80;
+      //speed = 60;
     }
     
     if(diff > 0)
@@ -413,8 +415,8 @@ ePistonRunError_t PIS_Run_to_length(float length)
     do
     {
         float current_length = PIS_Read_length();
-        sprintf(temp, "Current length = %.4f", current_length);
-        Log.Debug(temp);
+        //sprintf(temp, "Current length = %.4f", current_length);
+        //Log.Debug(temp);
         float diff = current_length - length;
 
         if(fabs(diff) < 0.01)
@@ -491,6 +493,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
     else {
         error = PISErrorNone;
     }
+
     return error;
 }
 
@@ -562,7 +565,6 @@ ePistonRunError_t PIS_Run_to_volume(float volume)
     
     return error;
 }
-
 
 void PIS_Extend(bool startup, uint8_t speed)
 {
@@ -638,11 +640,12 @@ void PIS_Reset_to_Zero(void)
     MEM_Set_u8(TRV_zero, true);
     MEM_Set_i8(TRV_dir, PISRunStop);
     MEM_Set_u8(TRV_eng, false);
+    PIS_Disable();
 }
 
 void PIS_Run_to_Full(void)
 {
-    char temp[64];
+    //char temp[64];
     //int32_t count = ENC_Get_count();
     int32_t count = ENC_Get_max_count();
     Log.Debug("PIS_Run_to_Full called");
@@ -657,10 +660,10 @@ void PIS_Run_to_Full(void)
     //while(  (fabs(PIS_Read_current()) > 0.000001f) &&
     //        (count != ENC_Get_count()) )
     {
-        sprintf(temp, "Running to full: pos = %0.4f, count=%li, current=%.8f",
-                          ENC_Get_Length(), ENC_Get_count(), PIS_Read_current());
-        Log.Debug(temp);
-        PIS_Read_length();
+        //sprintf(temp, "Running to full: pos = %0.4f, count=%li, current=%.8f",
+        //                  ENC_Get_Length(), ENC_Get_count(), PIS_Read_current());
+        //Log.Debug(temp);
+        //PIS_Read_length();
         _delay_ms(1000);
     }
     _delay_ms(1000);
@@ -670,6 +673,7 @@ void PIS_Run_to_Full(void)
     MEM_Set_u8(TRV_full, true);
     MEM_Set_i8(TRV_dir, PISRunStop);
     MEM_Set_u8(TRV_eng, false);
+    PIS_Disable();
 }
 
 void PIS_Calibrate(uint8_t cal)
