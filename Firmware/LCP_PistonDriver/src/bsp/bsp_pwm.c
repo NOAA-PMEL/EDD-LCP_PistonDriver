@@ -1,6 +1,8 @@
 #include "bsp_pwm.h"
 #include "logging.h"
 
+static bool pwm_running = false;
+
 //Timer_B_outputPWMParam param = {
 //  .clockSource = TIMER_B_CLOCKSOURCE_SMCLK,             /** 2MHz */
 //  .clockSourceDivider = TIMER_B_CLOCKSOURCE_DIVIDER_1, 
@@ -77,7 +79,16 @@ void BPS_PWM_SetPWM(uint8_t chan, uint16_t pwm)
     }
 
     //Timer_B_clearTimerInterrupt(TIMER_B0_BASE);
-    Timer_B_startCounter(TIMER_B0_BASE, TIMER_B_UP_MODE);
+
+    if (pwm_running)
+    {
+        /* do nothing */
+    }
+    else
+    {
+        Timer_B_startCounter(TIMER_B0_BASE, TIMER_B_UP_MODE);
+        pwm_running = true;
+    }
 
     if(chan == 0)
     {
@@ -112,4 +123,5 @@ void BPS_PWM_StopPWM(void)
 {
     Timer_B_stop(TIMER_B0_BASE);
     Timer_B_clearTimerInterrupt(TIMER_B0_BASE);
+    pwm_running = false;
 }
