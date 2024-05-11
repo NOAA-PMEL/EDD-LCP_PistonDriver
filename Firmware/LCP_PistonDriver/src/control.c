@@ -283,6 +283,7 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
     {
         if (*pWrite->MOV_Full != 0)
         {
+            BSP_I2C_Enable(EUSCI_B1_BASE);
             /** piston move to full */
             MEM_Set_MOV_Full(*pWrite->MOV_Full);
             MEM_Set_MOV_Zero(!*pWrite->MOV_Full);
@@ -293,6 +294,7 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
     {
         if (*pWrite->MOV_Zero != 0)
         {
+            BSP_I2C_Enable(EUSCI_B1_BASE);
             /** piston move to zero */
             MEM_Set_MOV_Zero(*pWrite->MOV_Zero);
             MEM_Set_MOV_Full(!*pWrite->MOV_Zero);
