@@ -663,13 +663,13 @@ void PIS_Run_to_Full(void)
         //sprintf(temp, "Running to full: pos = %0.4f, count=%li, current=%.8f",
         //                  ENC_Get_Length(), ENC_Get_count(), PIS_Read_current());
         //Log.Debug(temp);
-        //PIS_Read_length();
+        PIS_Read_length();
         _delay_ms(1000);
     }
+
+    PIS_Read_length();
     _delay_ms(1000);
     Log.Debug("Move Complete");
-    Log.Debug("Resetting encoder");
-
     MEM_Set_u8(TRV_full, true);
     MEM_Set_i8(TRV_dir, PISRunStop);
     MEM_Set_u8(TRV_eng, false);
