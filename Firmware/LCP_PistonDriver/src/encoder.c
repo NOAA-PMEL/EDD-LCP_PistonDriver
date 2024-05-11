@@ -160,42 +160,45 @@ void ENC_SetDir(ePistonDir_t dir)
     g_encoder_direction = (int32_t)dir;
     MEM_Set_i8(TRV_dir, dir);
 
-    if (dir == DIR_EXTEND)
-    {
-        BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
-        BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
-    }
-    else
-    {
-        BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
-        BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);
-    }
+    //if (dir == DIR_EXTEND)
+    //{
+    //    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
+    //    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+    //}
+    //else
+    //{
+    //    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
+    //    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);
+    //}
+    //__no_operation();
+    //__enable_interrupt();
+    //__no_operation();
+
+    //if(dir == DIR_EXTEND)
+    //{
+
+    //Log.Debug ("__disable_interrupt()disabling interrupt");
+    //__disable_interrupt();
+    //Log.Debug ("__disable_interrupt()disabling interrupt DONE");
+    //__no_operation();
+
+    //Log.Debug ("BSP_GPIO clearing interrupts ENcoder A-B");
+    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
+    BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);
+    //Log.Debug ("BSP_GPIO clearing interrupts ENcoder A-B DONE");
+
+    //Log.Debug ("BSP_GPIO setting interrupts ENcoder A-B");
+    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
+    BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+    //Log.Debug ("BSP_GPIO setting interrupts ENcoder A-B DONE");
+
+    //}else {
+    //BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
+    //BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
+    //}
     __no_operation();
     __enable_interrupt();
     __no_operation();
-
-    ////if(dir == DIR_EXTEND)
-    ////{
-
-    ////Log.Debug ("__disable_interrupt()disabling interrupt");
-    ////__disable_interrupt();
-    ////Log.Debug ("__disable_interrupt()disabling interrupt DONE");
-    ////__no_operation();
-
-    ////Log.Debug ("BSP_GPIO clearing interrupts ENcoder A-B");
-    //BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
-    //BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_B);
-    ////Log.Debug ("BSP_GPIO clearing interrupts ENcoder A-B DONE");
-
-    ////Log.Debug ("BSP_GPIO setting interrupts ENcoder A-B");
-    //BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_A);
-    //BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
-    ////Log.Debug ("BSP_GPIO setting interrupts ENcoder A-B DONE");
-
-    ////}else {
-    ////BSP_GPIO_ClearInterrupt(&g_BSP_GPIO_ENCODER_A);
-    ////BSP_GPIO_SetInterrupt(&g_BSP_GPIO_ENCODER_B);
-    ////}
 }
 
 int8_t ENC_GetDir(void)
