@@ -80,14 +80,14 @@ void DRV8874_forward( uint8_t percent )
   sprintf(temp, "Setting DRV8874 FORWARD at %u%%, pwm = %u", percent, target);
   Log.Debug(temp);
 
-  speed_fwd = target;
-  BPS_PWM_SetPWM(1, speed_fwd);
+  //speed_fwd = target;
+  //BPS_PWM_SetPWM(1, speed_fwd);
 
-  //do {
-  //  BPS_PWM_SetPWM(1, speed_fwd);
-  //  __delay_cycles(1000);
-  //  speed_fwd += inc;
-  //} while (target != speed_fwd);
+  do {
+    BPS_PWM_SetPWM(1, speed_fwd);
+    __delay_cycles(1000);
+    speed_fwd += inc;
+  } while (target != speed_fwd);
 
 #endif
 
@@ -126,14 +126,14 @@ void DRV8874_reverse( uint8_t percent )
  sprintf(temp, "Setting DRV8874 REVERSED at %u%%, pwm = %u", percent, target);
  Log.Debug(temp);
 
- speed_rev = target;
- BPS_PWM_SetPWM(0, speed_rev);
+ //speed_rev = target;
+ //BPS_PWM_SetPWM(0, speed_rev);
 
-  //do {
-  //  BPS_PWM_SetPWM(0, speed_rev);
-  //  __delay_cycles(1000);
-  //  speed_rev += inc;
-  //} while (target != speed_rev);
+  do {
+    BPS_PWM_SetPWM(0, speed_rev);
+    __delay_cycles(1000);
+    speed_rev += inc;
+  } while (target != speed_rev);
 
 #endif
 
