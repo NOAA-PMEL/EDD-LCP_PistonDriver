@@ -5,9 +5,10 @@
   (paper "A4")
 
   (title_block
-    (date "2020-06-17")
-    (rev "R0.1")
+    (date "2024-07-22")
+    (rev "1.3")
     (comment 1 "Design by: Matt Casari")
+    (comment 2 "Updated by Joseph Kurina")
   )
 
   (lib_symbols
@@ -215,7 +216,7 @@
     (property "Reference" "J18" (at 191.262 103.0732 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "Conn_01x04" (at 191.262 105.3846 0)
+    (property "Value" "Conn_02x02" (at 191.262 105.3846 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical" (at 189.23 102.87 0)

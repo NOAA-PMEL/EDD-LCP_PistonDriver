@@ -1,0 +1,66 @@
+### Footprint positions - created on Mon Aug 19 09:52:59 2024 ###
+### Printed by KiCad version 7.0.10
+## Unit = inches, Angle = deg.
+## Side : top
+# Ref     Val                  Package                                                             PosX       PosY       Rot  Side
+C4        CP                   CP_Radial_D12.5mm_P5.00mm                                         5.3697    -2.1551  180.0000  top
+C7        0.022uF              C_0805_2012Metric                                                 5.7240    -2.1040  -135.0000  top
+C8        10uF                 CP_Elec_4x4.5                                                     2.9929    -3.4232  180.0000  top
+C9        0.1uF                C_0805_2012Metric                                                 3.2275    -3.1225  -90.0000  top
+C12       0.1uF                C_0805_2012Metric                                                 3.5814    -3.1189  135.0000  top
+C13       0.1uF                C_0805_2012Metric                                                 3.8200    -3.1450   90.0000  top
+C17       10uF                 C_1210_3225Metric                                                 4.6010    -5.6660  -90.0000  top
+C18       10uF                 C_1210_3225Metric                                                 5.1575    -5.7129  -90.0000  top
+C19       1uF                  C_0603_1608Metric                                                 5.9875    -5.3375    0.0000  top
+C20       0.22uF               C_0603_1608Metric                                                 4.9960    -5.6350   90.0000  top
+C21       0.1uF                C_0603_1608Metric                                                 5.9860    -5.4050    0.0000  top
+C22       0.22uF               C_0603_1608Metric                                                 4.7475    -5.6335   90.0000  top
+C24       1.0uF                C_0603_1608Metric                                                 4.8300    -5.8425  -90.0000  top
+C26       0.1uF                C_0402_1005Metric                                                 5.7700    -5.5360  -90.0000  top
+C27       0.1uF                C_0402_1005Metric                                                 4.7366    -5.7200  180.0000  top
+C29       10uF                 C_1206_3216Metric                                                 5.3300    -5.5026   90.0000  top
+C31       10uF                 R_0805_2012Metric                                                 5.1375    -5.2575  -90.0000  top
+C33       10uF                 R_0805_2012Metric                                                 4.6080    -5.2700  -90.0000  top
+D1        5.6V                 D_SOD-323_HandSoldering                                           3.3335    -4.4618    0.0000  top
+D6        LED_BLUE             LED_0805_2012Metric                                               3.1452    -2.7387  145.0000  top
+D7        LED_GREEN            LED_0805_2012Metric                                               3.2092    -2.6438  140.0000  top
+D8        RB060M-60TR          D_SOD-123F                                                        5.7155    -5.3181    0.0000  top
+F1        1A                   Fuse_Bourns_MF-RG650                                              3.8450    -5.5375   90.0000  top
+F3        250mA                Fuse_Bourns_MF-RG650                                              4.6612    -2.2848    0.0000  top
+J1        Conn_01x06           PinSocket_1x06_P2.54mm_Vertical                                   4.3880    -1.9120  -70.0000  top
+J2        Conn_01x05           Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical              4.2913    -5.1575  -45.0000  top
+J3        Conn_01x02           Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical              3.0680    -4.7980  120.0000  top
+J4        Conn_01x05           Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical              3.9685    -4.8189  -45.0000  top
+J5        Conn_02x05_Odd_Even  PinSocket_2x05_P1.27mm_Vertical                                   2.9906    -3.2193  180.0000  top
+J9        Conn_01x02           Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical              3.2580    -5.1010  130.0000  top
+J10       Conn_01x02           Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical              2.9210    -4.4770  110.0000  top
+J11       Conn_01x02           Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical              3.5330    -5.3610  140.0000  top
+J12       Conn_01x02           Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical              4.2920    -5.7930  165.0000  top
+J17       Conn_01x02           Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical              6.0300    -2.6925  180.0000  top
+J18       Conn_01x04           Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical              4.7020    -1.9200    0.0000  top
+L1        12uH                 L_Bourns-SRN8040_8x8.15mm                                         5.5598    -5.5600  -90.0000  top
+L2        10uH                 L_Coilcraft_XAL1010                                               4.8710    -5.3560   90.0000  top
+Q1        DMG2305UX-7          SOT-23                                                            3.9764    -2.3228   45.0000  top
+R1        4.42M                R_0805_2012Metric                                                 3.2225    -4.3369   90.0000  top
+R2        4.42M                R_0805_2012Metric                                                 3.3250    -4.2900    0.0000  top
+R4        499k                 R_0805_2012Metric                                                 3.3800    -4.5944   90.0000  top
+R5        0.25                 R_Axial_Power_L48.0mm_W12.5mm_P55.88mm                            3.5125    -2.5275  -90.0000  top
+R14       26.7k                R_0402_1005Metric                                                 4.9950    -5.7525  -90.0000  top
+R15       100k                 R_0402_1005Metric                                                 4.9250    -5.8200  -90.0000  top
+R18       100k                 R_0402_1005Metric                                                 4.8850    -5.8634  -90.0000  top
+R19       9.09k                R_0402_1005Metric                                                 4.7300    -5.8334  -90.0000  top
+R20       1k                   R_0402_1005Metric                                                 4.7750    -5.8325   90.0000  top
+R21       470                  R_0805_2012Metric                                                 3.1638    -3.3138  135.0000  top
+R22       10k                  R_0805_2012Metric                                                 3.8780    -2.4213  135.0000  top
+R23       49.9                 R_0805_2012Metric                                                 4.3504    -2.3425  -90.0000  top
+R24       49.9                 R_0805_2012Metric                                                 4.4488    -2.3425   90.0000  top
+SW1       SW_Push              SW_SPST_TL3305A                                                   3.6880    -2.2740   37.5000  top
+TP8       TestPoint            TestPoint_Keystone_5000-5004_Miniature                            6.3575    -5.0950    0.0000  top
+TP9       TestPoint            TestPoint_Keystone_5000-5004_Miniature                            5.8675    -5.1050    0.0000  top
+TP11      TestPoint            TestPoint_Keystone_5000-5004_Miniature                            6.1225    -5.1025    0.0000  top
+TP13      TestPoint            TestPoint_Keystone_5000-5004_Miniature                            5.0875    -5.8975    0.0000  top
+TP22      TestPoint            TestPoint_Keystone_5000-5004_Miniature                            4.0625    -5.5450    0.0000  top
+U2        DRV8874              HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3x3mm_ThermalVias     5.8125    -2.2850   45.0000  top
+U4        BD9G102G-LB          SOT-23-6_Handsoldering                                            5.8626    -5.5331   90.0000  top
+U5        LM61460              TI_RJR0014A                                                       4.8710    -5.6760   90.0000  top
+## End

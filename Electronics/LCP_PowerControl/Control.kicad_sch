@@ -5,9 +5,10 @@
   (paper "A4")
 
   (title_block
-    (date "2020-06-17")
-    (rev "R0.1")
+    (date "2024-07-22")
+    (rev "1.3")
     (comment 1 "Design by: Matt Casari")
+    (comment 2 "Updated by Joseph Kurina")
   )
 
   (lib_symbols
@@ -408,7 +409,7 @@
     (property "Reference" "J2" (at 113.8428 83.185 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "Conn_01x05" (at 113.8428 85.4964 0)
+    (property "Value" "Conn_01x02" (at 113.8428 85.4964 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0212_2x01_P3.00mm_Vertical" (at 111.76 93.98 0)
@@ -417,7 +418,7 @@
     (property "Datasheet" "~" (at 111.76 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MPN" "61300511121" (at 111.76 93.98 0)
+    (property "MPN" "0430450212" (at 111.76 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 3b325944-f980-471f-93e2-539d6c516dfe))
@@ -462,7 +463,7 @@
     (property "Reference" "J4" (at 90.9828 104.775 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "Conn_01x05" (at 90.9828 107.0864 0)
+    (property "Value" "Conn_02x02" (at 90.9828 107.0864 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical" (at 88.9 115.57 0)
@@ -471,7 +472,7 @@
     (property "Datasheet" "~" (at 88.9 115.57 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MPN" "61300511121" (at 88.9 115.57 0)
+    (property "MPN" "0430450428" (at 88.9 115.57 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "4" (uuid f0971fd8-bb4b-4b25-9a84-312b991840cd))
