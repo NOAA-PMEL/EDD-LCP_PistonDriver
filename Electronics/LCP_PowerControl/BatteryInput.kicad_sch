@@ -494,7 +494,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 167.64 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-00005f052069)
-    (property "Reference" "TP22" (at 169.1132 37.6428 0)
+    (property "Reference" "BATT_V+1" (at 169.1132 37.6428 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "TestPoint" (at 169.1132 39.9542 0)
@@ -513,7 +513,7 @@
     (instances
       (project "LCP_PowerControl"
         (path "/41d9a78b-a4de-4258-a1a2-a19eb582c73a/00000000-0000-0000-0000-00005ee2a57d"
-          (reference "TP22") (unit 1)
+          (reference "BATT_V+1") (unit 1)
         )
       )
     )
