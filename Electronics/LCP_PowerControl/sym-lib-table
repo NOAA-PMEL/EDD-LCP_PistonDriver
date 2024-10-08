@@ -6,4 +6,5 @@
   (lib (name "PMEL_PowerICs")(type "Legacy")(uri "${KIPRJMOD}/PMEL_PowerICs.lib")(options "")(descr ""))
   (lib (name "LCP_PowerControl-rescue")(type "Legacy")(uri "${KIPRJMOD}/LCP_PowerControl-rescue.lib")(options "")(descr ""))
   (lib (name "PMEL_PowerICs_NewLib")(type "KiCad")(uri "${KIPRJMOD}/PMEL_PowerICs_NewLib.kicad_sym")(options "")(descr ""))
+  (lib (name "PMEL_Inductor")(type "KiCad")(uri "${KIPRJMOD}/PMEL_Inductor.kicad_sym")(options "")(descr ""))
 )
