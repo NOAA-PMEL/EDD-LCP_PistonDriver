@@ -42,8 +42,9 @@ void DRV8874_enable( void )
 void DRV8874_disable( void ) 
 {
   Log.Debug("Disabling DRV8874");
-  BSP_GPIO_Set(&g_BSP_GPIO_ENCODER_PULLUP);
   BSP_12V_Off();
+  _delay_ms(1000);
+  BSP_GPIO_Set(&g_BSP_GPIO_ENCODER_PULLUP);
 }
 
 void DRV8874_forward( uint8_t percent )
@@ -53,9 +54,9 @@ void DRV8874_forward( uint8_t percent )
   char temp[80];
   speed_rev = 0;
   BSP_GPIO_Set(&g_BSP_GPIO_MD_SLEEP);
-  _delay_ms(100);
+  _delay_ms(10);
 
-  Log.Debug("DRV8874_forward After sleep 100ms cycles");
+  Log.Debug("DRV8874_forward After sleep 10ms cycles");
 
 #ifdef DRV8874_NO_PWM
   BSP_GPIO_Set(&g_BSP_GPIO_MD_ENABLE);
@@ -100,8 +101,8 @@ void DRV8874_reverse( uint8_t percent )
   char temp[80];
   speed_fwd = 0;
   BSP_GPIO_Set(&g_BSP_GPIO_MD_SLEEP);
-  _delay_ms(100);
-  Log.Debug("DRV8874_reverse After sleep 100ms");
+  _delay_ms(10);
+  Log.Debug("DRV8874_reverse After sleep 10ms");
 #ifdef DRV8874_NO_PWM
   BSP_GPIO_Set(&g_BSP_GPIO_MD_ENABLE);
   BSP_GPIO_Set(&g_BSP_GPIO_MD_PH);
