@@ -301,6 +301,16 @@ void _CTRL_Run_Commands(uint8_t offset, const sRAM_t *pWrite, const sRAM_t *pLas
             PIS_Reset_to_Zero();
         }
     }
+    else if (offset == RAM_RST_FULL)
+    {
+        if (*pWrite->RST_Full != 0)
+        {
+            BSP_I2C_Enable(EUSCI_B1_BASE);
+            /** piston reset to full */
+            MEM_Set_RST_Full(*pWrite->RST_Full);
+            PIS_Reset_to_Full();
+        }
+    }
     else if (offset == RAM_USER_OVERRIDE)
     {
         /** User Override */

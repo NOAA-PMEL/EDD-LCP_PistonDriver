@@ -79,11 +79,13 @@
 #define RAM_USER_OVERRIDE 0x63
 #define RAM_MOV_ZERO 0x64
 #define RAM_MOV_FULL 0x65
+#define RAM_RST_FULL 0x66
 #define RAM_PST_CAL 0x67
 #define RAM_TRV_ZERO 0x68  
 #define RAM_TRV_FULL 0x69  
 #define RAM_TRV_MIN 0x6A  
-#define RAM_TRV_MAX 0x6B  
+#define RAM_TRV_MAX 0x6B
+#define RAM_TRV_FRST 0x6C  
 #define RAM_PID_COEFF_P 0x80  
 #define RAM_PID_COEFF_I 0x84  
 #define RAM_BAT_RETCAP 0x88  
@@ -145,6 +147,7 @@ typedef enum eRamVars_u8 {
   TRV_full,
   TRV_min,
   TRV_max,
+  TRV_frst,
 }eRamVars_u8_t;
 
 //typedef enum eRamVars_c {
@@ -177,11 +180,13 @@ typedef struct sRAM {
     volatile uint8_t *USR_override;
     volatile uint8_t *MOV_Zero;
     volatile uint8_t *MOV_Full;
+    volatile uint8_t *RST_Full;
     volatile uint8_t *PST_calibration;
     volatile uint8_t *TRV_zero;
     volatile uint8_t *TRV_full;
     volatile uint8_t *TRV_min;
     volatile uint8_t *TRV_max;
+    volatile uint8_t *TRV_frst;
     volatile float *PID_coeff_p;
     volatile float *PID_coeff_i;
     volatile float *PID_coeff_d;
@@ -233,6 +238,7 @@ void MEM_Set_Var_Write(uint8_t value);
 void MEM_Set_User_Override(bool value);
 void MEM_Set_MOV_Full(bool value);
 void MEM_Set_MOV_Zero(bool value);
+void MEM_Set_RST_Full(bool value);
 void MEM_Set_PST_Calibration(bool value);
 void MEM_Set_Travel_Direction(int8_t dir);
 void MEM_Set_Travel_Engage(bool state);
@@ -275,6 +281,7 @@ bool MEM_Get_TRV_Zero(void);
 bool MEM_Get_TRV_Full(void);
 bool MEM_Get_TRV_Min(void);
 bool MEM_Get_TRV_Max(void);
+bool MEM_Get_TRV_Frst(void);
 
 double MEM_Get_BAT_Retcap(void);
 double MEM_Get_BAT_Repsoc(void);

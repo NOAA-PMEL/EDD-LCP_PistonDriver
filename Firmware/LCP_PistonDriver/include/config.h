@@ -42,7 +42,7 @@
 /** Encoder Settings */
 #define SYS_ENCODER_MIN_COUNT_DEFAULT   ( 0 ) 
 #define SYS_ENCODER_MAX_COUNT_DEFAULT   ( 141841 )
-#define SYS_ENCODER_LENGTH_DEFAULT      ( 11.6875 )
+#define SYS_ENCODER_LENGTH_DEFAULT      ( 11.650 )
 
 /*******************************************************************************
  * Extended Scan Interface Settings

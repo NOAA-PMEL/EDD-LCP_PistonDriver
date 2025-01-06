@@ -570,6 +570,7 @@ void PIS_Extend(bool startup, uint8_t speed)
 {
     MEM_Set_u8(TRV_zero, false);
     MEM_Set_u8(TRV_full, false);
+    MEM_Set_u8(TRV_frst, false);
     Log.Debug("PIS_Extend called");
     if(ENC_GetDir() == DIR_RETRACT)
     {
@@ -590,6 +591,7 @@ void PIS_Retract(bool startup, uint8_t speed)
 {
     MEM_Set_u8(TRV_zero, false);
     MEM_Set_u8(TRV_full, false);
+     MEM_Set_u8(TRV_frst, false);
     Log.Debug("PIS_Retract called");
     if(ENC_GetDir() == DIR_EXTEND)
     {
@@ -669,13 +671,21 @@ void PIS_Run_to_Full(void)
 
     PIS_Read_length();
     _delay_ms(1000);
-    Log.Debug("Move Complete");
+    //Log.Debug("Move Complete");
     MEM_Set_u8(TRV_full, true);
     MEM_Set_i8(TRV_dir, PISRunStop);
     MEM_Set_u8(TRV_eng, false);
     PIS_Disable();
 }
-
+void PIS_Reset_to_Full(void)
+{   
+    Log.Debug("PIS_Reset_to_Full called");
+    PIS_Run_to_Full();
+    //Log.Debug("Resetting encoder");
+    ENC_Set_count(ENC_Get_max_count());
+    MEM_Set_u8(TRV_frst, true);
+    PIS_Disable();
+}
 void PIS_Calibrate(uint8_t cal)
 {   
     if(cal == 1)
@@ -909,6 +919,7 @@ bool PIS_is_moving(void)
     {
         MEM_Set_u8(TRV_zero, false);
         MEM_Set_u8(TRV_full, false);
+         MEM_Set_u8(TRV_frst, false);
         return true;
     }
     else
