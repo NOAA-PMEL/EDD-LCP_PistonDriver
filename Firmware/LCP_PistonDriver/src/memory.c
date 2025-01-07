@@ -449,6 +449,9 @@ void MEM_Set_u8(eRamVars_u8_t type, uint8_t value)
   case TRV_full:
     memcpy((uint8_t*)RAM.TRV_full, (uint8_t*)&value, sizeof(uint8_t));
     break;
+  case TRV_frst:
+    memcpy((uint8_t*)RAM.TRV_frst, (uint8_t*)&value, sizeof(uint8_t));
+    break;
   default:
 
     sprintf(temp, "MEM_Set_u8 called with invalid value = %u", value);
