@@ -55,9 +55,7 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [
-        "clearance|117606000|76966000|84a0ea86-4581-4c50-ad2a-23efb5dac647|ad1abf33-1c96-49b7-827d-ee219bcf46dc"
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -500,7 +498,7 @@
     },
     "net_format_name": "Pcbnew",
     "page_layout_descr_file": "",
-    "plot_directory": "",
+    "plot_directory": "../../../../../Desktop/",
     "spice_adjust_passive_values": false,
     "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",

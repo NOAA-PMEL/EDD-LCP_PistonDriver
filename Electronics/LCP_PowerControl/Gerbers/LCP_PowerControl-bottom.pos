@@ -1,0 +1,8 @@
+### Footprint positions - created on Wed Dec 11 17:54:32 2024 ###
+### Printed by KiCad version 7.0.10
+## Unit = inches, Angle = deg.
+## Side : bottom
+# Ref     Val       Package                                      PosX       PosY       Rot  Side
+C4        DNP       CP_Radial_D12.5mm_P5.00mm                  5.0355    -4.9220  180.0000  bottom
+R5        0.25      R_Axial_Power_L48.0mm_W12.5mm_P55.88mm     4.3340    -3.4350  -90.0000  bottom
+## End

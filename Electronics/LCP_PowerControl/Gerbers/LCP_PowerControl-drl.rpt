@@ -1,0 +1,33 @@
+Drill report for LCP_PowerControl.kicad_pcb
+Created on 12/11/2024 5:54:09 PM
+
+Copper Layer Stackup:
+    =============================================================
+    L1 :  F.Cu                      front
+    L2 :  In1.Cu                    in1
+    L3 :  In2.Cu                    in2
+    L4 :  B.Cu                      back
+
+
+Drill file 'LCP_PowerControl-PTH.drl' contains
+    plated through holes:
+    =============================================================
+    T1  0.300mm  0.0118"  (141 holes)
+    T2  0.300mm  0.0118"  (15 holes)
+    T3  0.700mm  0.0276"  (10 holes)
+    T4  1.000mm  0.0394"  (20 holes)
+    T5  1.010mm  0.0398"  (4 holes)
+    T6  1.020mm  0.0402"  (10 holes)
+    T7  1.200mm  0.0472"  (4 holes)
+    T8  2.500mm  0.0984"  (4 holes)
+
+    Total plated holes count 208
+
+
+Drill file 'LCP_PowerControl-NPTH.drl' contains
+    unplated through holes:
+    =============================================================
+    T1  1.000mm  0.0394"  (12 holes)
+    T2  1.020mm  0.0402"  (6 holes)
+
+    Total unplated holes count 18
