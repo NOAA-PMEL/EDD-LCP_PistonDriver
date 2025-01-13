@@ -1370,9 +1370,9 @@ STATIC double _PIS_calculate_volume_from_length(
  */
 STATIC bool _check_is_at_zero(void)
 {
-    
+  _delay_ms(10);  
   int32_t count = ENC_Get_count();
-  _delay_ms(10);
+  _delay_ms(1);
   
   // MUST BE CALLED WHILE IN MOTION
   if( (PIS_Read_current()> 0.05) && (count != ENC_Get_count()) )
