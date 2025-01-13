@@ -625,7 +625,7 @@ void PIS_Reset_to_Zero(void)
     Log.Debug("PIS_Reset_to_Zero called");
     //int32_t count = ENC_Get_count();
     PIS_Retract(true, 100);
-    _delay_ms(500);
+    _delay_ms(1000);
 
     //while( (fabs(PIS_Read_current()) > 0.05f) &&
     //(count != ENC_Get_count()) )
@@ -1370,7 +1370,6 @@ STATIC double _PIS_calculate_volume_from_length(
  */
 STATIC bool _check_is_at_zero(void)
 {
-  _delay_ms(10);  
   int32_t count = ENC_Get_count();
   _delay_ms(1);
   
