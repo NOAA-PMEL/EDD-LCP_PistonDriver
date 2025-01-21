@@ -70,11 +70,13 @@ STATIC sRAM_t RAM = {
     .USR_override = (uint8_t*) &storage_ram[RAM_USER_OVERRIDE],
     .MOV_Zero = (uint8_t*) &storage_ram[RAM_MOV_ZERO],
     .MOV_Full = (uint8_t*) &storage_ram[RAM_MOV_FULL],
+    .RST_Full = (uint8_t*) &storage_ram[RAM_RST_FULL],
     .PST_calibration = (uint8_t*) &storage_ram[RAM_PST_CAL],
     .TRV_zero = (uint8_t*) &storage_ram[RAM_TRV_ZERO],
     .TRV_full = (uint8_t*) &storage_ram[RAM_TRV_FULL],
     .TRV_min = (uint8_t*) &storage_ram[RAM_TRV_MIN],
     .TRV_max = (uint8_t*) &storage_ram[RAM_TRV_MAX],
+    .TRV_frst = (uint8_t*) &storage_ram[RAM_TRV_FRST],
     .PID_coeff_p = (float*) &storage_ram[RAM_PID_COEFF_P],
     .PID_coeff_i = (float*) &storage_ram[RAM_PID_COEFF_I],
     .PID_coeff_d = (float*) &storage_ram[RAM_PID_COEFF_D],
@@ -119,11 +121,13 @@ STATIC sRAM_t CMDRAM = {
     .USR_override = (uint8_t*) &temp_ram[RAM_USER_OVERRIDE],
     .MOV_Zero = (uint8_t*) &temp_ram[RAM_MOV_ZERO],
     .MOV_Full = (uint8_t*) &temp_ram[RAM_MOV_FULL],
+    .RST_Full = (uint8_t*) &temp_ram[RAM_RST_FULL],
     .PST_calibration = (uint8_t*) &temp_ram[RAM_PST_CAL],
     .TRV_zero = (uint8_t*) &temp_ram[RAM_TRV_ZERO],
     .TRV_full = (uint8_t*) &temp_ram[RAM_TRV_FULL],
     .TRV_min = (uint8_t*) &temp_ram[RAM_TRV_MIN],
     .TRV_max = (uint8_t*) &temp_ram[RAM_TRV_MAX],
+    .TRV_frst = (uint8_t*) &temp_ram[RAM_TRV_FRST],
     .PID_coeff_p = (float*) &temp_ram[RAM_PID_COEFF_P],
     .PID_coeff_i = (float*) &temp_ram[RAM_PID_COEFF_I],
     .PID_coeff_d = (float*) &temp_ram[RAM_PID_COEFF_D],
@@ -445,6 +449,9 @@ void MEM_Set_u8(eRamVars_u8_t type, uint8_t value)
   case TRV_full:
     memcpy((uint8_t*)RAM.TRV_full, (uint8_t*)&value, sizeof(uint8_t));
     break;
+  case TRV_frst:
+    memcpy((uint8_t*)RAM.TRV_frst, (uint8_t*)&value, sizeof(uint8_t));
+    break;
   default:
 
     sprintf(temp, "MEM_Set_u8 called with invalid value = %u", value);
@@ -587,6 +594,11 @@ void MEM_Set_MOV_Zero(volatile bool value)
     *RAM.MOV_Zero = value;
 }
 
+void MEM_Set_RST_Full(volatile bool value)
+{
+    *RAM.RST_Full = value;
+}
+
 void MEM_Set_Travel_Direction(volatile int8_t dir)
 {
     /** Set commanded direction */
@@ -683,6 +695,7 @@ bool MEM_Get_TRV_Zero(void)                 { return  *RAM.TRV_zero;}
 bool MEM_Get_TRV_Full(void)                 { return  *RAM.TRV_full;} 
 bool MEM_Get_TRV_Min(void)                  { return  *RAM.TRV_min;} 
 bool MEM_Get_TRV_Max(void)                  { return  *RAM.TRV_max;} 
+bool MEM_Get_TRV_Frst(void)                  { return  *RAM.TRV_frst;}
 double MEM_Get_BAT_Retcap(void)             { return  *RAM.BAT_retcap;} 
 double MEM_Get_BAT_Repsoc(void)             { return  *RAM.BAT_repsoc;} 
 double MEM_Get_BAT_Vcell(void)              { return  *RAM.BAT_vcell;} 

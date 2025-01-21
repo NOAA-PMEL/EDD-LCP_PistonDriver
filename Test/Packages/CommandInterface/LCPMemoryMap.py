@@ -29,6 +29,7 @@ memory = {
     'TRV_FULL': [0x69, 'bool'],
     'TRV_MIN': [0x6A, 'bool'],
     'TRV_MAX': [0x6B, 'bool'],
+    'TRV_FRST': [0x6C, 'bool'],
     'PID_COEFF_P': [0x80, 'float'],
     'PID_COEFF_I': [0x84, 'float'],
     'BAT_RETCAP': [0x88, 'double'],

@@ -393,6 +393,16 @@ class LCPCommand:
             bool: Not Fully Extended (False), Fully Extended (True)
         """
         return self._read('TRV_FULL')
+    
+    @property
+    def fullrst(self) -> bool:
+        """ Full encoder reset Flag
+        The current flag status for indicating fully extended and encode reset.
+
+        Returns:
+            bool: Not Fully Extended and reset (False), Fully Extended and encoder reset (True)
+        """
+        return self._read('TRV_FRST')
 
     @property
     def zero(self) -> bool:

@@ -42,8 +42,10 @@ void DRV8874_enable( void )
 void DRV8874_disable( void ) 
 {
   Log.Debug("Disabling DRV8874");
-  BSP_GPIO_Set(&g_BSP_GPIO_ENCODER_PULLUP);
   BSP_12V_Off();
+  // delay 1.0 seconds for actuator momentum
+  _delay_ms(3200);
+  BSP_GPIO_Set(&g_BSP_GPIO_ENCODER_PULLUP);
 }
 
 void DRV8874_forward( uint8_t percent )
