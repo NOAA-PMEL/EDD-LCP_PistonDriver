@@ -643,6 +643,7 @@ void PIS_Reset_to_Zero(void)
     MEM_Set_i8(TRV_dir, PISRunStop);
     MEM_Set_u8(TRV_eng, false);
     PIS_Disable();
+    PIS_Read_length();
 }
 
 void PIS_Run_to_Full(void)
@@ -685,6 +686,7 @@ void PIS_Reset_to_Full(void)
     ENC_Set_count(ENC_Get_max_count());
     MEM_Set_u8(TRV_frst, true);
     PIS_Disable();
+    PIS_Read_length();
 }
 void PIS_Calibrate(uint8_t cal)
 {   
