@@ -638,12 +638,13 @@ void PIS_Reset_to_Zero(void)
     }
     //Log.Debug("Move Complete");
     //Log.Debug("Resetting encoder");
-    ENC_Set_count(0);
     MEM_Set_u8(TRV_zero, true);
     MEM_Set_i8(TRV_dir, PISRunStop);
     MEM_Set_u8(TRV_eng, false);
     PIS_Disable();
     PIS_Read_length();
+    _delay_ms(1000);
+    ENC_Set_count(0);
 }
 
 void PIS_Run_to_Full(void)
@@ -670,13 +671,13 @@ void PIS_Run_to_Full(void)
         _delay_ms(1000);
     }
 
-    PIS_Read_length();
-    _delay_ms(1000);
     //Log.Debug("Move Complete");
     MEM_Set_u8(TRV_full, true);
     MEM_Set_i8(TRV_dir, PISRunStop);
     MEM_Set_u8(TRV_eng, false);
     PIS_Disable();
+    PIS_Read_length();
+    _delay_ms(1000);
 }
 void PIS_Reset_to_Full(void)
 {   
