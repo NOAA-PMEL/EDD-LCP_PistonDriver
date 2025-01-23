@@ -463,6 +463,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
     /* update the length in memory map*/
     PIS_Read_length();
     Log.Debug(temp);
+    PIS_Stop();
     
     diff = ENC_Get_Length() - length;
     sprintf(temp, "Diff = %0.4f", diff);
@@ -482,6 +483,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
         {
             /** Log Stalled Rev, near zero hard stop? */
             Log.Error("Stall near zero hard stop");
+            
         }
     } 
     else if((actuator.setpoint_flag == false))
@@ -645,6 +647,7 @@ void PIS_Reset_to_Zero(void)
     PIS_Read_length();
     _delay_ms(1000);
     ENC_Set_count(0);
+    PIS_Stop();
 }
 
 void PIS_Run_to_Full(void)
@@ -678,6 +681,7 @@ void PIS_Run_to_Full(void)
     PIS_Disable();
     PIS_Read_length();
     _delay_ms(1000);
+    PIS_Stop();
 }
 void PIS_Reset_to_Full(void)
 {   
