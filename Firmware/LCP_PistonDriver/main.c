@@ -41,7 +41,7 @@ int main( void )
     /* for low power consumption, uncomment lines below */
     __no_operation();
     __enable_interrupt();
-    //__bis_SR_register(LPM4_bits + GIE);
+    __bis_SR_register(LPM3_bits + GIE);
     __no_operation();
     __no_operation();
 
