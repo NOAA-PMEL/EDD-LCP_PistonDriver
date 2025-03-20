@@ -55,37 +55,31 @@ int main( void )
     TA3CTL = 0;  // Timer A3
 
     // 7. Disable motor driver IC
-    // Your motor driver appears to have sleep/enable lines
-    // Assuming g_BSP_GPIO_MD_SLEEP is active low
     BSP_GPIO_Clear(&g_BSP_GPIO_MD_SLEEP);  // Put motor driver to sleep
     BSP_GPIO_Clear(&g_BSP_GPIO_MD_ENABLE); // Disable motor driver
     
-    // 8. Configure GPIO pins 
-    // Put unused GPIO pins in a defined state
-    P1OUT = 0;
-    P2OUT = 0;
-    P3OUT = 0;
-    P4OUT = 0;
-    P5OUT = 0;
-    P6OUT = 0;
-    P7OUT = 0;
-    P8OUT = 0;
-    
-    P1DIR = 0xFF;
-    P2DIR = 0xFF;
-    P3DIR = 0xFF;
-    P4DIR = 0xFF;
-    P5DIR = 0xFF;
-    P6DIR = 0xFF;
-    P7DIR = 0xFF;
-    P8DIR = 0xFF;
+    // Make sure 12V power rail is off
+    BSP_12V_Off();
     
     // Visual indicator before sleep
     BSP_LED_Set(LED_GREEN);
     __delay_cycles(500000);
     BSP_LED_Clear(LED_GREEN);
+    
+    // Make sure blue LED is off
+    BSP_LED_Clear(LED_BLUE);
 
-    /* for low power consumption, uncomment lines below */
+    // 2. Set clock system to minimum power configuration
+    CSCTL0_H = CSKEY_H;          // Unlock CS registers
+    CSCTL1 = DCOFSEL_0;          // Set DCO to lowest frequency
+    CSCTL2 = SELA__VLOCLK + SELS__VLOCLK + SELM__VLOCLK; // Use VLOCLK (10kHz)
+    CSCTL3 = DIVA__1 + DIVS__1 + DIVM__1;  // No division
+    CSCTL0_H = 0;                // Lock CS registers
+    
+    // 3. Configure FRAM for lowest power
+    FRCTL0 = FRCTLPW | NWAITS_0; // Set FRAM to minimum wait states
+
+    /* Enter low power mode */
     __enable_interrupt();
     __bis_SR_register(LPM3_bits + GIE);
     //__no_operation();
