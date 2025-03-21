@@ -36,6 +36,7 @@ void DRV8874_enable( void )
 {
   Log.Debug("Enabling DRV8874");
   BSP_GPIO_Clear(&g_BSP_GPIO_ENCODER_PULLUP);
+  _delay_ms(250); // delay 250ms for the vref to stabilize
   BSP_12V_On();
 }
 
