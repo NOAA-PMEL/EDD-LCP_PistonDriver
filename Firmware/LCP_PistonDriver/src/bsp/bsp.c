@@ -186,7 +186,7 @@ void _delay_ms(uint32_t seconds)
 {
   while(--seconds > 0)
   {
-    __delay_cycles(2500);
+    __delay_cycles(2500); /* XXX this is wrong, @2500 a 3200ms delay = 1000ms, so this should be adjusted to 8000*/
   }
 }
 

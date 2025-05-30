@@ -386,63 +386,143 @@ ePistonRunError_t PIS_Run_to_length(float length)
 
     actuator.setpoint_flag = false;
     float diff = length - ENC_Get_Length();
-    uint8_t speed;
-    if(fabs(diff) > PISTON_SLOW_SPEED_LENGTH)
-    {
-      speed = 100;
-    } else {
-      speed = 60; /*Old ram was 80*/
-    }
-    
-    if(diff > 0)
-    {
-        actuator.move_dir = PISRunFwd;           
-        PIS_Extend(true, speed);
-        
-    } else if(diff < 0) 
-    {
-        actuator.move_dir = PISRunRev;
-        PIS_Retract(true, speed);
-    } else {
-        actuator.setpoint_flag = true;
-    }
+    bool pid = MEM_Get_PID_Used();
 
-    float current = 0.0f;
-    bool current_stop = false;
-    bool slow_speed_flag = false;
-
-    do
+    if(pid)
     {
-        float current_length = PIS_Read_length();
-        //sprintf(temp, "Current length = %.4f", current_length);
-        //Log.Debug(temp);
-        float diff = current_length - length;
-
-        if(fabs(diff) < 0.01)
+        float dt = 1.0; /*should be ~10x the loop time*/
+        float Kp = MEM_Get_PID_Coeff_P();
+        float Ki = MEM_Get_PID_Coeff_I();
+        float Kd = MEM_Get_PID_Coeff_D();
+        float integral = 0;
+        float derivative = 0;
+        float difflast = 0;
+        float speed = 0;
+        float current = 0.0f;
+        bool current_stop = false;
+        do
         {
-            DRV8874_stop();
-            actuator.setpoint_flag = true;
-        } 
+            float current_length = PIS_Read_length();
+            sprintf(temp, "Current PID length = %.4f", current_length);
+            Log.Debug(temp);
+            float diff = current_length - length;
 
-        if(!slow_speed_flag)
-        {
-            if(fabs(diff) <= PISTON_SLOW_SPEED_LENGTH)
+            if(fabs(diff) < 0.01)
             {
-                slow_speed_flag = true;
-                if(actuator.move_dir == PISRunFwd)
+                DRV8874_stop();
+                actuator.setpoint_flag = true;
+                speed = 0;
+            }
+
+            else
+            {
+                speed = (Kp * diff) + (Ki * integral) + (Kd * derivative);   
+
+                if (speed > 100)
                 {
-                    PIS_Extend(false, PISTON_SLOW_SPEED);
+                    speed = 100;
                 }
-                else
+                else if (speed < -100)
                 {
-                    PIS_Retract(false, PISTON_SLOW_SPEED);
+                    speed = -100;
+                }
+                
+                integral += (diff * dt);
+
+                derivative = (diff - difflast) / dt;
+                difflast = diff;
+            }
+
+            /*Send the Actuator the movement command using PID calculate speed (PWM)*/
+            if(diff > 0)
+            {
+                actuator.move_dir = PISRunFwd; 
+                sprintf(temp, "PID Extend Command speed = %.4f", speed);
+                Log.Debug(temp);          
+                PIS_Extend(true, speed);
+            
+            } 
+            else if(diff < 0) 
+            {
+                actuator.move_dir = PISRunRev;
+                sprintf(temp, "PID Retract Command speed = %.4f", speed);
+                Log.Debug(temp);
+                PIS_Retract(true, speed);
+            } 
+            else 
+            {
+                actuator.setpoint_flag = true;
+            }
+
+            current = DRV8874_read_current();
+            current_stop = (current >= 0.005f);
+
+            /*PID Loop time*/
+            _delay_ms(300); /*min 300ms delay to run through other functions, if need to stop direction then 3500ms delay*/
+
+        } while (!actuator.setpoint_flag && current_stop);
+    }
+
+    else
+    {
+        uint8_t speed;
+        if(fabs(diff) > PISTON_SLOW_SPEED_LENGTH)
+        {
+        speed = 100;
+        } else {
+        speed = 60; /*Old ram was 80*/
+        }
+        
+        if(diff > 0)
+        {
+            actuator.move_dir = PISRunFwd;           
+            PIS_Extend(true, speed);
+            
+        } else if(diff < 0) 
+        {
+            actuator.move_dir = PISRunRev;
+            PIS_Retract(true, speed);
+        } else {
+            actuator.setpoint_flag = true;
+        }
+
+        float current = 0.0f;
+        bool current_stop = false;
+        bool slow_speed_flag = false;
+
+        do
+        {
+            float current_length = PIS_Read_length();
+            //sprintf(temp, "Current length = %.4f", current_length);
+            //Log.Debug(temp);
+            float diff = current_length - length;
+
+            if(fabs(diff) < 0.01)
+            {
+                DRV8874_stop();
+                actuator.setpoint_flag = true;
+            } 
+
+            if(!slow_speed_flag)
+            {
+                if(fabs(diff) <= PISTON_SLOW_SPEED_LENGTH)
+                {
+                    slow_speed_flag = true;
+                    if(actuator.move_dir == PISRunFwd)
+                    {
+                        PIS_Extend(false, PISTON_SLOW_SPEED);
+                    }
+                    else
+                    {
+                        PIS_Retract(false, PISTON_SLOW_SPEED);
+                    }
                 }
             }
-        }
-        current = DRV8874_read_current();
-        current_stop = (current >= 0.005f);
+            current = DRV8874_read_current();
+            current_stop = (current >= 0.005f);
 
-    } while(!actuator.setpoint_flag && current_stop);
+        } while(!actuator.setpoint_flag && current_stop);
+    }
 
     Log.Debug("Exited do/while loop");
     PIS_Stop();
