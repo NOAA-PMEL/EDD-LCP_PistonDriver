@@ -391,8 +391,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
     {
       speed = 100;
     } else {
-      speed = 80;
-      //speed = 60;
+      speed = 60; /*Old ram was 80*/
     }
     
     if(diff > 0)
