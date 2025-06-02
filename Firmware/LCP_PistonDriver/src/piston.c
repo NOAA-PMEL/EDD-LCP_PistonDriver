@@ -437,17 +437,17 @@ ePistonRunError_t PIS_Run_to_length(float length)
             if(diff > 0)
             {
                 actuator.move_dir = PISRunFwd; 
-                sprintf(temp, "PID Extend Command speed = %.4f", speed);
+                sprintf(temp, "PID Extend Command speed = %.4f", fabs(speed));
                 Log.Debug(temp);          
-                PIS_Extend(true, speed);
+                PIS_Extend(true, fabs(speed));
             
             } 
             else if(diff < 0) 
             {
                 actuator.move_dir = PISRunRev;
-                sprintf(temp, "PID Retract Command speed = %.4f", speed);
+                sprintf(temp, "PID Retract Command speed = %.4f", fabs(speed));
                 Log.Debug(temp);
-                PIS_Retract(true, speed);
+                PIS_Retract(true, fabs(speed));
             } 
             else 
             {
