@@ -405,7 +405,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
             float current_length = PIS_Read_length();
             sprintf(temp, "Current PID length = %.4f", current_length);
             Log.Debug(temp);
-            float diff = current_length - length;
+            float diff = length - current_length;
 
             if(fabs(diff) < 0.01)
             {
@@ -495,7 +495,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
             float current_length = PIS_Read_length();
             //sprintf(temp, "Current length = %.4f", current_length);
             //Log.Debug(temp);
-            float diff = current_length - length;
+            float diff = length - current_length;
 
             if(fabs(diff) < 0.01)
             {
@@ -544,7 +544,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
     Log.Debug(temp);
     PIS_Stop();
     
-    diff = ENC_Get_Length() - length;
+    diff = length - ENC_Get_Length();
     sprintf(temp, "Diff = %0.4f", diff);
     Log.Debug(temp);
     
