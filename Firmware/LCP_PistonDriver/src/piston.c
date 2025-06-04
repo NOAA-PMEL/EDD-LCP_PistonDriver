@@ -390,16 +390,18 @@ ePistonRunError_t PIS_Run_to_length(float length)
 
     if(pid)
     {
-        float dt = 1.0; /*should be ~10x the loop time*/
+        float dt = 1.0; /*should be ~10*(count*PID loop delay)*/
         float Kp = MEM_Get_PID_Coeff_P();
         float Ki = MEM_Get_PID_Coeff_I();
         float Kd = MEM_Get_PID_Coeff_D();
         float integral = 0;
         float derivative = 0;
         float difflast = 0;
-        float speed = 0;
+        float speedf = 0;
+        uint8_t speed = 0;
         float current = 0.0f;
         bool current_stop = false;
+        uint8_t count = 0;
         do
         {
             float current_length = PIS_Read_length();
@@ -416,49 +418,52 @@ ePistonRunError_t PIS_Run_to_length(float length)
 
             else
             {
-                speed = (Kp * diff) + (Ki * integral) + (Kd * derivative);   
+                speedf = fabs((Kp * diff) + (Ki * integral) + (Kd * derivative));
+                speedf = round(speedf);   
 
-                if (speed > 100)
+                if (speedf > 100)
                 {
-                    speed = 100;
-                }
-                else if (speed < -100)
-                {
-                    speed = -100;
+                    speedf = 100;
                 }
                 
-                integral += (diff * dt);
+                speed = (uint8_t)speedf;
 
+                integral += (diff * dt);
                 derivative = (diff - difflast) / dt;
                 difflast = diff;
+                count++;
             }
 
             /*Send the Actuator the movement command using PID calculate speed (PWM)*/
-            if(diff > 0)
+            if(count >= 300) /*min 300ms delay to run through other functions(counts*PID loop delay), if need to stop direction then 3500ms delay*/
             {
-                actuator.move_dir = PISRunFwd; 
-                sprintf(temp, "PID Extend Command speed = %.4f", fabs(speed));
-                Log.Debug(temp);          
-                PIS_Extend(true, fabs(speed));
-            
-            } 
-            else if(diff < 0) 
-            {
-                actuator.move_dir = PISRunRev;
-                sprintf(temp, "PID Retract Command speed = %.4f", fabs(speed));
-                Log.Debug(temp);
-                PIS_Retract(true, fabs(speed));
-            } 
-            else 
-            {
-                actuator.setpoint_flag = true;
+                count = 0;
+                if(diff > 0)
+                {
+                    actuator.move_dir = PISRunFwd; 
+                    sprintf(temp, "PID Extend Command speed = %.4f", speed);
+                    Log.Debug(temp);          
+                    PIS_Extend(true, speed);
+                
+                } 
+                else if(diff < 0) 
+                {
+                    actuator.move_dir = PISRunRev;
+                    sprintf(temp, "PID Retract Command speed = %.4f", speed);
+                    Log.Debug(temp);
+                    PIS_Retract(true, speed);
+                } 
+                else 
+                {
+                    actuator.setpoint_flag = true;
+                }
             }
 
             current = DRV8874_read_current();
             current_stop = (current >= 0.005f);
 
-            /*PID Loop time*/
-            _delay_ms(300); /*min 300ms delay to run through other functions, if need to stop direction then 3500ms delay*/
+            /*PID Loop delay*/
+            _delay_ms(1); 
 
         } while (!actuator.setpoint_flag && current_stop);
     }
