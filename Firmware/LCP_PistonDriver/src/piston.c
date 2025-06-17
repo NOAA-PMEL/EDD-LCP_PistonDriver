@@ -391,7 +391,7 @@ ePistonRunError_t PIS_Run_to_length(float length)
     {
       speed = 100;
     } else {
-      speed = 60; /*Old ram was 80*/
+      speed = 80; /*Old ram was 80, 60 did not work, stalled out ram under load*/
     }
     
     if(diff > 0)
