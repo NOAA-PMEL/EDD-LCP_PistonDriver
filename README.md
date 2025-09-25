@@ -33,11 +33,62 @@ master_gcc branch is compatible with gcc compiler for MSP430 MCU. Please follow 
 * make flash
 
 ## State of this project
-TODO
+The LCP has been extensilivly tested and deployed in Puget Sound and the Bering Sea in Moored mode.  The mechanical design is complete, the electronics hardware needs a goround-up re-design for lower power consumption, decreased cost, and robustness.  The Firmware needs a ground up re-write for robustnuss and readability.  The piston board should be merged with the LCP-Control Board, and the seperate micro-controller elminated if possible.
 
-### Future work
-An RTOS should be added to this project to allow for i2c calls while movements are in progress.#
+# Branch
+Master_gcc is the active branch and encompasses the most upto date version of the project 
 
-## Branch
-Develop has been merged with master until this project is picked back up
+# Low-Cost-Profiler
+Low Cost Profiler for Oceanographic Monitoring
+
+
+## Profiler System Diagram
+```mermaid
+graph LR;
+    
+
+    subgraph Low Cost Profiler
+    
+    
+    MainController --- PistonController
+    GPS --> MainController
+    Pressure --> MainController
+    Temperature --> MainController
+    IMU --> MainController
+    Accelerometer --> MainController
+    subgraph Profiler Control
+        MainController
+        subgraph sensors
+            Pressure
+            Temperature
+            GPS 
+            IMU
+            Accelerometer
+        end
+
+        IridiumSBD --- MainController
+        subgraph Telemetry
+        IridiumSBD
+        end
+    end
+
+    subgraph Power Control ;
+    Piston --> PistonController
+    Encoder --> PistonController
+    subgraph motion
+    Encoder
+    Piston
+    end
+    Batteries --> PistonController
+    subgraph power
+    Batteries
+    end
+    BatteryFuelGauge --> PistonController
+    subgraph Sensor2
+    BatteryFuelGauge     
+    end
+    end
+    
+    end
+```
 
